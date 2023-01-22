@@ -25,7 +25,11 @@ const router = createBrowserRouter([
         element: <MenuList />,
       },
       {
-        path: '/reservation/',
+        path: '/reservation',
+        element: <Booking />,
+      },
+      {
+        path: '/reservation/:mobile',
         element: <Booking />,
       },
       {
