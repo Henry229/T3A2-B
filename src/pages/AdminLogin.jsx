@@ -1,10 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Restaurant from '../api/restaurant';
 
 const AdminLogin = () => {
   const formRef = useRef();
   const idRef = useRef();
   const passwordRef = useRef();
+  const errRef = useRef();
+  const navigate = useNavigate();
+  const [errMsg, setErrMsg] = useState('');
 
   const restaurant = new Restaurant();
 
@@ -16,11 +20,32 @@ const AdminLogin = () => {
     };
     const { id, password } = loginInfo;
     if (id === '' || password === '') return;
-    restaurant.adminLogin(loginInfo);
+
+    restaurant
+      .adminLogin(loginInfo)
+      .then((res) => {
+        console.log('$$$$', res.data);
+        res.data;
+        navigate(`/admin/bookmain`);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setErrMsg('Invalid credentials');
+        } else if (err.response.status === 403) {
+          setErrMsg('Missing Auth');
+        } else {
+          setErrMsg('Login failed');
+        }
+      });
+
     formRef.current.reset();
   };
+
   return (
     <section>
+      <p ref={errRef} aria-live='assertive'>
+        {errMsg}
+      </p>
       <h2>Login</h2>
       <form ref={formRef} onSubmit={handleSubmit}>
         <label htmlFor='loginId'>ID</label>

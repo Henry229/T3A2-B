@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AdminLogin from '../pages/AdminLogin';
 
 export default class Restaurant {
   constructor() {
@@ -14,12 +13,10 @@ export default class Restaurant {
   }
   async adminLogin(loginInfo) {
     const { id, password } = loginInfo;
-    return this.httpServer
-      .post('/admin/login', loginInfo, {
-        headers: { Authorization: 'Basic ' + btoa(id + ':' + password) },
-      })
-      .then((res) => {
-        res.data;
-      });
+    console.log('###', loginInfo);
+    const response = this.httpServer.post('/admin/login', loginInfo, {
+      headers: { Authorization: 'Basic ' + btoa(id + ':' + password) },
+    });
+    return response;
   }
 }
