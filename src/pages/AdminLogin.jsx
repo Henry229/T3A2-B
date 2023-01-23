@@ -14,7 +14,8 @@ const AdminLogin = () => {
       id: idRef.current.value,
       password: passwordRef.current.value,
     };
-    if (idRef.current.value === '' && passwordRef.current.value === '') return;
+    const { id, password } = loginInfo;
+    if (id === '' || password === '') return;
     restaurant.adminLogin(loginInfo);
     formRef.current.reset();
   };
