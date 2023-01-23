@@ -8,8 +8,7 @@ export default class Restaurant {
   }
   async bookingClient(bookingPerson) {
     return this.httpServer.post('/reservation', bookingPerson).then((res) => {
-      console.log('---yogida1: ', res);
-      res.data;
+      res.data.guest;
     });
   }
 }

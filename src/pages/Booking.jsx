@@ -25,12 +25,13 @@ const Booking = () => {
       time: timeRef.current.value || '',
       guestNumber: guestNumberRef.current.value || '',
     };
-    bookingPerson.date = `${bookingPerson.date}T${bookingPerson.time}Z`;
+    const convertDay = `${bookingPerson.date}T${bookingPerson.time}Z`;
+    bookingPerson.date = convertDay.toLocaleString();
+    console.log('####', bookingPerson.date, '/', convertDay);
     delete bookingPerson.time;
-    // const book = JSON.stringify(bookingPerson)
-    // bookingPerson = JSON.parse(book)
     console.log('=== yogida1:', bookingPerson);
     restaurant.bookingClient(bookingPerson);
+    formRef.current.reset();
   };
 
   return (
