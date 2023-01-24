@@ -7,7 +7,7 @@ footer {
   flex-direction: column;
 }
 
-#icons {
+#footerIcons {
   display: flex;
   justify-content: space-around;
   margin-bottom: 10px;
@@ -23,15 +23,39 @@ footer {
   opacity: 0.7;
 }
 
-#email {
+#footerText {
+  visibility: hidden;
   position: absolute;
-  left:0;
-  bottom:0;
-  right:0;
-  margin-left: 10px;
 }
 
-#ph {
-  margin-left: auto;
-  margin-right: 10px;
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.material-symbols-outlined {
+  border: none;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 700,
+  'GRAD' 200,
+  'opsz' 48
+}
+
+@media only screen and (min-width: 500px) {
+  #footerText {
+    visibility: visible;
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  #footerText > p {
+    margin: 5px;
+  }
 }
