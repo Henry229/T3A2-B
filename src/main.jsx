@@ -9,6 +9,7 @@ import Booking from './pages/Booking';
 import BookMain from './pages/BookMain';
 import MenuList from './pages/MenuList';
 import Notfound from './pages/Notfound';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <MenuList />,
+        element: <Home />,
       },
       {
         path: '/menu',

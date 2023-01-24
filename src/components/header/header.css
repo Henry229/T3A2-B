@@ -5,7 +5,8 @@ header {
   border-bottom: solid 0.7px;
   justify-content: center;
   align-items: center;
-  height: 12vh;
+  height: 6em;
+  background-color: black;
   /* position: relative; */
 }
 
