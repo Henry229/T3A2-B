@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Restaurant from '../api/restaurant';
+// import * as btoa from 'btoa'
 
 const AdminLogin = () => {
   const formRef = useRef();
@@ -23,10 +24,8 @@ const AdminLogin = () => {
 
     restaurant
       .adminLogin(loginInfo)
-      .then((res) => {
-        console.log('$$$$', res.data);
-        res.data;
-        navigate(`/admin/bookmain`);
+      .then((jwt) => {
+        navigate(`/admin/bookmain`, { state: { jwt } });
       })
       .catch((err) => {
         if (err.response.status === 401) {
