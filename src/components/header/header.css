@@ -1,33 +1,22 @@
 header {
   display: flex;
   border-bottom: solid 0.7px;
-  /* justify-content: end; */
-  margin: 0;
+  justify-content: center;
+  align-content: center;
+  /* position: relative; */
 }
 
 nav {
   display: flex;
-  border: 2px solid;
-  margin: 0 0 0 auto;
+  margin: auto 0 0 auto;
 }
 
-ul {
+.title {
   display: flex;
-  list-style: none;
-  border: 1px solid;
-}
-
-li {
-  margin-right: 20px;
-  border: 0.3px solid;
-  display: flex;
-}
-
-p {
-  text-align: left;
-  margin-left: 15px;
+  position: absolute;
   font-size: 1.6em;
-  margin: 0;
-  border: 1px solid;
 }
 
+nav > * {
+  margin-right: 1rem;
+}

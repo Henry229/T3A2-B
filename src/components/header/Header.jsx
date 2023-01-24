@@ -6,14 +6,12 @@ import './header.css'
 const Header = () => {
   return (
     <header>
-      <Link to='/'><p>The Gangnam Style BBQ</p></Link>
+      <Link to='/' className='title'>The Gangnam Style BBQ</Link>
       <nav>
-        <ul>
-          <li><Link to='/menu'>Menu</Link></li>
-          <li><Link to='/reservation'>Reservation</Link></li>
-          <li><Link to='/aboutUs'>About Us</Link></li>
-          <li><Link to='/admin'>Admin</Link></li>
-        </ul>
+          <Link to='/menu'>Menu</Link>
+          <Link to='/reservation'>Reservation</Link>
+          <Link to='/aboutUs'>About Us</Link>
+          <Link to='/admin'>Admin</Link>
       </nav>
     </header>
   );
