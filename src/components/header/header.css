@@ -2,10 +2,10 @@ header {
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
-  border-bottom: solid 0.7px;
   justify-content: center;
   align-items: center;
-  height: 12vh;
+  height: 6em;
+  background-color: black;
   /* position: relative; */
 }
 
@@ -39,11 +39,12 @@ nav > *:hover {
 
   header {
     align-items: baseline;
-    height: 5.5em;
+    height: 4.5em;
   }
 
   .title {
     margin-top: .5em;
+    font-size: 1.4em;
   }
 
   nav {
@@ -52,6 +53,7 @@ nav > *:hover {
 
   nav > * {
     margin: 0 .7em 0 .7em;
+    font-size: 0.8em;
   }
 
 
