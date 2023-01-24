@@ -7,16 +7,26 @@ export default class Restaurant {
     });
   }
   async bookingClient(bookingPerson) {
-    return this.httpServer.post('/reservation', bookingPerson).then((res) => {
-      res.data.guest;
-    });
+    return await this.httpServer
+      .post('/reservation', bookingPerson)
+      .then((res) => {
+        res.data.guest;
+      });
   }
   async adminLogin(loginInfo) {
     const { id, password } = loginInfo;
-    console.log('###', loginInfo);
-    const response = this.httpServer.post('/admin/login', loginInfo, {
+    const response = await this.httpServer.post('/admin/login', loginInfo, {
       headers: { Authorization: 'Basic ' + btoa(id + ':' + password) },
     });
-    return response;
+    return (await response).data.jwt;
+  }
+  async getAllClient(jwt) {
+    return await this.httpServer
+      .get('reservation', {
+        headers: { jwt: jwt },
+      })
+      .then((res) => {
+        res.data.guest;
+      });
   }
 }
