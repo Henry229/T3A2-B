@@ -1,28 +1,19 @@
 import React from 'react';
 import { GrRestaurant } from 'react-icons/gr';
 import { Link } from 'react-router-dom';
+import './header.css'
 
 const Header = () => {
   return (
-    <nav>
-      <Link to='/'>
-        <GrRestaurant />
-      </Link>
-      <ul>
-        <li>
+    <header>
+      <Link to='/' className='title'>The Gangnam Style BBQ</Link>
+      <nav>
           <Link to='/menu'>Menu</Link>
-        </li>
-        <li>
           <Link to='/reservation'>Reservation</Link>
-        </li>
-        <li>
-          <Link to='/aboutUs'>About Us</Link>
-        </li>
-        <li>
+          <Link to='/aboutUs'>About us</Link>
           <Link to='/admin'>Admin</Link>
-        </li>
-      </ul>
-    </nav>
+      </nav>
+    </header>
   );
 };
 
