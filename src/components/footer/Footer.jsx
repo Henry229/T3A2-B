@@ -6,8 +6,6 @@ const Footer = () => {
   const [popupBox, setPopupBox] = useState('')
   const [targetContent, setTargetContent] = useState('')
 
-  const promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
-
   const displayPopupBox = (e) => {
     setPopupBox(document.getElementById("footerPopup"))
     setTargetContent(e.target.innerHTML)

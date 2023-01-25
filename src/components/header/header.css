@@ -1,5 +1,6 @@
 header {
   display: flex;
+  width: 100vw;
   flex-wrap: wrap;
   box-sizing: border-box;
   justify-content: center;
@@ -18,11 +19,7 @@ nav {
   position: absolute;
   display: flex;
   font-size: 2em;
-  color: #f6ae2d;
-}
-
-.title:hover {
-  color: #9b6604;
+  color: white;
 }
 
 nav > * {
@@ -31,6 +28,7 @@ nav > * {
   color: wheat;
 }
 
+.title:hover,
 nav > *:hover {
   color: gray;
 }
@@ -55,9 +53,4 @@ nav > *:hover {
     margin: 0 .7em 0 .7em;
     font-size: 0.8em;
   }
-
-
-
-
-  
 }

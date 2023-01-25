@@ -1,36 +1,38 @@
-import React from 'react'
+import React, {useState} from 'react'
 import bbq1 from '../assets/bbq1.jpg'
-import './home'
+import bbq2 from '../assets/bbq2.jpg'
+import bbq4 from '../assets/bbq4.jpg'
+import foods from '../assets/foods.jpg'
+import meat4 from '../assets/meat4.jpg'
+import './home.css'
+
 
 const Home = () => {
+  const images = [bbq1, bbq2, bbq4, foods, meat4]
+  const [mainImage, setMainImage] = useState(bbq2)
+
+  const changeMainImg = (index) => {
+    setMainImage(images[index])
+  }
+
+  const renderImages = () => {
+    return images.map((image, index) => {
+      return <img onClick={() => changeMainImg(index)} className='imagesInSlide' key={index} src={image} alt='Photo of meat' />
+    })
+  }
   
   return (
-    <>
-      <h1>The authentic Korean BBQ</h1>
-      <article>
-        <section>
-          <img src={bbq1} alt="" />
+    <main className='home'>
+      <h1>Taste Korea In Sydney</h1>
+        <section id='homeMainImg'>
+          <img src={mainImage} alt="Korean BBQ Photo" />
         </section>
-        <section>
-          <h2>
-            Taste Korea in Sydney.
-          </h2>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. <br />
-            Vero, quisquam! Autem repellat error quisquam vitae, inventore sequi soluta, nesciunt atque adipisci laborum, <br />
-            quas dolorum non nihil voluptate fugiat. Ducimus, illum? <br />
-            Quaerat, similique eaque. Architecto voluptatem non impedit magni corrupti qui, atque ea, <br />
-            odit maxime adipisci numquam minima eveniet deserunt debitis provident. Aspernatur, fuga. <br />
-            Laudantium quidem ratione minus nesciunt quos deleniti. <br />
-            Libero quod earum assumenda ad, minus aliquid quo aliquam asperiores aperiam cum necessitatibus eaque, illum autem? <br />
-            Minima consequatur cum, voluptatibus officiis, debitis esse est, numquam soluta quod repudiandae libero perferendis? <br />
-            Nostrum nisi, harum cupiditate repellat eum at vel eos nihil, <br />
-            facilis quos officia aliquid odio temporibus cum eligendi provident quibusdam voluptas deserunt commodi! <br />
-            Obcaecati quaerat porro quia, at soluta nulla? <br />
-          </p>
+        <section id='imgSlideContainer'>
+          {renderImages()}
         </section>
-      </article>
-    </>
+        <h1>We are Gangnam Style BBQ</h1>
+        <section id='homeTextBox'><p>Where traditional flavors and modern twists come together. </p></section>
+    </main>
   )
 }
 
