@@ -31,18 +31,19 @@ export async function getAllClient(jwt) {
     headers: headers,
   });
   const data = await response.json();
-  console.log('/////////', data);
   return data.reservations;
 }
 
 export async function updateClient(jwt, body, sendId) {
   headers.set('jwt', jwt);
-  const res2 = await (
-    await fetch(`http://localhost:3000/reservation/${sendId}`, {
-      method: 'PUT',
-      headers: headers,
-      body: JSON.stringify(body),
-    })
-  ).json();
-  return res2.data.updatedReservation;
+  headers.append('Content-Type', 'application/json');
+  const response = await fetch(`http://localhost:3000/reservation/${sendId}`, {
+    method: 'PUT',
+    headers: headers,
+    body: body,
+    redirect: 'follow',
+  });
+  const data = await response.json();
+  console.log('====', data);
+  return data.updatedReservation;
 }
