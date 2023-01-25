@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Restaurant from '../api/restaurant';
-// import * as btoa from 'btoa'
+import { adminLogin } from '../api/fetch_res';
 
 const AdminLogin = () => {
   const formRef = useRef();
@@ -11,9 +10,7 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState('');
 
-  const restaurant = new Restaurant();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const loginInfo = {
       id: idRef.current.value,
@@ -22,20 +19,25 @@ const AdminLogin = () => {
     const { id, password } = loginInfo;
     if (id === '' || password === '') return;
 
-    restaurant
-      .adminLogin(loginInfo)
-      .then((jwt) => {
-        navigate(`/admin/bookmain`, { state: { jwt } });
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          setErrMsg('Invalid credentials');
-        } else if (err.response.status === 403) {
-          setErrMsg('Missing Auth');
-        } else {
-          setErrMsg('Login failed');
-        }
-      });
+    const jwt = await adminLogin(loginInfo);
+    console.log('!!!!', jwt);
+    jwt.jwt
+      ? navigate('/admin/bookmain', { state: { jwt } })
+      : setErrMsg('failed login');
+
+    // .then((jwt) => {
+    //   navigate(`/admin/bookmain`, { state: { jwt } });
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   if (err.response.status === 401) {
+    //     setErrMsg('Invalid credentials');
+    //   } else if (err.response.status === 403) {
+    //     setErrMsg('Missing Auth');
+    //   } else {
+    //     setErrMsg('Login failed');
+    //   }
+    // });
 
     formRef.current.reset();
   };
