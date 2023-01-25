@@ -1,22 +1,79 @@
-main {
+.home {
   display: flex;
-  background: url('../assets/bbq1.jpg') no-repeat center;
-  background-size: cover;
-  backdrop-filter: blur(999999px);
-  height: 80vh;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 
-article {
-  background-color: #FFCC66;
-  opacity: .95;
-  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-  border-radius: 2%;
+.home>h1 {
+  font-size: 17px;
+  color: #f6ae2d;
 }
 
-/* main article text, img */
-article {
-  font-size:0.9rem;
-  font-weight: 600;
-  width: 90%;
-  align-self: center;
+#homeMainImg {
+ margin-bottom: 10px;
+}
+
+#homeMainImg>img {
+  height: 47vh;
+  width: 70vw;
+  object-fit: fill;
+  box-shadow:
+  -60px -45px 0 -40px tomato,
+  60px 45px 0 -40px tomato;
+  border-radius: 10%;
+}
+
+#imgSlideContainer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100vw;
+}
+
+.imagesInSlide {
+  border: wheat 1px solid;
+  height: 14vw;
+  width: 14vw;
+}
+
+.imagesInSlide:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#homeTextBox {
+  background-color: #f6ae2d;
+  width: 70vw;
+  margin: 10px 30px 50px 30px;
+  color: black;
+  text-align: center;
+}
+
+@media only screen and (min-width: 900px) {
+  .home>h1 {
+    font-size: 25px;
+  }
+
+  #homeMainImg>img {
+    margin-right: 50vw;
+    width: 40vw;
+    align-self: flex-end;
+   }
+
+   #imgSlideContainer {
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 50vw;
+    height: 40vh;
+    position: absolute;
+    left: 50vw;
+    bottom: 258px;
+   }
+
+   .imagesInSlide {
+    display: flexbox;
+  }
+   
+
 }
