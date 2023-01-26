@@ -1,7 +1,5 @@
 import base64 from 'base-64';
 
-const headers = new Headers();
-
 export async function bookingClient(bookingPerson) {
   const response = (
     await fetch('http://localhost:3000/reservation', {
@@ -13,6 +11,7 @@ export async function bookingClient(bookingPerson) {
 }
 
 export async function adminLogin(loginInfo) {
+  const headers = new Headers();
   const { id, password } = loginInfo;
   headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
   const response = await fetch('http://localhost:3000/admin/login', {
@@ -25,6 +24,7 @@ export async function adminLogin(loginInfo) {
 }
 
 export async function getAllClient(jwt) {
+  const headers = new Headers();
   headers.set('jwt', jwt);
   const response = await fetch('http://localhost:3000/reservation', {
     method: 'GET',
@@ -35,9 +35,10 @@ export async function getAllClient(jwt) {
 }
 
 export async function updateClient(jwt, body, sendId) {
+  const headers = new Headers();
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
-  console.log('>>>>', jwt, body, sendId);
+  console.log('>>>>', jwt, body, headers);
   const response = await fetch(`http://localhost:3000/reservation/${sendId}`, {
     method: 'PUT',
     headers: headers,
@@ -50,6 +51,7 @@ export async function updateClient(jwt, body, sendId) {
 }
 
 export async function deleteClient(jwt, deleteId) {
+  const headers = new Headers();
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
   const response = await fetch(

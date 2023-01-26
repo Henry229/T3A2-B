@@ -13,13 +13,13 @@ const UpdateModal = ({ client, updateUsingState, updateInform }) => {
   const { firstName, lastName, mobile, date, guestNumber } = client.guest;
   const guest = client.guest;
   let updated = '';
-  console.log('<<<<yougida09:', client);
-  console.log('<<<<yougida019:', guest);
+  // console.log('<<<<yougida09:', client);
+  // console.log('<<<<yougida019:', guest);
 
   const stringDate = date.slice(0, 10);
   const stringTime = date.slice(11, 16);
   // date: stringDate.toLocaleString();
-  console.log('>>>>', date, '/', stringTime);
+  // console.log('>>>>', date, '/', stringTime);
 
   const handleChange = async (e) => {
     if (e.currentTarget == null) {
@@ -29,7 +29,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform }) => {
     if (e.currentTarget.name === 'date') {
       const time = `${stringTime}:00.000`;
       const day = `${e.currentTarget.value}T${time}Z`;
-      console.log('======yogida12', `${e.currentTarget.value}T${time}Z`);
+      // console.log('======yogida12', `${e.currentTarget.value}T${time}Z`);
       updated = { ...client, guest: { ...guest, date: day } };
     } else if (e.currentTarget.name === 'time') {
       const day = `${stringDate}T${e.currentTarget.value}:00.000Z`;
@@ -41,7 +41,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform }) => {
         guest: { ...guest, [e.currentTarget.name]: e.currentTarget.value },
       };
     }
-    await setUpdateDB(() => updated);
+    setUpdateDB(() => updated);
     updateUsingState(updated);
   };
 
