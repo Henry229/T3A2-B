@@ -13,9 +13,10 @@ footer {
   margin-bottom: 10px;
 }
 
+#footerIcons>.material-symbols-outlined,
 .fa {
+  font-size: 28px;
   box-sizing: border-box;
-  font-size: xx-large;
   color: antiquewhite;
 }
 
