@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getAllClient, updateClient } from '../api/fetch_res';
+import { getAllClient, updateClient, deleteClient } from '../api/fetch_res';
 import NotConfirm from '../components/notConfirm./NotConfirm';
 
 const BookMain = () => {
@@ -14,6 +14,7 @@ const BookMain = () => {
   const jwtValue = jwt.jwt;
 
   const handleUpdate = async (updated) => {
+    console.log('***yogida10: ', updated);
     setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
@@ -27,9 +28,14 @@ const BookMain = () => {
     await updateClient(jwtValue, body, sendId);
   };
 
+  const handleState = (updated) => {
+    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+  };
+
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
-    await deleteClient();
+    const deleteId = deleted._id;
+    await deleteClient(jwtValue, deleteId);
   };
 
   const getConformedClients = (clients) => {
@@ -55,8 +61,6 @@ const BookMain = () => {
     notOkClient = getConformingClients(clients);
   }, [clients]);
 
-  console.log('>>>', okClient);
-  console.log('<<<<', notOkClient);
   return (
     <>
       <section>
@@ -69,6 +73,8 @@ const BookMain = () => {
               client={client}
               onUpdate={handleUpdate}
               onDelete={handleDelete}
+              updateUsingState={handleState}
+              updateInform={handleUpdate}
             />
           ))}
         </ul>
@@ -81,6 +87,9 @@ const BookMain = () => {
               key={client._id}
               client={client}
               onUpdate={handleUpdate}
+              onDelete={handleDelete}
+              updateUsingState={handleState}
+              updateInform={handleUpdate}
             />
           ))}
         </ul>

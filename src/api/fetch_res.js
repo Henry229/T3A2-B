@@ -37,6 +37,7 @@ export async function getAllClient(jwt) {
 export async function updateClient(jwt, body, sendId) {
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
+  console.log('>>>>', jwt, body, sendId);
   const response = await fetch(`http://localhost:3000/reservation/${sendId}`, {
     method: 'PUT',
     headers: headers,
@@ -46,4 +47,21 @@ export async function updateClient(jwt, body, sendId) {
   const data = await response.json();
   console.log('====', data);
   return data.updatedReservation;
+}
+
+export async function deleteClient(jwt, deleteId) {
+  headers.set('jwt', jwt);
+  headers.append('Content-Type', 'application/json');
+  const response = await fetch(
+    `http://localhost:3000/reservation/${deleteId}`,
+    {
+      method: 'DELETE',
+      headers: headers,
+      // body: body,
+      redirect: 'follow',
+    }
+  );
+  const data = await response.json();
+  console.log('====', data);
+  return data.deletedReservation;
 }
