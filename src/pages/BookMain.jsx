@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getAllClient, updateClient, deleteClient } from '../api/fetch_res';
+import {
+  getAllClient,
+  updateClient,
+  deleteClient,
+  searchMobile,
+} from '../api/fetch_res';
 import NotConfirm from '../components/notConfirm./NotConfirm';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
+  const [mobile, setMobile] = useState('');
   let okClient = [];
   let notOkClient = [];
 
@@ -14,7 +20,7 @@ const BookMain = () => {
   const jwtValue = jwt.jwt;
 
   const handleUpdate = async (updated) => {
-    console.log('***yogida10: ', updated);
+    // console.log('***yogida10: ', updated);
     setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
@@ -47,6 +53,11 @@ const BookMain = () => {
   };
   notOkClient = getConformingClients(clients);
 
+  const handleSearch = async (e) => {
+    setMobile(() => e.target.value);
+    await searchMobile(jwtValue, mobile).then((res) => console.log(res));
+  };
+
   useEffect(() => {
     async function effect() {
       const clients = await getAllClient(jwtValue);
@@ -64,7 +75,11 @@ const BookMain = () => {
   return (
     <>
       <section>
-        <h1>Booking List</h1>
+        <h2>Search mobile number</h2>
+        <input type='text' value={mobile} onChange={handleSearch} />
+      </section>
+      <section>
+        <h2>Booking List</h2>
         <h3>Need to confirm</h3>
         <ul>
           {notOkClient.map((client) => (

@@ -8,8 +8,9 @@ import AdminLogin from './pages/AdminLogin';
 import Booking from './pages/Booking';
 import BookMain from './pages/BookMain';
 import MenuList from './pages/MenuList';
-import Notfound from './pages/Notfound';
+import SearchMobile from './pages/SearchMobile';
 import Home from './pages/Home';
+
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/bookmain',
         element: <BookMain />,
+      },
+      {
+        path: '/admin/search',
+        element: <SearchMobile />,
       },
       {
         path: '/aboutUs',
