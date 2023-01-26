@@ -10,6 +10,7 @@ import BookMain from './pages/BookMain';
 import MenuList from './pages/MenuList';
 import SearchMobile from './pages/SearchMobile';
 import Home from './pages/Home';
+import Notfound from './pages/Notfound';
 
 
 const router = createBrowserRouter([
