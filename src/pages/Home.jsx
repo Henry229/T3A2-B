@@ -5,6 +5,7 @@ import foods from '../assets/foods.jpg'
 import meat4 from '../assets/meat4.jpg'
 import meat1 from '../assets/meat1.jpg'
 import './home.css'
+import { Link } from 'react-router-dom'
 
 
 const Home = () => {
@@ -45,18 +46,18 @@ const Home = () => {
         </section>
       </article>
       <article className='homeNavContainer'>
-        <section className='homeNavIcons'>
+        <Link className='homeNavIcons' to='/menu'>
           <span class="material-symbols-outlined">restaurant_menu</span>
           <p>Menu</p>
-        </section>
-        <section className='homeNavIcons'>
+        </Link>
+        <Link className='homeNavIcons'to='/reservation'>
           <span class="material-symbols-outlined">book</span>
           <p>Reservation</p>
-        </section>
-        <section className='homeNavIcons'>
+        </Link>
+        <a className='homeNavIcons' href="https://www.google.com/maps/place/Sydney+Opera+House/@-33.8567844,151.213108,17z/data=!3m2!4b1!5s0x6b12ae67d234a27f:0xd6d4e9380ca1e32f!4m6!3m5!1s0x6b12ae665e892fdd:0x3133f8d75a1ac251!8m2!3d-33.8567844!4d151.2152967!16zL20vMDZfbm0">
           <span class="material-symbols-outlined">location_on</span>
           <p>Location</p>
-        </section>
+        </a>
       </article>
     </main>
   )
