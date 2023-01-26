@@ -9,6 +9,7 @@ import Booking from './pages/Booking';
 import BookMain from './pages/BookMain';
 import MenuList from './pages/MenuList';
 import Notfound from './pages/Notfound';
+import SearchMobile from './pages/SearchMobile';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/bookmain',
         element: <BookMain />,
+      },
+      {
+        path: '/admin/search',
+        element: <SearchMobile />,
       },
       {
         path: '/aboutUs',

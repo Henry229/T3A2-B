@@ -67,3 +67,18 @@ export async function deleteClient(jwt, deleteId) {
   console.log('====', data);
   return data.deletedReservation;
 }
+
+export async function searchMobile(jwt, mobile) {
+  const headers = new Headers();
+  headers.set('jwt', jwt);
+  headers.append('Content-Type', 'application/json');
+  const response = await fetch(`http://localhost:3000/reservation/${mobile}`, {
+    method: 'GET',
+    headers: headers,
+    // body: body,
+    redirect: 'follow',
+  });
+  const data = await response.json();
+  console.log('====', data);
+  return data.reservations;
+}
