@@ -24,7 +24,8 @@ const BookMain = () => {
       isConfirmed: updated.isConfirmed,
     });
     const sendId = updated._id;
-    await updateClient(jwtValue, body, sendId);
+    //REMOVED AWAIT
+    updateClient(jwtValue, body, sendId);
   };
 
   const handleDelete = async (deleted) => {
@@ -44,7 +45,6 @@ const BookMain = () => {
   useEffect(() => {
     async function effect() {
       const clients = await getAllClient(jwtValue);
-      console.log(clients);
       setClients(clients);
     }
     effect();
@@ -55,8 +55,6 @@ const BookMain = () => {
     notOkClient = getConformingClients(clients);
   }, [clients]);
 
-  console.log('>>>', okClient);
-  console.log('<<<<', notOkClient);
   return (
     <>
       <section>

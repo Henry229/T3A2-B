@@ -1,8 +1,7 @@
 import base64 from 'base-64';
 
-const headers = new Headers();
-
 export async function bookingClient(bookingPerson) {
+  const headers = new Headers()
   const response = (
     await fetch('http://localhost:3000/reservation', {
       method: 'POST',
@@ -12,7 +11,9 @@ export async function bookingClient(bookingPerson) {
   return response.data.guest;
 }
 
+//1
 export async function adminLogin(loginInfo) {
+  const headers = new Headers()
   const { id, password } = loginInfo;
   headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
   const response = await fetch('http://localhost:3000/admin/login', {
@@ -20,11 +21,11 @@ export async function adminLogin(loginInfo) {
     headers: headers,
   });
   const data = await response.json();
-  console.log('&&&', data);
   return data;
 }
 
 export async function getAllClient(jwt) {
+  const headers = new Headers()
   headers.set('jwt', jwt);
   const response = await fetch('http://localhost:3000/reservation', {
     method: 'GET',
@@ -35,6 +36,7 @@ export async function getAllClient(jwt) {
 }
 
 export async function updateClient(jwt, body, sendId) {
+  const headers = new Headers();
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
   const response = await fetch(`http://localhost:3000/reservation/${sendId}`, {
@@ -44,6 +46,5 @@ export async function updateClient(jwt, body, sendId) {
     redirect: 'follow',
   });
   const data = await response.json();
-  console.log('====', data);
   return data.updatedReservation;
 }
