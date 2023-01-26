@@ -1,0 +1,56 @@
+header {
+  display: flex;
+  width: 100vw;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  height: 6em;
+  background-color: black;
+  /* position: relative; */
+}
+
+nav {
+  display: flex;
+  margin: auto 0 0 auto;
+}
+
+.title {
+  position: absolute;
+  display: flex;
+  font-size: 2em;
+  color: white;
+}
+
+nav > * {
+  margin-right: 1.1rem;
+  font-size: 1.1em;
+  color: wheat;
+}
+
+.title:hover,
+nav > *:hover {
+  color: gray;
+}
+
+@media only screen and (max-width: 1100px) {
+
+  header {
+    align-items: baseline;
+    height: 4.5em;
+  }
+
+  .title {
+    margin-top: .5em;
+    font-size: 1.4em;
+  }
+
+  nav {
+    margin: auto 0 0 0;
+  }
+
+  nav > * {
+    margin: 0 .7em 0 .7em;
+    font-size: 0.8em;
+  }
+}
