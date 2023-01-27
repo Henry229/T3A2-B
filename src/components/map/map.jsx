@@ -18,7 +18,7 @@ export default function Map() {
     <section id ='map'>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0" />
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyCfUcXBUPJYNSyvLVtt-Y7S3PwXp18BvEM" }}
+        bootstrapURLKeys={{ key: "" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
