@@ -12,7 +12,6 @@ import SearchMobile from './pages/SearchMobile';
 import Home from './pages/Home';
 import Notfound from './pages/Notfound';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -44,7 +43,7 @@ const router = createBrowserRouter([
         element: <BookMain />,
       },
       {
-        path: '/admin/search',
+        path: '/admin/search/:mobile',
         element: <SearchMobile />,
       },
       {
