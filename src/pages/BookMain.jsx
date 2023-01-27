@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { BsSearch } from 'react-icons/bs';
 import {
   getAllClient,
   updateClient,
   deleteClient,
   searchMobile,
 } from '../api/fetch_res';
-import NotConfirm from '../components/notConfirm./NotConfirm';
+import DoConfirm from '../components/DoConfirm./DoConfirm';
+import { getConformedClients, getConformingClients } from '../util/getClients';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
+  const [searchedClients, setSearchedClients] = useState([]);
   const [mobile, setMobile] = useState('');
+  const navigate = useNavigate();
   let okClient = [];
   let notOkClient = [];
 
@@ -44,19 +48,29 @@ const BookMain = () => {
     await deleteClient(jwtValue, deleteId);
   };
 
-  const getConformedClients = (clients) => {
-    return clients.filter((client) => client.isConfirmed === true);
-  };
   okClient = getConformedClients(clients);
-  const getConformingClients = (clients) => {
-    return clients.filter((client) => client.isConfirmed === false);
-  };
   notOkClient = getConformingClients(clients);
 
-  const handleSearch = async (e) => {
-    setMobile(() => e.target.value);
-    await searchMobile(jwtValue, mobile).then((res) => console.log(res));
+  const handleForm = async (e) => {
+    e.preventDefault();
+    await searchMobile(jwtValue, mobile)
+      .then((res) => console.log('<<<===', res[0].guest))
+      .then((data) =>
+        data.map((client, index) => console.log('###', client[index].guest))
+      );
+    // .then((data) => data.map((client) => setSearchedClients(client)));
+    navigate(`/admin/search/${mobile}`, {
+      state: { searchedClients },
+      // state: { searchedClients, handleUpdate, handleDelete, handleState },
+    });
   };
+  // state: { searchedClients, handleUpdate, handleDelete, handleState },
+  // await searchMobile(jwtValue, mobile).then((searchedClients) =>
+  //   navigate(`/admin/search/${mobile}`, {
+  //     state: { searchedClients, handleUpdate, handleDelete, handleState },
+  //   })
+  // );
+  // };
 
   useEffect(() => {
     async function effect() {
@@ -76,14 +90,24 @@ const BookMain = () => {
     <>
       <section>
         <h2>Search mobile number</h2>
-        <input type='text' value={mobile} onChange={handleSearch} />
+        <form action='' onSubmit={handleForm}>
+          <input
+            type='search'
+            name='q'
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
+          />
+          <button>
+            <BsSearch />
+          </button>
+        </form>
       </section>
       <section>
         <h2>Booking List</h2>
         <h3>Need to confirm</h3>
         <ul>
           {notOkClient.map((client) => (
-            <NotConfirm
+            <DoConfirm
               key={client._id}
               client={client}
               onUpdate={handleUpdate}
@@ -98,7 +122,7 @@ const BookMain = () => {
         <h3>Completed Booking</h3>
         <ul>
           {okClient.map((client) => (
-            <NotConfirm
+            <DoConfirm
               key={client._id}
               client={client}
               onUpdate={handleUpdate}

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
-import Restaurant from '../api/restaurant';
+import { bookingClient } from '../api/fetch_res';
 
 const Booking = () => {
   const formRef = useRef();
@@ -11,26 +11,33 @@ const Booking = () => {
   const timeRef = useRef();
   const guestNumberRef = useRef();
 
-  const restaurant = new Restaurant();
-
   const [data, setData] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const bookingPerson = {
-      firstName: firstNameRef.current.value || '',
-      lastName: lastNameRef.current.value || '',
-      mobile: mobileRef.current.value || '',
-      date: dateRef.current.value || '',
-      time: timeRef.current.value || '',
-      guestNumber: guestNumberRef.current.value || '',
-    };
-    const convertDay = `${bookingPerson.date}T${bookingPerson.time}Z`;
-    bookingPerson.date = convertDay.toLocaleString();
-    console.log('####', bookingPerson.date, '/', convertDay);
-    delete bookingPerson.time;
-    console.log('=== yogida1:', bookingPerson);
-    restaurant.bookingClient(bookingPerson);
+    if (
+      firstNameRef.current.value === '' ||
+      lastNameRef.current.value === '' ||
+      mobileRef.current.value === '' ||
+      dateRef.current.value === '' ||
+      guestNumberRef.current.value === ''
+    )
+      return;
+
+    const body = JSON.stringify({
+      firstName: firstNameRef.current.value,
+      lastName: lastNameRef.current.value,
+      mobile: mobileRef.current.value,
+      date: `${dateRef.current.value}T${timeRef.current.value}Z`.toLocaleString(),
+      // time: timeRef.current.value || '',
+      guestNumber: guestNumberRef.current.value,
+    });
+    // const convertDay = `${bookingPerson.date}T${bookingPerson.time}Z`;
+    // bookingPerson.date = convertDay.toLocaleString();
+    // console.log('####', bookingPerson.date, '/', convertDay);
+    // delete bookingPerson.time;
+    console.log('=== yogida1:', body);
+    bookingClient(body);
     formRef.current.reset();
   };
 

@@ -1,13 +1,17 @@
 import base64 from 'base-64';
 
-export async function bookingClient(bookingPerson) {
-  const response = (
-    await fetch('http://localhost:3000/reservation', {
-      method: 'POST',
-      body: JSON.stringify(bookingPerson),
-    })
-  ).json;
-  return response.data.guest;
+export async function bookingClient(body) {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  const response = await fetch('http://localhost:3000/reservation', {
+    method: 'POST',
+    headers: headers,
+    body: body,
+    redirect: 'follow',
+  });
+  const data = await response.json();
+  console.log('!!! Created New one : ', data);
+  return data.guest;
 }
 
 export async function adminLogin(loginInfo) {
@@ -79,6 +83,6 @@ export async function searchMobile(jwt, mobile) {
     redirect: 'follow',
   });
   const data = await response.json();
-  console.log('====', data);
+  console.log('====', data.reservations);
   return data.reservations;
 }

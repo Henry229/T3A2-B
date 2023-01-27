@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import UpdateModal from '../updateModal/UpdateModal';
 
-const NotConfirm = ({
+const DoConfirm = ({
   client,
   onUpdate,
   onDelete,
@@ -16,8 +16,7 @@ const NotConfirm = ({
     const isConfirmed = e.target.checked ? true : false;
     onUpdate({ ...client, isConfirmed });
   };
-  const stringDate = date;
-  // console.log(stringDate);
+
   const handleDelete = () => {
     onDelete(client);
   };
@@ -49,4 +48,4 @@ const NotConfirm = ({
   );
 };
 
-export default NotConfirm;
+export default DoConfirm;
