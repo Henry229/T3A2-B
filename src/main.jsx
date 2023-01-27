@@ -10,6 +10,7 @@ import BookMain from './pages/BookMain';
 import MenuList from './pages/MenuList';
 import SearchMobile from './pages/SearchMobile';
 import Home from './pages/Home';
+import Notfound from './pages/Notfound';
 
 
 const router = createBrowserRouter([
@@ -55,8 +56,6 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
 );
 ``;

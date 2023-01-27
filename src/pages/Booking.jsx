@@ -27,9 +27,7 @@ const Booking = () => {
     };
     const convertDay = `${bookingPerson.date}T${bookingPerson.time}Z`;
     bookingPerson.date = convertDay.toLocaleString();
-    console.log('####', bookingPerson.date, '/', convertDay);
     delete bookingPerson.time;
-    console.log('=== yogida1:', bookingPerson);
     restaurant.bookingClient(bookingPerson);
     formRef.current.reset();
   };

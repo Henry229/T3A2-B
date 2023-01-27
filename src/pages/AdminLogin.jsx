@@ -20,7 +20,6 @@ const AdminLogin = () => {
     if (id === '' || password === '') return;
 
     const jwt = await adminLogin(loginInfo);
-    console.log('!!!!', jwt);
     jwt.jwt
       ? navigate('/admin/bookmain', { state: { jwt } })
       : setErrMsg('failed login');
