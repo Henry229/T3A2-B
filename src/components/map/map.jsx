@@ -4,6 +4,8 @@ import './map.css'
 
 const Marker = ({ marker }) => <span id='marker' class="material-symbols-outlined">{marker}</span>
 
+const googleApiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY
+
 export default function Map() {
   const defaultProps = {
     center: {
@@ -18,7 +20,7 @@ export default function Map() {
     <section id ='map'>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0" />
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }}
+        bootstrapURLKeys={{ key: googleApiKey }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
