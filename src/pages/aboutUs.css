@@ -1,0 +1,74 @@
+.aboutUs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nameCard {
+  width: 80vw;
+  height: 30vh;
+  max-width: 480px;
+  background-color: #FFCC66;
+  opacity: .95;
+  box-shadow: black 0px 22px 70px 4px;
+  border-radius: 2%;
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.nameCardP {
+  display: flex;
+  color: black;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1.3px dashed black;
+  margin: 0;
+  height: 50px;
+}
+
+#lastNameP {
+  border: none;
+}
+
+.nameCardP>span {
+  margin: 0 10px 0 5px;
+}
+
+#mapContainer {
+  box-shadow: black 0px 22px 70px 4px;
+  margin: 5vh 0 13vh 0;
+}
+
+#map {
+  width: 80vw;
+  height: 70vh;
+  max-width: 500px;
+  max-height: 300px;
+  background-color: #FFCC66;
+  padding: 10px;
+}
+
+#marker {
+  color: red;
+  font-size: 30px;
+  font-weight: 2;
+}
+
+
+@media only screen and (min-width: 700px) {
+  .aboutUs {
+    background: 
+    url('../assets/restaurant.jpg') center no-repeat;
+    background-size: cover;
+  }
+
+  .nameCard {
+    width: 350px;
+  }
+
+  #map {
+    width: 450px;
+  }
+}
