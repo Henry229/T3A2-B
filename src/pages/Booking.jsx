@@ -15,6 +15,7 @@ const Booking = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (
       firstNameRef.current.value === '' ||
       lastNameRef.current.value === '' ||
