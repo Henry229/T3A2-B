@@ -17,6 +17,7 @@ export async function bookingClient(body) {
 //1
 export async function adminLogin(loginInfo) {
   const { id, password } = loginInfo;
+  const headers = new Headers();
   headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
   const response = await fetch('http://localhost:3000/admin/login', {
     method: 'POST',
@@ -27,6 +28,7 @@ export async function adminLogin(loginInfo) {
 }
 
 export async function getAllClient(jwt) {
+  const headers = new Headers();
   headers.set('jwt', jwt);
   const response = await fetch('http://localhost:3000/reservation', {
     method: 'GET',
@@ -80,6 +82,27 @@ export async function searchMobile(jwt, mobile) {
     redirect: 'follow',
   });
   const data = await response.json();
-  console.log('====', data.reservations);
-  return data.reservations;
+  console.log('==fetch_searchmobile: ===', data);
+  return data;
 }
+// data1.reservations.map(
+//   (reserve) =>
+//     setSearchedClients((prev) => [
+//       ...prev,
+//       { guest: reserve.guest, inConfirmed: reserve.isConfirmed },
+//     ])
+//   // setSearchedClients( {reserve.guest, reserve.isConfirmed })
+// );
+// .then((res) => console.log('line 58 <<<===', res[0].guest))
+// .then((data) =>
+//   data.map((client) => console.log(' line 59, ###', client))
+// );
+// .then((data) => data.map((client) => setSearchedClients(client)));
+
+// state: { searchedClients, handleUpdate, handleDelete, handleState },
+// await searchMobile(jwtValue, mobile).then((searchedClients) =>
+//   navigate(`/admin/search/${mobile}`, {
+//     state: { searchedClients, handleUpdate, handleDelete, handleState },
+//   })
+// );
+// };

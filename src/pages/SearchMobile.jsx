@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import BookingList from '../components/bookingList/BookingList';
-import DoConfirm from '../components/DoConfirm./DoConfirm';
+import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
 
 const SearchMobile = () => {
