@@ -20,6 +20,11 @@ const DoConfirm = ({
   const handleDelete = () => {
     onDelete(client);
   };
+
+  const stringDate = date.slice(0, 10);
+  const stringTime = date.slice(11, 16);
+  const combineName = `${firstName} ${lastName}`;
+
   return (
     <>
       <li onClick={() => setClick(() => true)}>
@@ -28,8 +33,9 @@ const DoConfirm = ({
           checked={isConfirmed === true}
           onChange={handleChange}
         />
-        <span>{date}</span>
-        <span>{`${firstName} ${lastName}`}</span>
+        <span>{stringDate}</span>
+        <span>{stringTime}</span>
+        <span>{combineName}</span>
         <span>{mobile}</span>
         <button onClick={handleDelete}>
           <FaTrashAlt />

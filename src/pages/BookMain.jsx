@@ -7,7 +7,7 @@ import {
   deleteClient,
   searchMobile,
 } from '../api/fetch_res';
-import DoConfirm from '../components/DoConfirm./DoConfirm';
+import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
 
 const BookMain = () => {
@@ -54,24 +54,17 @@ const BookMain = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
-    await searchMobile(jwtValue, mobile)
-      .then((res) => console.log('<<<===', res[0].guest))
-      .then((data) =>
-        data.map((client, index) => console.log('###', client[index].guest))
-      );
-    // .then((data) => data.map((client) => setSearchedClients(client)));
+    const data1 = await searchMobile(jwtValue, mobile);
+    console.log('lin 58: ', data1);
+    await data1.reservations.map((reserv) => {
+      console.log('guest in map:', reserv.guest);
+      setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
+    });
+
     navigate(`/admin/search/${mobile}`, {
       state: { searchedClients },
-      // state: { searchedClients, handleUpdate, handleDelete, handleState },
     });
   };
-  // state: { searchedClients, handleUpdate, handleDelete, handleState },
-  // await searchMobile(jwtValue, mobile).then((searchedClients) =>
-  //   navigate(`/admin/search/${mobile}`, {
-  //     state: { searchedClients, handleUpdate, handleDelete, handleState },
-  //   })
-  // );
-  // };
 
   useEffect(() => {
     async function effect() {
@@ -86,10 +79,14 @@ const BookMain = () => {
     notOkClient = getConformingClients(clients);
   }, [clients]);
 
+  useEffect(() => {
+    console.log('searchedClient in useEffect', searchedClients);
+  }, [searchedClients]);
+
   return (
     <>
       <section>
-        <h2>Search mobile number</h2>
+        <h2 className='text-3xl'>Search mobile number</h2>
         <form action='' onSubmit={handleForm}>
           <input
             type='search'
@@ -102,7 +99,7 @@ const BookMain = () => {
           </button>
         </form>
       </section>
-      <section>
+      <section className='w-full flex p-4 text-2xl border-b border-blue-600 mb-4'>
         <h2>Booking List</h2>
         <h3>Need to confirm</h3>
         <ul>
