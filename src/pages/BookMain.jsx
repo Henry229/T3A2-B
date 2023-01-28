@@ -17,6 +17,7 @@ const BookMain = () => {
   const navigate = useNavigate();
   let okClient = [];
   let notOkClient = [];
+  let whyarray = [];
 
   const {
     state: { jwt },
@@ -56,13 +57,16 @@ const BookMain = () => {
     e.preventDefault();
     const data1 = await searchMobile(jwtValue, mobile);
     console.log('lin 58: ', data1);
-    await data1.reservations.map((reserv) => {
+    data1.reservations.map((reserv) => {
       console.log('guest in map:', reserv.guest);
-      setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
+      whyarray.push({ guest: reserv.guest, isConfirmed: reserv.isConfirmed });
+      console.log('wayarray in map:', whyarray);
+      // setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
     });
+    // setSearchedClients(whyarray);
 
     navigate(`/admin/search/${mobile}`, {
-      state: { searchedClients },
+      state: { whyarray },
     });
   };
 

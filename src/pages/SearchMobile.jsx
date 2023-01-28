@@ -6,7 +6,6 @@ import { getConformedClients, getConformingClients } from '../util/getClients';
 const SearchMobile = () => {
   const {
     state: { searchedClients },
-    // state: { searchedClients, handleUpdate, handleDelete, handleState },
   } = useLocation();
 
   console.log('<<<>>>>', searchedClients);
