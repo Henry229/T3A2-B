@@ -9,15 +9,17 @@ import {
 } from '../api/fetch_res';
 import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
+import SearchMobile from './SearchMobile';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
-  const [searchedClients, setSearchedClients] = useState([]);
+  // const [searchedClients, setSearchedClients] = useState([]);
   const [mobile, setMobile] = useState('');
   const navigate = useNavigate();
   let okClient = [];
   let notOkClient = [];
-  let whyarray = [];
+  // let searchedClients = [];
+  // let searched = [];
 
   const {
     state: { jwt },
@@ -55,19 +57,25 @@ const BookMain = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
-    const data1 = await searchMobile(jwtValue, mobile);
-    console.log('lin 58: ', data1);
-    data1.reservations.map((reserv) => {
-      console.log('guest in map:', reserv.guest);
-      whyarray.push({ guest: reserv.guest, isConfirmed: reserv.isConfirmed });
-      console.log('wayarray in map:', whyarray);
-      // setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
-    });
-    // setSearchedClients(whyarray);
 
-    navigate(`/admin/search/${mobile}`, {
-      state: { whyarray },
-    });
+    // searched = await searchMobile(jwtValue, mobile);
+    // searched.reservations.map((reserv) => {
+    //   searchedClients.push({
+    //     guest: reserv.guest,
+    //     isConfirmed: reserv.isConfirmed,
+    //     _id: reserv._id,
+    //     __v: 0,
+    //   });
+    //   // setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
+    // });
+
+    navigate(
+      `/admin/search/${mobile}`,
+      // { replace: true },
+      {
+        state: { mobile, jwtValue },
+      }
+    );
   };
 
   useEffect(() => {
@@ -82,10 +90,6 @@ const BookMain = () => {
     okClient = getConformedClients(clients);
     notOkClient = getConformingClients(clients);
   }, [clients]);
-
-  useEffect(() => {
-    console.log('searchedClient in useEffect', searchedClients);
-  }, [searchedClients]);
 
   return (
     <>
@@ -103,7 +107,8 @@ const BookMain = () => {
           </button>
         </form>
       </section>
-      <section className='w-full flex p-4 text-2xl border-b border-blue-600 mb-4'>
+      {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
+      <section>
         <h2>Booking List</h2>
         <h3>Need to confirm</h3>
         <ul>

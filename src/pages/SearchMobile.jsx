@@ -1,28 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
+import {
+  getAllClient,
+  updateClient,
+  deleteClient,
+  searchMobile,
+} from '../api/fetch_res';
+import MobileSearchConfirm from '../components/MobileSearchConfirm/MobileSearchConfirm';
 
 const SearchMobile = () => {
   const {
-    state: { searchedClients },
+    state: { mobile, jwtValue },
   } = useLocation();
 
-  console.log('<<<>>>>', searchedClients);
+  const [okClient, setOkClient] = useState([]);
+  const [notOkClient, setNotOkClient] = useState([]);
+  let localOkClient = [];
+  let localNotOkClient = [];
 
-  let okClient = [];
-  let notOkClient = [];
-  const [mobileClients, setMobileClients] = useState([]);
+  let searchedClients = [];
+  let searched = [];
+
+  const [mobileClients, setMobileClients] = useState(searchedClients);
 
   useEffect(() => {
-    setMobileClients(searchedClients);
-    okClient = getConformedClients(mobileClients);
-    notOkClient = getConformingClients(mobileClients);
-  }, [mobileClients]);
+    async function effect() {
+      searched = await searchMobile(jwtValue, mobile);
+      searched.reservations.map((reserv) => {
+        searchedClients.push({
+          guest: reserv.guest,
+          isConfirmed: reserv.isConfirmed,
+          _id: reserv._id,
+          __v: 0,
+        });
+      });
+      console.log('===<<< array in effect ', searchedClients);
+      setMobileClients(searchedClients);
+
+      // setMobileClients(searchedClients);
+      // setOkClient(localOkClient);
+      // setOkClient(getConformedClients(searchedClients));
+      // console.log('>>>>okClient in effect: ', okClient);
+      // setNotOkClient(localNotOkClient);
+      // notOkClient(getConformingClients(searchedClients));
+      // console.log('>>>>okClient in effect: ', notOkClient);
+    }
+    effect();
+  }, []);
+
+  useEffect(() => {
+    console.log('>>>in effect', mobileClients);
+    localOkClient = getConformedClients(mobileClients);
+    console.log('### OKClient in effect', localOkClient);
+    localNotOkClient = getConformingClients(mobileClients);
+    console.log('### Not OKClient in effect', localNotOkClient);
+    //   notOkClient.map((client) => console.log(client, '/', !!notOkClient));
+  }, [searchedClients, mobileClients]);
 
   const handleUpdate = async (updated) => {
-    // console.log('***yogida10: ', updated);
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+    console.log('***yogida10: ', updated);
+    setMobileClients(
+      mobileClients.map((c) => (c._id === updated._id ? updated : c))
+    );
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
       lastName: updated.guest.lastName,
@@ -32,54 +72,67 @@ const SearchMobile = () => {
       isConfirmed: updated.isConfirmed,
     });
     const sendId = updated._id;
-    await updateClient(jwtValue, body, sendId);
+    const resultUpdate = await updateClient(jwtValue, body, sendId);
+
+    // console.log('<===> in handleUpdate: ', mobileClients);
   };
 
   const handleState = (updated) => {
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+    setMobileClients(
+      mobileClients.map((c) => (c._id === updated._id ? updated : c))
+    );
   };
 
   const handleDelete = async (deleted) => {
-    setClients(clients.filter((d) => d._id !== deleted._id));
+    setMobileClients(mobileClients.filter((d) => d._id !== deleted._id));
     const deleteId = deleted._id;
     await deleteClient(jwtValue, deleteId);
   };
 
+  localOkClient = getConformedClients(mobileClients);
+  localNotOkClient = getConformingClients(mobileClients);
+
   return (
-    <div>
+    <>
       <h2>Searched Mobile Info.</h2>
       <section>
         <h2>Booking List</h2>
         <h3>Need to confirm</h3>
         <ul>
-          {notOkClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={mobileClients}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
+          {console.log('<<<<localNotOkClient in UL', localNotOkClient)}
+          {localNotOkClient &&
+            localNotOkClient.map((client) => (
+              // <p key={client._id}>{client.guest.firstName}</p>
+
+              <MobileSearchConfirm
+                key={client._id}
+                client={client}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                updateUsingState={handleState}
+                updateInform={handleUpdate}
+              />
+            ))}
         </ul>
       </section>
       <section>
         <h3>Completed Booking</h3>
         <ul>
-          {okClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={mobileClients}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
+          {console.log('<<<<localOkClient in UL', localOkClient)}
+          {localOkClient &&
+            localOkClient.map((client) => (
+              <MobileSearchConfirm
+                key={client._id}
+                client={client}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                updateUsingState={handleState}
+                updateInform={handleUpdate}
+              />
+            ))}
         </ul>
       </section>
-    </div>
+    </>
   );
 };
 

@@ -42,7 +42,7 @@ export async function updateClient(jwt, body, sendId) {
   const headers = new Headers();
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
-  console.log('>>>>', jwt, body, headers);
+  console.log('>>>>', jwt, body, sendId);
   const response = await fetch(`http://localhost:3000/reservation/${sendId}`, {
     method: 'PUT',
     headers: headers,
@@ -50,6 +50,7 @@ export async function updateClient(jwt, body, sendId) {
     redirect: 'follow',
   });
   const data = await response.json();
+  console.log('====', data);
   return data.updatedReservation;
 }
 
