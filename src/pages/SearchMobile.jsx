@@ -37,6 +37,8 @@ const SearchMobile = () => {
       });
       console.log('===<<< array in effect ', searchedClients);
       setMobileClients(searchedClients);
+      setOkClient(() => getConformedClients(mobileClients));
+      setNotOkClient(() => getConformingClients(mobileClients));
 
       // setMobileClients(searchedClients);
       // setOkClient(localOkClient);
@@ -51,12 +53,13 @@ const SearchMobile = () => {
 
   useEffect(() => {
     console.log('>>>in effect', mobileClients);
-    localOkClient = getConformedClients(mobileClients);
-    console.log('### OKClient in effect', localOkClient);
-    localNotOkClient = getConformingClients(mobileClients);
-    console.log('### Not OKClient in effect', localNotOkClient);
+    setOkClient(() => getConformedClients(mobileClients));
+    console.log('### OKClient in effect', okClient);
+    setNotOkClient(() => getConformingClients(mobileClients));
+    // localNotOkClient = getConformingClients(mobileClients);
+    console.log('### Not OKClient in effect', notOkClient);
     //   notOkClient.map((client) => console.log(client, '/', !!notOkClient));
-  }, [searchedClients, mobileClients]);
+  }, [mobileClients]);
 
   const handleUpdate = async (updated) => {
     console.log('***yogida10: ', updated);
@@ -73,8 +76,6 @@ const SearchMobile = () => {
     });
     const sendId = updated._id;
     const resultUpdate = await updateClient(jwtValue, body, sendId);
-
-    // console.log('<===> in handleUpdate: ', mobileClients);
   };
 
   const handleState = (updated) => {
@@ -89,9 +90,6 @@ const SearchMobile = () => {
     await deleteClient(jwtValue, deleteId);
   };
 
-  localOkClient = getConformedClients(mobileClients);
-  localNotOkClient = getConformingClients(mobileClients);
-
   return (
     <>
       <h2>Searched Mobile Info.</h2>
@@ -100,8 +98,8 @@ const SearchMobile = () => {
         <h3>Need to confirm</h3>
         <ul>
           {console.log('<<<<localNotOkClient in UL', localNotOkClient)}
-          {localNotOkClient &&
-            localNotOkClient.map((client) => (
+          {notOkClient &&
+            notOkClient.map((client) => (
               // <p key={client._id}>{client.guest.firstName}</p>
 
               <MobileSearchConfirm
@@ -119,8 +117,8 @@ const SearchMobile = () => {
         <h3>Completed Booking</h3>
         <ul>
           {console.log('<<<<localOkClient in UL', localOkClient)}
-          {localOkClient &&
-            localOkClient.map((client) => (
+          {okClient &&
+            okClient.map((client) => (
               <MobileSearchConfirm
                 key={client._id}
                 client={client}
