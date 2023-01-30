@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import {
   getAllClient,
@@ -22,9 +22,9 @@ const BookMain = () => {
   // let searched = [];
 
   const {
-    state: { jwt },
+    state: { result },
   } = useLocation();
-  const jwtValue = jwt.jwt;
+  const jwtValue = result.jwt;
 
   const handleUpdate = async (updated) => {
     // console.log('***yogida10: ', updated);
@@ -69,18 +69,16 @@ const BookMain = () => {
     //   // setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
     // });
 
-    navigate(
-      `/admin/search/${mobile}`,
-      // { replace: true },
-      {
-        state: { mobile, jwtValue },
-      }
-    );
+    navigate(`/admin/search/${mobile}`, {
+      state: { mobile, jwtValue },
+    });
   };
 
   useEffect(() => {
     async function effect() {
-      const clients = await getAllClient(jwtValue);
+      const results = await getAllClient(jwtValue);
+      const clients = results.reservations;
+      const newJwt = results.jwt;
       setClients(clients);
     }
     effect();
@@ -94,18 +92,21 @@ const BookMain = () => {
   return (
     <>
       <section>
-        <h2 className='text-3xl'>Search mobile number</h2>
-        <form action='' onSubmit={handleForm}>
-          <input
-            type='search'
-            name='q'
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-          />
-          <button>
-            <BsSearch />
-          </button>
-        </form>
+        <article>
+          <h2 className='text-3xl'>Search mobile number</h2>
+          <form action='' onSubmit={handleForm}>
+            <input
+              type='search'
+              name='q'
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+            />
+            <button>
+              <BsSearch />
+            </button>
+          </form>
+        </article>
+        <Link to='/'>Logout</Link>
       </section>
       {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
       <section>

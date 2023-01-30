@@ -19,10 +19,13 @@ const AdminLogin = () => {
     const { id, password } = loginInfo;
     if (id === '' || password === '') return;
 
-    const jwt = await adminLogin(loginInfo);
-    jwt.jwt
-      ? navigate('/admin/bookmain', { state: { jwt } })
-      : setErrMsg('failed login');
+    const result = await adminLogin(loginInfo);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('Wrong ID or Password!');
+    } else if (result.jwt) {
+      navigate('/admin/bookmain', { state: { result } });
+    } else setErrMsg('failed login');
 
     // .then((jwt) => {
     //   navigate(`/admin/bookmain`, { state: { jwt } });
@@ -30,7 +33,6 @@ const AdminLogin = () => {
     // .catch((err) => {
     //   console.log(err);
     //   if (err.response.status === 401) {
-    //     setErrMsg('Invalid credentials');
     //   } else if (err.response.status === 403) {
     //     setErrMsg('Missing Auth');
     //   } else {
@@ -43,9 +45,6 @@ const AdminLogin = () => {
 
   return (
     <section>
-      <p ref={errRef} aria-live='assertive'>
-        {errMsg}
-      </p>
       <h2>Login</h2>
       <form ref={formRef} onSubmit={handleSubmit}>
         <label htmlFor='loginId'>ID</label>
@@ -54,6 +53,9 @@ const AdminLogin = () => {
         <input ref={passwordRef} type='password' id='password' />
         <button>Login</button>
       </form>
+      <p ref={errRef} aria-live='assertive'>
+        {errMsg}
+      </p>
     </section>
   );
 };
