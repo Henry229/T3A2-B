@@ -23,6 +23,40 @@ Middleware In Express
 
 In number 3, ‘all functions’ are called ‘middlewares’ in Express. They are functions that are executed before it sends a response. Developers can define them for error-handling, validation, calculation, database query, etc. Also Express has some built-in middlewares, for example, ‘express.json()’ parses JSON requests and returns parsed data to request so developers can access  and manipulate the request object using dot notation.
 
+```js
+import express from 'express'
+import reservationRoutes from './controllers/ReservationRoutes.js'
+
+const app = express()
+
+app.get('/', (req, res) => {
+  res.json({msg: 'Restaurant booking API'})
+})
+
+app.use('/reservation', reservationRoutes)
+
+app.listen(process.env.PORT || 3000, () => console.log('API Connected'))
+```
+
+The code snippet above shows basic usage of express. Firstly, it makes an instance of express and define response by endpoints and HTTP verbs. And app.use() method lets the 'app' uses the given middleware. In this case, the reservationRoutes is imported from other file, and it prefixes a part of url to be '/reservation'. So all url starts with '/reservation', will be passed to the 'reservationRoutes' middleware which looks like this:
+
+```js
+import express from 'express'
+
+const router = express.Router()
+
+router.get('/', verifyJwt, generateAdminJWT, async (req, res) => {
+  const reservations = await Reservation.find().populate(populateOption)
+  reservations.sort((a, b) => a.guest.date - b.guest.date)
+
+  reservations.length ? res.json({jwt: req.jwt, reservations}) : res.status(404).json(notFoundMsg)
+})
+
+export default router
+```
+
+This is a part of the reservationRouter middleware. The router has been defined on the top and instead of using 'app.[httpVerb]', it uses router.[httpVerb]. The verifyJwt and the generateAdminJWT are middlewares that will be executed in sequence when a get request is made for 'https://someURL/reservation'. Then, finally the callback function will be executed and will send the response. At the bottom, it shows that the defined router is default exported. Which enables to assign more semantic name in the index.js and register it.
+
 ### bcrypt
 
 Bcrypt has been used in this project to implement following features:
@@ -163,9 +197,46 @@ const updatedReservation = await Reservation.findByIdAndUpdate(
         )
 ```
 
-`Model.findByIdAndUpdate()` method will find the document whose id is the same as the given id argument and update it. The optional second argument '{returnDocument: 'after'}' will return
+`Model.findByIdAndUpdate()` method will find the document whose id is the same as the given id argument and update it with the given fields. The optional third argument '{returnDocument: 'after'}' will return the updated document instead of the original document. And `Model.findByIdAndDelete()` works same as this method but it doesn't require any fields to be provided, it will search the document that has the given id and delete the corresponding document.
 
+### jest, supertest
 
-### jest
+Jest is one of the most popular JavaScript testing frameworks. And supertest lets developers to send requests to the server and able to access the response object in test scripts.  
 
-### supertest
+The following code snippet will show the usage of jest and supertest.
+```js
+import request from 'supertest'
+import app from '../index.js'
+
+describe('POST Reservation',() => {
+  for (let testCase of sameCustomerFilterTestCases) {
+    test(testCase.condition, async () => {
+      const res = await request(app).post('/reservation').send(testCase.guest)
+      expect(res.statusCode).toBe(testCase.expectedStatus)
+
+      if (testCase.expectedStatus === 201) {
+        expect(res.statusCode).toBe(201)
+        expect(new Date(res.body.guest.date).toLocaleString()).toEqual(new Date(testCase.guest.date).toLocaleString())
+        expect(res.body.guest).toEqual(testCase.guest)
+      }else {
+        expect(res.statusCode).toBe(409)
+        expect(res.body.error).toBe('Same guest found!')
+        expect(Object.keys(res.body).length).toEqual(1)
+      }
+    })
+  }
+})
+```
+
+describe('Testing category') method group tests by the given category. Then it uses callback function to call test() method execute the test. The first argument of the test method should specify the test condition and the expected outcome. And the following callback function will perform the test.  
+A request can be sent to the server as follows:  
+`const response = await request([imported app]).[httpVerb]([url]).set([headers]).send([body])`  
+Then, this will return the response from the server and developers can check if the response is as expected:  
+`expect([res.body.someValue]).toBe(expectedValue)`  
+If the 'some value' is not 'expected value', the test will fail. If it's the same, it will move to the next.  
+The 'expect' argument no need to be specific. For example, we can use Boolean operator as well:  
+`expect(res.body.someValue > 5).toBe(true)`  
+To check if a specific field is in the response body, we can use 'toBeDefined()' method. It is useful to check if a specific field is included in the response body that has unpredictable value such as JWT:  
+`expect(res.body.jwt).toBeDefined()`
+And it also can access the response status code by calling `response.statusCode`.
+
