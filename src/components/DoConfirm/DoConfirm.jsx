@@ -21,13 +21,18 @@ const DoConfirm = ({
     onDelete(client);
   };
 
+  const handleCancel = () => {
+    setClick(false);
+    console.log('>>>>>====', click);
+  };
+
   const stringDate = date.slice(0, 10);
   const stringTime = date.slice(11, 16);
   const combineName = `${firstName} ${lastName}`;
 
   return (
     <>
-      <li onClick={() => setClick(() => true)}>
+      <li onClick={() => setClick(true)}>
         <input
           type='checkbox'
           checked={isConfirmed === true}
@@ -40,12 +45,13 @@ const DoConfirm = ({
         <button onClick={handleDelete}>
           <FaTrashAlt />
         </button>
-        <div>
+        <div onClick={() => setClick(false)}>
           {click && (
             <UpdateModal
               client={client}
               updateUsingState={updateUsingState}
               updateInform={updateInform}
+              onCancel={handleCancel}
             />
           )}
         </div>

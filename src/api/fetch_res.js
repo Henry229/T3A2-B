@@ -16,26 +16,54 @@ export async function bookingClient(body) {
 
 //1
 export async function adminLogin(loginInfo) {
-  const { id, password } = loginInfo;
-  const headers = new Headers();
-  headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
-  const response = await fetch('http://localhost:3000/admin/login', {
-    method: 'POST',
-    headers: headers,
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const { id, password } = loginInfo;
+    const headers = new Headers();
+    headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
+    const response = await fetch('http://localhost:3000/admin/login', {
+      method: 'POST',
+      headers: headers,
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Response : ${response.statusText}`);
+    }
+  } catch (error) {
+    return {
+      isError: true,
+      errorData: {
+        message: error.message,
+        statusCode: error.status,
+      },
+    };
+  }
 }
 
 export async function getAllClient(jwt) {
-  const headers = new Headers();
-  headers.set('jwt', jwt);
-  const response = await fetch('http://localhost:3000/reservation', {
-    method: 'GET',
-    headers: headers,
-  });
-  const data = await response.json();
-  return data.reservations;
+  try {
+    const headers = new Headers();
+    headers.set('jwt', jwt);
+    const response = await fetch('http://localhost:3000/reservation', {
+      method: 'GET',
+      headers: headers,
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Response : ${response.statusText}`);
+    }
+  } catch (error) {
+    return {
+      isError: true,
+      errorData: {
+        message: error.message,
+        statusCode: error.status,
+      },
+    };
+  }
 }
 
 export async function updateClient(jwt, body, sendId) {

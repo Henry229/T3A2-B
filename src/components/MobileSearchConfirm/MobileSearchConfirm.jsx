@@ -9,7 +9,6 @@ const MobileSearchConfirm = ({
   updateUsingState,
   updateInform,
 }) => {
-  console.log('===> client in mobileSearch', client);
   const [click, setClick] = useState(false);
   const { _id, isConfirmed } = client;
   const { date, lastName, firstName, mobile } = client.guest;
@@ -22,13 +21,23 @@ const MobileSearchConfirm = ({
     onDelete(client);
   };
 
+  const handleCancel = () => {
+    setClick(false);
+    console.log('>>>>>====', click);
+  };
+
   const stringDate = date.slice(0, 10);
   const stringTime = date.slice(11, 16);
   const combineName = `${firstName} ${lastName}`;
 
   return (
     <>
-      <li onClick={() => setClick(() => true)}>
+      <li
+        onClick={() => {
+          setClick(true);
+          console.log('<<<<<<====', click);
+        }}
+      >
         <input
           type='checkbox'
           checked={isConfirmed === true}
@@ -47,6 +56,7 @@ const MobileSearchConfirm = ({
               client={client}
               updateUsingState={updateUsingState}
               updateInform={updateInform}
+              onCancel={handleCancel}
             />
           )}
         </div>
