@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getConformedClients, getConformingClients } from '../util/getClients';
 import {
@@ -8,24 +8,31 @@ import {
   searchMobile,
 } from '../api/fetch_res';
 import MobileSearchConfirm from '../components/MobileSearchConfirm/MobileSearchConfirm';
+import { useJwt } from '../context/jwtContext';
 
 const SearchMobile = () => {
   const {
-    state: { mobile, jwtValue },
+    state: { mobile },
   } = useLocation();
 
   const [okClient, setOkClient] = useState([]);
+  const { jwt, setJwt } = useJwt();
   const [notOkClient, setNotOkClient] = useState([]);
+  const [errMsg, setErrMsg] = useState('');
+  const errRef = useRef();
   let localOkClient = [];
   let localNotOkClient = [];
 
   let searchedClients = [];
   let searched = [];
+  let jwtValue = jwt;
+  console.log('===<<<', jwt, '/', jwtValue);
 
   const [mobileClients, setMobileClients] = useState(searchedClients);
 
   useEffect(() => {
     async function effect() {
+      jwtValue = jwt;
       searched = await searchMobile(jwtValue, mobile);
       searched.reservations.map((reserv) => {
         searchedClients.push({
@@ -39,14 +46,6 @@ const SearchMobile = () => {
       setMobileClients(searchedClients);
       setOkClient(() => getConformedClients(mobileClients));
       setNotOkClient(() => getConformingClients(mobileClients));
-
-      // setMobileClients(searchedClients);
-      // setOkClient(localOkClient);
-      // setOkClient(getConformedClients(searchedClients));
-      // console.log('>>>>okClient in effect: ', okClient);
-      // setNotOkClient(localNotOkClient);
-      // notOkClient(getConformingClients(searchedClients));
-      // console.log('>>>>okClient in effect: ', notOkClient);
     }
     effect();
   }, []);
@@ -75,7 +74,14 @@ const SearchMobile = () => {
       isConfirmed: updated.isConfirmed,
     });
     const sendId = updated._id;
-    const resultUpdate = await updateClient(jwtValue, body, sendId);
+    jwtValue = jwt;
+    const result = await updateClient(jwtValue, body, sendId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to update mobile client info!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed update mobile Client()');
   };
 
   const handleState = (updated) => {
@@ -87,7 +93,15 @@ const SearchMobile = () => {
   const handleDelete = async (deleted) => {
     setMobileClients(mobileClients.filter((d) => d._id !== deleted._id));
     const deleteId = deleted._id;
-    await deleteClient(jwtValue, deleteId);
+    jwtValue = jwt;
+    // call deleteClient for fetch delete
+    const result = await deleteClient(jwtValue, deleteId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to delete mobile client!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed deleteClient()');
   };
 
   return (
@@ -95,6 +109,9 @@ const SearchMobile = () => {
       <h2>Searched Mobile Info.</h2>
       <section>
         <h2>Booking List</h2>
+        <p ref={errRef} aria-live='assertive'>
+          {errMsg}
+        </p>
         <h3>Need to confirm</h3>
         <ul>
           {console.log('<<<<localNotOkClient in UL', localNotOkClient)}
