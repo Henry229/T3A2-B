@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import {
@@ -10,11 +10,14 @@ import {
 import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
 import SearchMobile from './SearchMobile';
+import { useJwt } from '../context/jwtContext';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
-  // const [searchedClients, setSearchedClients] = useState([]);
+  const { jwt, setJwt } = useJwt();
   const [mobile, setMobile] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const errRef = useRef();
   const navigate = useNavigate();
   let okClient = [];
   let notOkClient = [];
@@ -24,7 +27,7 @@ const BookMain = () => {
   const {
     state: { result },
   } = useLocation();
-  const jwtValue = result.jwt;
+  let jwtValue = result.jwt;
 
   const handleUpdate = async (updated) => {
     // console.log('***yogida10: ', updated);
@@ -38,8 +41,15 @@ const BookMain = () => {
       isConfirmed: updated.isConfirmed,
     });
     const sendId = updated._id;
-    //REMOVED AWAIT
-    updateClient(jwtValue, body, sendId);
+    jwtValue = jwt;
+    //call updateClient for fetch put
+    const result = await updateClient(jwtValue, body, sendId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to update client info!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed updateClient()');
   };
 
   const handleState = (updated) => {
@@ -49,7 +59,15 @@ const BookMain = () => {
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
     const deleteId = deleted._id;
-    await deleteClient(jwtValue, deleteId);
+    jwtValue = jwt;
+    // call deleteClient for fetch delete
+    const result = await deleteClient(jwtValue, deleteId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to delete client!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed deleteClient()');
   };
 
   okClient = getConformedClients(clients);
@@ -58,19 +76,8 @@ const BookMain = () => {
   const handleForm = async (e) => {
     e.preventDefault();
 
-    // searched = await searchMobile(jwtValue, mobile);
-    // searched.reservations.map((reserv) => {
-    //   searchedClients.push({
-    //     guest: reserv.guest,
-    //     isConfirmed: reserv.isConfirmed,
-    //     _id: reserv._id,
-    //     __v: 0,
-    //   });
-    //   // setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
-    // });
-
     navigate(`/admin/search/${mobile}`, {
-      state: { mobile, jwtValue },
+      state: { mobile },
     });
   };
 
@@ -78,7 +85,7 @@ const BookMain = () => {
     async function effect() {
       const results = await getAllClient(jwtValue);
       const clients = results.reservations;
-      const newJwt = results.jwt;
+      setJwt(results.jwt);
       setClients(clients);
     }
     effect();
@@ -111,6 +118,9 @@ const BookMain = () => {
       {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
       <section>
         <h2>Booking List</h2>
+        <p ref={errRef} aria-live='assertive'>
+          {errMsg}
+        </p>
         <h3>Need to confirm</h3>
         <ul>
           {notOkClient.map((client) => (
