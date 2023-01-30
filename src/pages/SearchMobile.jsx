@@ -1,29 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
+import {
+  getAllClient,
+  updateClient,
+  deleteClient,
+  searchMobile,
+} from '../api/fetch_res';
+import MobileSearchConfirm from '../components/MobileSearchConfirm/MobileSearchConfirm';
+import { useJwt } from '../context/jwtContext';
 
 const SearchMobile = () => {
   const {
-    state: { searchedClients },
-    // state: { searchedClients, handleUpdate, handleDelete, handleState },
+    state: { mobile },
   } = useLocation();
 
-  console.log('<<<>>>>', searchedClients);
+  const [okClient, setOkClient] = useState([]);
+  const { jwt, setJwt } = useJwt();
+  const [notOkClient, setNotOkClient] = useState([]);
+  const [errMsg, setErrMsg] = useState('');
+  const errRef = useRef();
+  let localOkClient = [];
+  let localNotOkClient = [];
 
-  let okClient = [];
-  let notOkClient = [];
-  const [mobileClients, setMobileClients] = useState([]);
+  let searchedClients = [];
+  let searched = [];
+  let jwtValue = jwt;
+  console.log('===<<<', jwt, '/', jwtValue);
+
+  const [mobileClients, setMobileClients] = useState(searchedClients);
 
   useEffect(() => {
-    setMobileClients(searchedClients);
-    okClient = getConformedClients(mobileClients);
-    notOkClient = getConformingClients(mobileClients);
+    async function effect() {
+      jwtValue = jwt;
+      searched = await searchMobile(jwtValue, mobile);
+      searched.reservations.map((reserv) => {
+        searchedClients.push({
+          guest: reserv.guest,
+          isConfirmed: reserv.isConfirmed,
+          _id: reserv._id,
+          __v: 0,
+        });
+      });
+      console.log('===<<< array in effect ', searchedClients);
+      setMobileClients(searchedClients);
+      setOkClient(() => getConformedClients(mobileClients));
+      setNotOkClient(() => getConformingClients(mobileClients));
+    }
+    effect();
+  }, []);
+
+  useEffect(() => {
+    console.log('>>>in effect', mobileClients);
+    setOkClient(() => getConformedClients(mobileClients));
+    console.log('### OKClient in effect', okClient);
+    setNotOkClient(() => getConformingClients(mobileClients));
+    // localNotOkClient = getConformingClients(mobileClients);
+    console.log('### Not OKClient in effect', notOkClient);
+    //   notOkClient.map((client) => console.log(client, '/', !!notOkClient));
   }, [mobileClients]);
 
   const handleUpdate = async (updated) => {
-    // console.log('***yogida10: ', updated);
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+    console.log('***yogida10: ', updated);
+    setMobileClients(
+      mobileClients.map((c) => (c._id === updated._id ? updated : c))
+    );
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
       lastName: updated.guest.lastName,
@@ -33,54 +74,80 @@ const SearchMobile = () => {
       isConfirmed: updated.isConfirmed,
     });
     const sendId = updated._id;
-    await updateClient(jwtValue, body, sendId);
+    jwtValue = jwt;
+    const result = await updateClient(jwtValue, body, sendId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to update mobile client info!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed update mobile Client()');
   };
 
   const handleState = (updated) => {
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+    setMobileClients(
+      mobileClients.map((c) => (c._id === updated._id ? updated : c))
+    );
   };
 
   const handleDelete = async (deleted) => {
-    setClients(clients.filter((d) => d._id !== deleted._id));
+    setMobileClients(mobileClients.filter((d) => d._id !== deleted._id));
     const deleteId = deleted._id;
-    await deleteClient(jwtValue, deleteId);
+    jwtValue = jwt;
+    // call deleteClient for fetch delete
+    const result = await deleteClient(jwtValue, deleteId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to delete mobile client!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed deleteClient()');
   };
 
   return (
-    <div>
+    <>
       <h2>Searched Mobile Info.</h2>
       <section>
         <h2>Booking List</h2>
+        <p ref={errRef} aria-live='assertive'>
+          {errMsg}
+        </p>
         <h3>Need to confirm</h3>
         <ul>
-          {notOkClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={mobileClients}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
+          {console.log('<<<<localNotOkClient in UL', localNotOkClient)}
+          {notOkClient &&
+            notOkClient.map((client) => (
+              // <p key={client._id}>{client.guest.firstName}</p>
+
+              <MobileSearchConfirm
+                key={client._id}
+                client={client}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                updateUsingState={handleState}
+                updateInform={handleUpdate}
+              />
+            ))}
         </ul>
       </section>
       <section>
         <h3>Completed Booking</h3>
         <ul>
-          {okClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={mobileClients}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
+          {console.log('<<<<localOkClient in UL', localOkClient)}
+          {okClient &&
+            okClient.map((client) => (
+              <MobileSearchConfirm
+                key={client._id}
+                client={client}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                updateUsingState={handleState}
+                updateInform={handleUpdate}
+              />
+            ))}
         </ul>
       </section>
-    </div>
+    </>
   );
 };
 

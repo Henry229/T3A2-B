@@ -16,41 +16,89 @@ export async function bookingClient(body) {
 
 //1
 export async function adminLogin(loginInfo) {
-  const { id, password } = loginInfo;
-  const headers = new Headers();
-  headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
-  const response = await fetch('https://mern-restaurant-api-production.up.railway.app/admin/login', {
-    method: 'POST',
-    headers: headers,
-  });
-  const data = await response.json();
-  return data;
+
+  try {
+    const { id, password } = loginInfo;
+    const headers = new Headers();
+    headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
+    const response = await fetch('http://localhost:3000/admin/login', {
+      method: 'POST',
+      headers: headers,
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Response : ${response.statusText}`);
+    }
+  } catch (error) {
+    return {
+      isError: true,
+      errorData: {
+        message: error.message,
+        statusCode: error.status,
+      },
+    };
+  }
 }
 
 export async function getAllClient(jwt) {
-  const headers = new Headers();
-  headers.set('jwt', jwt);
-  const response = await fetch('https://mern-restaurant-api-production.up.railway.app/reservation', {
-    method: 'GET',
-    headers: headers,
-  });
-  const data = await response.json();
-  return data.reservations;
+  try {
+    const headers = new Headers();
+    headers.set('jwt', jwt);
+    const response = await fetch('http://localhost:3000/reservation', {
+      method: 'GET',
+      headers: headers,
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error(`Response : ${response.statusText}`);
+    }
+  } catch (error) {
+    return {
+      isError: true,
+      errorData: {
+        message: error.message,
+        statusCode: error.status,
+      },
+    };
+  }
 }
 
 export async function updateClient(jwt, body, sendId) {
-  const headers = new Headers();
-  headers.set('jwt', jwt);
-  headers.append('Content-Type', 'application/json');
-  console.log('>>>>', jwt, body, headers);
-  const response = await fetch(`https://mern-restaurant-api-production.up.railway.app/reservation/${sendId}`, {
-    method: 'PUT',
-    headers: headers,
-    body: body,
-    redirect: 'follow',
-  });
-  const data = await response.json();
-  return data.updatedReservation;
+  try {
+    const headers = new Headers();
+    headers.set('jwt', jwt);
+    headers.append('Content-Type', 'application/json');
+    console.log('>>>>', jwt, body, sendId);
+    const response = await fetch(
+      `http://localhost:3000/reservation/${sendId}`,
+      {
+        method: 'PUT',
+        headers: headers,
+        body: body,
+        redirect: 'follow',
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log('====', data);
+      return data;
+    } else {
+      throw new Error(`Response : ${response.statusText}`);
+    }
+  } catch (error) {
+    return {
+      isError: true,
+      errorData: {
+        message: error.message,
+        statusCode: error.status,
+      },
+    };
+  }
+  // return data.updatedReservation;
 }
 
 export async function deleteClient(jwt, deleteId) {

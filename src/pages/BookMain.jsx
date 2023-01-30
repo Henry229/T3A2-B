@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import {
   getAllClient,
@@ -9,19 +9,25 @@ import {
 } from '../api/fetch_res';
 import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
+import SearchMobile from './SearchMobile';
+import { useJwt } from '../context/jwtContext';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
-  const [searchedClients, setSearchedClients] = useState([]);
+  const { jwt, setJwt } = useJwt();
   const [mobile, setMobile] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const errRef = useRef();
   const navigate = useNavigate();
   let okClient = [];
   let notOkClient = [];
+  // let searchedClients = [];
+  // let searched = [];
 
   const {
-    state: { jwt },
+    state: { result },
   } = useLocation();
-  const jwtValue = jwt.jwt;
+  let jwtValue = result.jwt;
 
   const handleUpdate = async (updated) => {
     // console.log('***yogida10: ', updated);
@@ -35,8 +41,15 @@ const BookMain = () => {
       isConfirmed: updated.isConfirmed,
     });
     const sendId = updated._id;
-    //REMOVED AWAIT
-    updateClient(jwtValue, body, sendId);
+    jwtValue = jwt;
+    //call updateClient for fetch put
+    const result = await updateClient(jwtValue, body, sendId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to update client info!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed updateClient()');
   };
 
   const handleState = (updated) => {
@@ -46,7 +59,15 @@ const BookMain = () => {
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
     const deleteId = deleted._id;
-    await deleteClient(jwtValue, deleteId);
+    jwtValue = jwt;
+    // call deleteClient for fetch delete
+    const result = await deleteClient(jwtValue, deleteId);
+    if (result.isError) {
+      console.log(result.errorData.message);
+      setErrMsg('fail to delete client!!');
+    } else if (result.jwt) {
+      setJwt(result.jwt);
+    } else setErrMsg('failed deleteClient()');
   };
 
   okClient = getConformedClients(clients);
@@ -68,21 +89,17 @@ const BookMain = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
-    const data1 = await searchMobile(jwtValue, mobile);
-    console.log('lin 58: ', data1);
-    await data1.reservations.map((reserv) => {
-      console.log('guest in map:', reserv.guest);
-      setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
-    });
 
     navigate(`/admin/search/${mobile}`, {
-      state: { searchedClients },
+      state: { mobile },
     });
   };
 
   useEffect(() => {
     async function effect() {
-      const clients = await getAllClient(jwtValue);
+      const results = await getAllClient(jwtValue);
+      const clients = results.reservations;
+      setJwt(results.jwt);
       setClients(clients);
     }
     effect();
@@ -93,28 +110,31 @@ const BookMain = () => {
     notOkClient = getConformingClients(clients);
   }, [clients]);
 
-  useEffect(() => {
-    console.log('searchedClient in useEffect', searchedClients);
-  }, [searchedClients]);
-
   return (
     <>
       <section>
-        <h2 className='text-3xl'>Search mobile number</h2>
-        <form action='' onSubmit={handleForm}>
-          <input
-            type='search'
-            name='q'
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-          />
-          <button>
-            <BsSearch />
-          </button>
-        </form>
+        <article>
+          <h2 className='text-3xl'>Search mobile number</h2>
+          <form action='' onSubmit={handleForm}>
+            <input
+              type='search'
+              name='q'
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+            />
+            <button>
+              <BsSearch />
+            </button>
+          </form>
+        </article>
+        <Link to='/'>Logout</Link>
       </section>
-      <section className='w-full flex p-4 text-2xl border-b border-blue-600 mb-4'>
+      {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
+      <section>
         <h2>Booking List</h2>
+        <p ref={errRef} aria-live='assertive'>
+          {errMsg}
+        </p>
         <h3>Need to confirm</h3>
         <ul>
           {notOkClient.map((client) => (

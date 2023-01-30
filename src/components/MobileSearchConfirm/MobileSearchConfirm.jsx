@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import UpdateModal from '../updateModal/UpdateModal';
 
-const DoConfirm = ({
+const MobileSearchConfirm = ({
   client,
   onUpdate,
   onDelete,
@@ -32,7 +32,12 @@ const DoConfirm = ({
 
   return (
     <>
-      <li onClick={() => setClick(true)}>
+      <li
+        onClick={() => {
+          setClick(true);
+          console.log('<<<<<<====', click);
+        }}
+      >
         <input
           type='checkbox'
           checked={isConfirmed === true}
@@ -45,7 +50,7 @@ const DoConfirm = ({
         <button onClick={handleDelete}>
           <FaTrashAlt />
         </button>
-        <div onClick={() => setClick(false)}>
+        <div>
           {click && (
             <UpdateModal
               client={client}
@@ -60,4 +65,4 @@ const DoConfirm = ({
   );
 };
 
-export default DoConfirm;
+export default MobileSearchConfirm;
