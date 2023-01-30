@@ -3,7 +3,7 @@ import base64 from 'base-64';
 export async function bookingClient(body) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
-  const response = await fetch('http://localhost:3000/reservation', {
+  const response = await fetch('https://mern-restaurant-api-production.up.railway.app/reservation', {
     method: 'POST',
     headers: headers,
     body: body,
@@ -16,6 +16,7 @@ export async function bookingClient(body) {
 
 //1
 export async function adminLogin(loginInfo) {
+
   try {
     const { id, password } = loginInfo;
     const headers = new Headers();
@@ -105,7 +106,7 @@ export async function deleteClient(jwt, deleteId) {
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
   const response = await fetch(
-    `http://localhost:3000/reservation/${deleteId}`,
+    `https://mern-restaurant-api-production.up.railway.app/reservation/${deleteId}`,
     {
       method: 'DELETE',
       headers: headers,
@@ -122,7 +123,7 @@ export async function searchMobile(jwt, mobile) {
   const headers = new Headers();
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
-  const response = await fetch(`http://localhost:3000/reservation/${mobile}`, {
+  const response = await fetch(`https://mern-restaurant-api-production.up.railway.app/reservation/${mobile}`, {
     method: 'GET',
     headers: headers,
     // body: body,
