@@ -204,6 +204,7 @@ const updatedReservation = await Reservation.findByIdAndUpdate(
 Jest is one of the most popular JavaScript testing frameworks. And supertest lets developers to send requests to the server and able to access the response object in test scripts.  
 
 The following code snippet will show the usage of jest and supertest.
+
 ```js
 import request from 'supertest'
 import app from '../index.js'
@@ -240,3 +241,20 @@ To check if a specific field is in the response body, we can use 'toBeDefined()'
 `expect(res.body.jwt).toBeDefined()`
 And it also can access the response status code by calling `response.statusCode`.
 
+## Testing
+
+### Development Testing
+
+#### Frontend
+
+#### Backend
+
+The automated test covers all the test scenarios.  
+Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/main/src/test) directory for more details.  
+
+**Automated test cases and outcomes**
+![test Case](resources/exp_test1.png)
+![test Case](resources/exp_test2.png)
+![test Case](resources/exp_test3.png)
+
+### Production Testing
