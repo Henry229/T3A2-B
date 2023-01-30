@@ -52,6 +52,20 @@ const BookMain = () => {
   okClient = getConformedClients(clients);
   notOkClient = getConformingClients(clients);
 
+  // const handleForm = async (e) => {
+  //   e.preventDefault();
+  //   const data1 = await searchMobile(jwtValue, mobile);
+  //   console.log('lin 58: ', data1);
+  //   await data1.reservations.map((reserv) => {
+  //     console.log('guest in map:', reserv.guest);
+  //     setSearchedClients((prev) => [...prev, { guest: reserv.guest }]);
+  //   });
+
+  //   navigate(`/admin/search/${mobile}`, {
+  //     state: { searchedClients },
+  //   });
+  // };
+
   const handleForm = async (e) => {
     e.preventDefault();
     const data1 = await searchMobile(jwtValue, mobile);
