@@ -29,7 +29,7 @@ const Booking = () => {
       firstName: firstNameRef.current.value,
       lastName: lastNameRef.current.value,
       mobile: mobileRef.current.value,
-      date: `${dateRef.current.value}T${timeRef.current.value}Z`.toLocaleString(),
+      date: `${dateRef.current.value}T${timeRef.current.value}`,
       // time: timeRef.current.value || '',
       guestNumber: guestNumberRef.current.value,
     });
@@ -37,8 +37,8 @@ const Booking = () => {
     // bookingPerson.date = convertDay.toLocaleString();
     // console.log('####', bookingPerson.date, '/', convertDay);
     // delete bookingPerson.time;
-    console.log('=== yogida1:', body);
     bookingClient(body);
+    
     formRef.current.reset();
   };
 

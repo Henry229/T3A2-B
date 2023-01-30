@@ -10,8 +10,8 @@ export async function bookingClient(body) {
     redirect: 'follow',
   });
   const data = await response.json();
-  console.log('!!! Created New one : ', data);
   return data.guest;
+  //Make useClient state global here
 }
 
 //1
@@ -71,7 +71,6 @@ export async function updateClient(jwt, body, sendId) {
     const headers = new Headers();
     headers.set('jwt', jwt);
     headers.append('Content-Type', 'application/json');
-    console.log('>>>>', jwt, body, sendId);
     const response = await fetch(
       `http://localhost:3000/reservation/${sendId}`,
       {
@@ -83,7 +82,6 @@ export async function updateClient(jwt, body, sendId) {
     );
     if (response.ok) {
       const data = await response.json();
-      console.log('====', data);
       return data;
     } else {
       throw new Error(`Response : ${response.statusText}`);
@@ -114,7 +112,6 @@ export async function deleteClient(jwt, deleteId) {
     }
   );
   const data = await response.json();
-  console.log('====', data);
   return data.deletedReservation;
 }
 
@@ -129,7 +126,6 @@ export async function searchMobile(jwt, mobile) {
     redirect: 'follow',
   });
   const data = await response.json();
-  console.log('==fetch_searchmobile: ===', data);
   return data;
 }
 // data1.reservations.map(
