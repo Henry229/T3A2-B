@@ -30,6 +30,7 @@ const Booking = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const letters = /^[A-Za-z]+$/
+    const mobileNumber = /^[0-9]+$/
     console.log(date)
 
     if (!date || date.toLocaleString().slice(12) === '00:00:00') {
@@ -45,7 +46,7 @@ const Booking = () => {
 
     if (
       mobileRef.current.value.length != 10 || 
-      Number(mobileRef.current.value) === NaN ||
+      !(mobileRef.current.value).match(mobileNumber) ||
       !mobileRef.current.value.startsWith('04')
       ) {
       return alert('Please type a valid mobile number')
