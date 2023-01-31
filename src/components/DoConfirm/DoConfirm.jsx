@@ -23,7 +23,6 @@ const DoConfirm = ({
 
   const handleCancel = () => {
     setClick(false);
-    console.log('>>>>>====', click);
   };
 
   const stringDate = date.slice(0, 10);

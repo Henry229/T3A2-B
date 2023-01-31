@@ -45,7 +45,6 @@ const BookMain = () => {
     //call updateClient for fetch put
     const result = await updateClient(jwtValue, body, sendId);
     if (result.isError) {
-      console.log(result.errorData.message);
       setErrMsg('fail to update client info!!');
     } else if (result.jwt) {
       setJwt(result.jwt);
@@ -87,6 +86,7 @@ const BookMain = () => {
       const clients = results.reservations;
       setJwt(results.jwt);
       setClients(clients);
+      console.log('useEffect')
     }
     effect();
   }, []);

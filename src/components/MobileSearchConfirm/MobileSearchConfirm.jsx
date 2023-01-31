@@ -23,7 +23,6 @@ const MobileSearchConfirm = ({
 
   const handleCancel = () => {
     setClick(false);
-    console.log('>>>>>====', click);
   };
 
   const stringDate = date.slice(0, 10);
@@ -35,7 +34,6 @@ const MobileSearchConfirm = ({
       <li
         onClick={() => {
           setClick(true);
-          console.log('<<<<<<====', click);
         }}
       >
         <input
