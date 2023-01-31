@@ -12,8 +12,6 @@ const Booking = () => {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const mobileRef = useRef();
-  const dateRef = useRef();
-  // const timeRef = useRef();
   const guestNumberRef = useRef();
 
   const [data, setData] = useState([]);
@@ -63,7 +61,6 @@ const Booking = () => {
       date: date,
       guestNumber: guestNumberRef.current.value,
     });
-    console.log(body);
     bookingClient(body);
     formRef.current.reset();
     };
