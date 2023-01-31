@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
 import { bookingClient } from '../api/fetch_res';
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css";
-import { addDays, subDays, setHours, setMinutes } from 'date-fns';
 import './booking.css'
+import Calendar from '../components/calendar/Calendar';
+import validateInputs from '../util/validations.js';
 
 
 const Booking = () => {
@@ -13,41 +12,15 @@ const Booking = () => {
   const lastNameRef = useRef();
   const mobileRef = useRef();
   const guestNumberRef = useRef();
-
-  const [data, setData] = useState([]);
   const [date, setDate] = useState(null);
-  // const [endDate, setEndDate] = useState(addMinutes(new Date(), 30));
-
-  const filterPassedTime = (time) => {
-    const currentDate = new Date();
-    const selectedDate = new Date(time);
-
-    return currentDate.getTime() < selectedDate.getTime();
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const letters = /^[A-Za-z]+$/
-    const mobileNumber = /^[0-9]+$/
-    console.log(date)
-
-    if (!date || date.toLocaleString().slice(12) === '00:00:00') {
-      return alert('Please select a valid date nad time from the calendar')
-    }
-  
-    if (
-      !firstNameRef.current.value.match(letters) || 
-      !lastNameRef.current.value.match(letters)
-      ) {
-      return alert('Please type valid name without space.')
-    }
-
-    if (
-      mobileRef.current.value.length != 10 || 
-      !(mobileRef.current.value).match(mobileNumber) ||
-      !mobileRef.current.value.startsWith('04')
-      ) {
-      return alert('Please type a valid mobile number')
+    
+    try {
+      validateInputs(date, firstNameRef.current.value, lastNameRef.current.value, mobileRef.current.value)
+    }catch(e) {
+      return alert(e.message)
     }
 
     const capitalizeString = (str) => {
@@ -97,30 +70,7 @@ const Booking = () => {
           placeholder='Mobile 0401333777'
         />
         <label htmlFor='date'>Booking Date</label>
-        <DatePicker name='date' id='date' 
-        className='bookingForm'
-        placeholderText='Select date'
-        selected={date}
-        onChange={(date) => setDate(date)} 
-        includeDateIntervals={[
-        { start: subDays(new Date(), 1), end: addDays(new Date(), 30) },
-        ]}
-        format='yyyy-MM-dd'
-        timeFormat="p"
-        dateFormat="Pp"
-        showTimeSelect
-        filterTime={filterPassedTime}
-        disabledKeyboardNavigation
-        minTime={setHours(setMinutes(new Date(), 0), 11)}
-        maxTime={setHours(setMinutes(new Date(), 30), 20)}
-        excludeTimes={[
-        setHours(setMinutes(new Date(), 30), 14),
-        setHours(setMinutes(new Date(), 0), 15),
-        setHours(setMinutes(new Date(), 30), 15),
-        setHours(setMinutes(new Date(), 0), 16),
-        setHours(setMinutes(new Date(), 30), 16)
-      ]}
-        />
+        <Calendar date={date} setDate={setDate}/>
         <label htmlFor='number'>Number of People</label>
         <select ref={guestNumberRef} name='guestNumber' id='number' className='bookingForm'>
           <option value='6'>6</option>

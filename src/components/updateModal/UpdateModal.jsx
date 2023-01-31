@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { FaRegWindowClose } from 'react-icons/fa';
+import Calendar from '../calendar/Calendar';
+import validateInputs from '../../util/validations.js';
+
 
 const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
   const [updateDB, setUpdateDB] = useState('');
   const { firstName, lastName, mobile, date, guestNumber } = client.guest;
+  const [getDate, setDate] = useState(new Date(date))
   const guest = client.guest;
   let updated = '';
 
@@ -11,36 +15,40 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
   const stringTime = date.slice(11, 16);
   // date: stringDate.toLocaleString();
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     if (e.currentTarget == null) {
       return;
     }
     e.preventDefault();
-    if (e.currentTarget.name === 'date') {
-      const time = `${stringTime}:00.000`;
-      const day = `${e.currentTarget.value}T${time}Z`;
-      updated = { ...client, guest: { ...guest, date: day } };
-    } else if (e.currentTarget.name === 'time') {
-      const day = `${stringDate}T${e.currentTarget.value}:00.000Z`;
-      updated = { ...client, guest: { ...guest, date: day } };
-    } else {
-      updated = {
-        ...client,
-        guest: { ...guest, [e.currentTarget.name]: e.currentTarget.value },
-      };
-    }
+
+    updated = {
+      ...client,
+      guest: { ...guest, [e.currentTarget.name]: e.currentTarget.value },
+    };
+    console.log(updated);
     setUpdateDB(() => updated);
     updateUsingState(updated);
   };
 
+  const updateDate = (dt) => {
+    updated = { ...client, guest: { ...guest, date: dt } }
+    setUpdateDB(() => updated);
+    updateUsingState(updated);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(updated)
+    if (!updated) {
+      return alert("Please type at least one field to update")
+    }
+
     updateInform(updateDB);
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off" >
         <label htmlFor='firstName'>First Name</label>
         <input
           type='text'
@@ -65,22 +73,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
           value={mobile}
           onChange={handleChange}
         />
-        <label htmlFor='date'>Booking Date</label>
-        <input
-          type='date'
-          name='date'
-          id='date'
-          value={stringDate}
-          onChange={handleChange}
-        />
-        <label htmlFor='time'>Booking Time</label>
-        <input
-          type='time'
-          name='time'
-          id='time'
-          value={stringTime}
-          onChange={handleChange}
-        />
+        <Calendar date={getDate} setDate={setDate} updateDate={updateDate}/>
         <label htmlFor='number'>Number of People</label>
         <select
           name='guestNumber'
@@ -88,6 +81,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
           value={guestNumber}
           onChange={handleChange}
         >
+          <option value='6'>6</option>
           <option value='5'>5</option>
           <option value='4'>4</option>
           <option value='3'>3</option>

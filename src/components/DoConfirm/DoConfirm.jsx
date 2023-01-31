@@ -11,7 +11,7 @@ const DoConfirm = ({
 }) => {
   const [click, setClick] = useState(false);
   const { _id, isConfirmed } = client;
-  const { date, lastName, firstName, mobile } = client.guest;
+  const { date, lastName, firstName, mobile, guestNumber } = client.guest;
   const handleChange = (e) => {
     const isConfirmed = e.target.checked ? true : false;
     onUpdate({ ...client, isConfirmed });
@@ -36,10 +36,11 @@ const DoConfirm = ({
           checked={isConfirmed === true}
           onChange={handleChange}
         />
-        <span>Table {client.table.tableNumber}</span>
-        <span>{stringDate}</span>
-        <span>{combineName}</span>
-        <span>{mobile}</span>
+        <span>{stringDate},</span>
+        <span> Table {client.table.tableNumber},</span>
+        <span> Guest number {guestNumber},</span>
+        <span>{` ${combineName},`}</span>
+        <span>{` ${mobile} `}</span>
         <button onClick={handleDelete}>
           <FaTrashAlt />
         </button>
