@@ -34,7 +34,7 @@ const Booking = () => {
     console.log(date)
 
     if (!date || date.toLocaleString().slice(12) === '00:00:00') {
-      alert('Please select a valid date nad time from the calendar')
+      return alert('Please select a valid date nad time from the calendar')
     }
   
     if (
