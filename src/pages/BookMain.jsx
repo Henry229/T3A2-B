@@ -14,6 +14,7 @@ import { useJwt } from '../context/jwtContext';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
+  const [clientsByDate, setClientsByDate] = useState([]);
   const { jwt, setJwt } = useJwt();
   const [mobile, setMobile] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -83,18 +84,38 @@ const BookMain = () => {
   useEffect(() => {
     async function effect() {
       const results = await getAllClient(jwtValue);
-      const clients = results.reservations;
-      setJwt(results.jwt);
-      setClients(clients);
-      console.log('useEffect')
+      if (! results?.isError) {
+        const clients = results.reservations;
+        setJwt(results.jwt);
+        setClients(clients);
+      }
     }
     effect();
   }, []);
 
   useEffect(() => {
-    okClient = getConformedClients(clients);
-    notOkClient = getConformingClients(clients);
+    if (clients.length) {
+      okClient = getConformedClients(clients);
+      notOkClient = getConformingClients(clients);
+    }
   }, [clients]);
+
+  const getClientsBydate = (e) => {
+    e.target.value === 'All Reservations' 
+    ? setClientsByDate([])
+    : setClientsByDate(clients.filter(client => new Date(client.guest.date).getDate() === new Date(e.target.value).getDate()))
+  }
+
+  const dropDown = () => {
+    const allDates = []
+    clients.forEach(client => allDates.push(new Date(client.guest.date).toLocaleDateString()))
+    const uniqueDates = allDates.filter((date, i) => allDates.indexOf(date) === i)
+    return (
+      uniqueDates.map((date, i )=> 
+      <option key={i}>{new Date(date).toDateString()}</option>)
+    )
+  }
+
 
   return (
     <>
@@ -113,17 +134,23 @@ const BookMain = () => {
             </button>
           </form>
         </article>
-        <Link to='/'>Logout</Link>
+        <Link to='/admin'>Logout</Link>
       </section>
       {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
       <section>
         <h2>Booking List</h2>
+        <select onChange={(e)=>getClientsBydate(e)}>
+          {clients && dropDown()}
+          <option>All Reservations</option>
+        </select>
         <p ref={errRef} aria-live='assertive'>
           {errMsg}
         </p>
-        <h3>Need to confirm</h3>
+        <h3>Unconfirmed bookings</h3>
         <ul>
-          {notOkClient.map((client) => (
+          {(clientsByDate.length 
+            ? clientsByDate.filter(client=>!client.isConfirmed) 
+            : notOkClient).map((client) => (
             <DoConfirm
               key={client._id}
               client={client}
@@ -136,9 +163,11 @@ const BookMain = () => {
         </ul>
       </section>
       <section>
-        <h3>Completed Booking</h3>
+        <h3>Confirmed Bookings</h3>
         <ul>
-          {okClient.map((client) => (
+            {(clientsByDate.length 
+              ? clientsByDate.filter(client=>client.isConfirmed) 
+              : okClient).map((client) => (
             <DoConfirm
               key={client._id}
               client={client}

@@ -25,8 +25,7 @@ const DoConfirm = ({
     setClick(false);
   };
 
-  const stringDate = date.slice(0, 10);
-  const stringTime = date.slice(11, 16);
+  const stringDate = new Date(date).toLocaleString()
   const combineName = `${firstName} ${lastName}`;
 
   return (
@@ -37,8 +36,8 @@ const DoConfirm = ({
           checked={isConfirmed === true}
           onChange={handleChange}
         />
+        <span>Table {client.table.tableNumber}</span>
         <span>{stringDate}</span>
-        <span>{stringTime}</span>
         <span>{combineName}</span>
         <span>{mobile}</span>
         <button onClick={handleDelete}>

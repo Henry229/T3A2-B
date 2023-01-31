@@ -2,7 +2,7 @@ import React from "react";
 import GoogleMapReact from 'google-map-react';
 import './map.css'
 
-const Marker = ({ marker }) => <span id='marker' class="material-symbols-outlined">{marker}</span>
+const Marker = ({ marker }) => <span id='marker' className="material-symbols-outlined">{marker}</span>
 
 const googleApiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY
 
