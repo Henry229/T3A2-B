@@ -18,7 +18,8 @@ const DoConfirm = ({
   };
 
   const handleDelete = () => {
-    onDelete(client);
+    const areYouSure = confirm(`Cancel reservation made by\n${firstName} ${lastName}\nat ${new Date(date).toLocaleString()}`)
+    areYouSure && onDelete(client)
   };
 
   const handleCancel = () => {
@@ -41,7 +42,8 @@ const DoConfirm = ({
         <span> Guest number {guestNumber},</span>
         <span>{` ${combineName},`}</span>
         <span>{` ${mobile} `}</span>
-        <button onClick={handleDelete}>
+        <button value='{client.guest._id}' 
+        onClick={handleDelete}>
           <FaTrashAlt />
         </button>
         <div onClick={() => setClick(false)}>

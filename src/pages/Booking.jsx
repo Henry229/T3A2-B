@@ -16,7 +16,7 @@ const Booking = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     try {
       validateInputs(date, firstNameRef.current.value, lastNameRef.current.value, mobileRef.current.value)
     }catch(e) {
@@ -24,7 +24,7 @@ const Booking = () => {
     }
 
     const capitalizeString = (str) => {
-      return str.charAt(0).toUpperCase()+str.slice(1)
+      return str.charAt(0).toUpperCase()+str.slice(1).toLowerCase()
     }
 
     const body = JSON.stringify({

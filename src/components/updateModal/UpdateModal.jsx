@@ -11,10 +11,6 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
   const guest = client.guest;
   let updated = '';
 
-  const stringDate = date.slice(0, 10);
-  const stringTime = date.slice(11, 16);
-  // date: stringDate.toLocaleString();
-
   const handleChange = (e) => {
     if (e.currentTarget == null) {
       return;
@@ -25,7 +21,6 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
       ...client,
       guest: { ...guest, [e.currentTarget.name]: e.currentTarget.value },
     };
-    console.log(updated);
     setUpdateDB(() => updated);
     updateUsingState(updated);
   };
@@ -38,10 +33,18 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(updated)
-    if (!updated) {
-      return alert("Please type at least one field to update")
+    if (!updateDB) {return alert("Please type at least one field to update")}
+    const fields = updateDB.guest
+    try {
+      validateInputs(fields.date, fields.firstName, fields.lastName, fields.mobile)
+    }catch (e) {
+      return alert(e.message)
     }
+    const capitalizeString = (str) => {
+      return str.charAt(0).toUpperCase()+str.slice(1).toLowerCase()
+    }
+    updateDB.guest.firstName = capitalizeString(fields.firstName)
+    updateDB.guest.lastName = capitalizeString(fields.lastName)
 
     updateInform(updateDB);
   };

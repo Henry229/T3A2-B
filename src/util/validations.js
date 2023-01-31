@@ -1,9 +1,8 @@
 export default function validateInputs(date, firstName, lastName, mobile) {
   const letters = /^[A-Za-z]+$/
   const mobileNumber = /^[0-9]+$/
-
   if (!date || date.toLocaleString().slice(12) === '00:00:00') {
-    throw new Error('Please select a valid date nad time from the calendar')
+     throw new Error('Please select a valid date nad time from the calendar')
   }
 
   if (
@@ -18,6 +17,6 @@ export default function validateInputs(date, firstName, lastName, mobile) {
     !(mobile).match(mobileNumber) ||
     !mobile.startsWith('04')
   ) {
-    throw new Erroralert('Please type a valid mobile number')
+    throw new Error ('Please type a valid mobile number')
   }
 }

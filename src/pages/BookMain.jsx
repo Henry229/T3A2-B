@@ -31,7 +31,6 @@ const BookMain = () => {
   let jwtValue = result.jwt;
 
   const handleUpdate = async (updated) => {
-    // console.log('***yogida10: ', updated);
     setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
