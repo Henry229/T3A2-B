@@ -101,21 +101,36 @@ export async function updateClient(jwt, body, sendId) {
 }
 
 export async function deleteClient(jwt, deleteId) {
-  const headers = new Headers();
-  headers.set('jwt', jwt);
-  headers.append('Content-Type', 'application/json');
-  const response = await fetch(
-    `http://localhost:3000/reservation/${deleteId}`,
-    {
-      method: 'DELETE',
-      headers: headers,
-      // body: body,
-      redirect: 'follow',
+  try {
+    const headers = new Headers();
+    headers.set('jwt', jwt);
+    headers.append('Content-Type', 'application/json');
+    const response = await fetch(
+      `http://localhost:3000/reservation/${deleteId}`,
+      {
+        method: 'DELETE',
+        headers: headers,
+        // body: body,
+        redirect: 'follow',
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log('====', data);
+      return data;
+    } else {
+      throw new Error(`Response : ${response.statusText}`);
     }
-  );
-  const data = await response.json();
-  console.log('====', data);
-  return data.deletedReservation;
+  } catch (error) {
+    return {
+      isError: true,
+      errorData: {
+        message: error.message,
+        statusCode: error.status,
+      },
+    };
+  }
+  // return data.deletedReservation;
 }
 
 export async function searchMobile(jwt, mobile) {
@@ -132,24 +147,3 @@ export async function searchMobile(jwt, mobile) {
   console.log('==fetch_searchmobile: ===', data);
   return data;
 }
-// data1.reservations.map(
-//   (reserve) =>
-//     setSearchedClients((prev) => [
-//       ...prev,
-//       { guest: reserve.guest, inConfirmed: reserve.isConfirmed },
-//     ])
-//   // setSearchedClients( {reserve.guest, reserve.isConfirmed })
-// );
-// .then((res) => console.log('line 58 <<<===', res[0].guest))
-// .then((data) =>
-//   data.map((client) => console.log(' line 59, ###', client))
-// );
-// .then((data) => data.map((client) => setSearchedClients(client)));
-
-// state: { searchedClients, handleUpdate, handleDelete, handleState },
-// await searchMobile(jwtValue, mobile).then((searchedClients) =>
-//   navigate(`/admin/search/${mobile}`, {
-//     state: { searchedClients, handleUpdate, handleDelete, handleState },
-//   })
-// );
-// };
