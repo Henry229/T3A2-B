@@ -44,14 +44,34 @@ const AdminLogin = () => {
   };
 
   return (
-    <section>
-      <h2>Login</h2>
-      <form ref={formRef} onSubmit={handleSubmit}>
+    <section className='w-full flex flex-col max-w-sm mx-auto mt-16 bg-gray-300 shadow-md rounded'>
+      <h2 className='flex justify-center my-4 font-bold text-2xl text-gray-800'>
+        Login
+      </h2>
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className='flex flex-col px-8 pt-6 pb-8 mb-4 text-lg text-gray-800 font-bold'
+      >
         <label htmlFor='loginId'>ID</label>
-        <input ref={idRef} type='text' id='loginId' />
-        <label htmlFor='password'>password</label>
-        <input ref={passwordRef} type='password' id='password' />
-        <button>Login</button>
+        <input
+          ref={idRef}
+          type='text'
+          id='loginId'
+          className='my-2 py-1 pl-3 text-gray-800 text-lg rounded-md border-0 outline-0'
+        />
+        <label htmlFor='password' className='mt-4'>
+          password
+        </label>
+        <input
+          ref={passwordRef}
+          type='password'
+          id='password'
+          className='my-2 py-1 pl-3 text-gray-800 text-lg rounded-md border-0 outline-0'
+        />
+        <button className='w-56 h-12 p-3 mt-6 mx-auto rounded-lg bg-indigo-500 text-xl text-gray-50'>
+          Login
+        </button>
       </form>
       <p ref={errRef} aria-live='assertive'>
         {errMsg}
