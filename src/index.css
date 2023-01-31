@@ -2,15 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+body {
+  width: 100vw;
+  height: 100vh;
+  @apply flex flex-col items-center;
+  @apply bg-zinc-900 text-gray-50;
+  /* font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
   background-color: #0d1321;
-  color: white;
+  color: white; */
 }
 
-a {
-  text-decoration: none;
+#root {
+  @apply w-full max-w-screen-2xl;
 }
+
+/* a {
+  text-decoration: none;
+} */
