@@ -11,14 +11,15 @@ const DoConfirm = ({
 }) => {
   const [click, setClick] = useState(false);
   const { _id, isConfirmed } = client;
-  const { date, lastName, firstName, mobile } = client.guest;
+  const { date, lastName, firstName, mobile, guestNumber } = client.guest;
   const handleChange = (e) => {
     const isConfirmed = e.target.checked ? true : false;
     onUpdate({ ...client, isConfirmed });
   };
 
   const handleDelete = () => {
-    onDelete(client);
+    const areYouSure = confirm(`Cancel reservation made by\n${firstName} ${lastName}\nat ${new Date(date).toLocaleString()}`)
+    areYouSure && onDelete(client)
   };
 
   const handleCancel = () => {
@@ -36,11 +37,13 @@ const DoConfirm = ({
           checked={isConfirmed === true}
           onChange={handleChange}
         />
-        <span>Table {client.table.tableNumber}</span>
-        <span>{stringDate}</span>
-        <span>{combineName}</span>
-        <span>{mobile}</span>
-        <button onClick={handleDelete}>
+        <span>{stringDate},</span>
+        <span> Table {client.table.tableNumber},</span>
+        <span> Guest number {guestNumber},</span>
+        <span>{` ${combineName},`}</span>
+        <span>{` ${mobile} `}</span>
+        <button value='{client.guest._id}' 
+        onClick={handleDelete}>
           <FaTrashAlt />
         </button>
         <div onClick={() => setClick(false)}>
