@@ -136,8 +136,14 @@ const Booking = () => {
             <option value='1'>1</option>
           </select>
         </article>
-        <div>
-          <button className='w-100 py-3  bg-blue-300  '>Book</button>
+        <div></div>
+        <div className='flex justify-end '>
+          <button
+            className='w-56 h-12 p-3 mt-2 rounded-lg bg-indigo-500 text-xl'
+            onClick={handleSubmit}
+          >
+            Book
+          </button>
         </div>
       </form>
     </section>
