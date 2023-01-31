@@ -3,6 +3,7 @@ import base64 from 'base-64';
 export async function bookingClient(body) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
+  console.log(body)
   const response = await fetch('http://localhost:3000/reservation', {
     method: 'POST',
     headers: headers,

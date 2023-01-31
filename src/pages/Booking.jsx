@@ -17,7 +17,7 @@ const Booking = () => {
   const guestNumberRef = useRef();
 
   const [data, setData] = useState([]);
-  const [date, setDate] = useState(addMinutes(new Date(), 30));
+  const [date, setDate] = useState(null);
   // const [endDate, setEndDate] = useState(addMinutes(new Date(), 30));
 
   const filterPassedTime = (time) => {
@@ -30,14 +30,11 @@ const Booking = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const letters = /^[A-Za-z]+$/
-    // if (
-    //   firstNameRef.current.value === '' ||
-    //   lastNameRef.current.value === '' ||
-    //   mobileRef.current.value === '' ||
-    //   date <= new Date() ||
-    //   guestNumberRef.current.value === ''
-    // )
-    //   return;
+    console.log(date)
+
+    if (date.toLocaleString().slice(12) === '00:00:00') {
+      alert('Please select a valid time from the calendar')
+    }
   
     if (
       !firstNameRef.current.value.match(letters) || 
@@ -58,8 +55,6 @@ const Booking = () => {
       return str.charAt(0).toUpperCase()+str.slice(1)
     }
 
-  
-
     const body = JSON.stringify({
       firstName: capitalizeString(firstNameRef.current.value),
       lastName: capitalizeString(lastNameRef.current.value),
@@ -67,6 +62,7 @@ const Booking = () => {
       date: date,
       guestNumber: guestNumberRef.current.value,
     });
+    console.log(body);
     bookingClient(body);
     formRef.current.reset();
     };
@@ -74,8 +70,8 @@ const Booking = () => {
   return (
     <section>
       <h2>Booking for Customer</h2>
-      <form ref={formRef} onSubmit={handleSubmit}>
-        <label htmlFor='firstName'>First Name</label>
+      <form ref={formRef} onSubmit={handleSubmit} autoComplete="off" >
+        <label htmlFor='firstName' >First Name</label>
         <input
           ref={firstNameRef}
           type='text'
@@ -101,7 +97,9 @@ const Booking = () => {
         />
         <label htmlFor='date'>Booking Date</label>
         <DatePicker name='date' id='date' 
-        selected={date} onChange={(date) => setDate(date)} 
+        placeholderText='Select date'
+        selected={date}
+        onChange={(date) => setDate(date)} 
         includeDateIntervals={[
         { start: subDays(new Date(), 1), end: addDays(new Date(), 30) },
         ]}

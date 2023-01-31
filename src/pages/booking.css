@@ -1,3 +1,8 @@
 .react-datepicker__time-list-item--disabled {
   display: none;
 }
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  display: inline;
+}
