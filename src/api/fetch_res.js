@@ -11,7 +11,7 @@ export async function bookingClient(body) {
     redirect: 'follow',
   });
   const data = await response.json();
-  return data.guest;
+  return data;
   //Make useClient state global here
 }
 
@@ -52,6 +52,7 @@ export async function getAllClient(jwt) {
     });
     if (response.ok) {
       const data = await response.json();
+      console.log(data)
       return data;
     } else {
       throw new Error(`Response : ${response.statusText}`);

@@ -44,11 +44,11 @@ const BookMain = () => {
     jwtValue = jwt;
     //call updateClient for fetch put
     const result = await updateClient(jwtValue, body, sendId);
-    if (result.isError) {
-      setErrMsg('fail to update client info!!');
+    if (result.errorData?.message == 'Response : Not Acceptable') {
+      alert('No available table found on the selected time')
     } else if (result.jwt) {
       setJwt(result.jwt);
-    } else setErrMsg('failed updateClient()');
+    } else alert('Network error\nPlease try again later');
   };
 
   const handleState = (updated) => {
@@ -134,49 +134,53 @@ const BookMain = () => {
         </article>
         <Link to='/admin'>Logout</Link>
       </section>
-      {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
-      <section>
-        <h2>Booking List</h2>
-        <select onChange={(e)=>getClientsBydate(e)}>
-          {clients && dropDown()}
-          <option>All Reservations</option>
-        </select>
-        <p ref={errRef} aria-live='assertive'>
-          {errMsg}
-        </p>
-        <h3>Unconfirmed bookings</h3>
-        <ul>
-          {(clientsByDate.length 
-            ? clientsByDate.filter(client=>!client.isConfirmed) 
-            : notOkClient).map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={client}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
-        </ul>
-      </section>
-      <section>
-        <h3>Confirmed Bookings</h3>
-        <ul>
-            {(clientsByDate.length 
-              ? clientsByDate.filter(client=>client.isConfirmed) 
-              : okClient).map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={client}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
-        </ul>
-      </section>
+      {!clients.length ? <h2>No Reservation Found</h2>
+      :
+        <>
+          <section>
+            <h2>Booking List</h2>
+            <select onChange={(e)=>getClientsBydate(e)}>
+              <option>All Reservations</option>
+              {clients && dropDown()}
+            </select>
+            <p ref={errRef} aria-live='assertive'>
+              {errMsg}
+            </p>
+            <h3>Unconfirmed bookings</h3>
+            <ul>
+              {(clientsByDate.length 
+                ? clientsByDate.filter(client=>!client.isConfirmed) 
+                : notOkClient).map((client) => (
+                <DoConfirm
+                  key={client._id}
+                  client={client}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  updateUsingState={handleState}
+                  updateInform={handleUpdate}
+                />
+              ))}
+            </ul>
+          </section>
+        <section>
+          <h3>Confirmed Bookings</h3>
+          <ul>
+              {(clientsByDate.length 
+                ? clientsByDate.filter(client=>client.isConfirmed) 
+                : okClient).map((client) => (
+              <DoConfirm
+                key={client._id}
+                client={client}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                updateUsingState={handleState}
+                updateInform={handleUpdate}
+              />
+            ))}
+          </ul>
+        </section>
+      </>
+      }
     </>
   );
 };

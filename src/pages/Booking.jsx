@@ -14,7 +14,7 @@ const Booking = () => {
   const guestNumberRef = useRef();
   const [date, setDate] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -34,9 +34,15 @@ const Booking = () => {
       date: date,
       guestNumber: guestNumberRef.current.value,
     });
-    bookingClient(body);
-    formRef.current.reset();
-    };
+    const res = await bookingClient(body);
+    if (res.table) {
+      alert(`Your reservation has been made on\n${new Date(res.guest.date).toLocaleString()} for ${res.guest.guestNumber} people`)
+      formRef.current.reset();
+    }else {
+      if (res.error == 'Same guest found!') {return alert('Your booking already has been made.')}
+      if (res.error == 'No available table found') {return alert('Sorry, we all booked out on the selected time.')}
+    }
+  };
 
   return (
     <section>
