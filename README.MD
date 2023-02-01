@@ -9,6 +9,155 @@
 
 ## Frontend
 
+### date-fns, react-datepicker
+
+date-fns and react-datepicker have been used to create a calendar interface to display the calendar and let users to select a date and time.  
+
+date-fns is a library that allow developers to easily manipulate date objects.  
+It provides more than 200 functions to manipulate date objects.  
+One of the most basic usage is formatting a date object and sort ascendant order:  
+
+```js
+import { format, compareAsc } from 'date-fns'
+
+format(new Date(2023, 11, 05), 'MM/dd/yyyy')
+//Create date and format => '11/05/2023'
+
+const dates = [
+  new Date(2022, 6, 2),
+  new Date(2020, 1, 11),
+  new Date(2021, 6, 10),
+]
+dates.sort(compareAsc)
+//=> [
+//   Wed Feb 11 2020 00:00:00,
+//   Mon Jul 10 2021 00:00:00,
+//   Sun Jul 02 2022 00:00:00
+// ]
+```
+
+In this project, it was mostly used to configure the calendar from the react-date picker.  
+
+```jsx
+  import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays, subDays, setHours, setMinutes } from 'date-fns';
+
+import React from 'react'
+
+const Calendar = ({date, setDate, updateDate}) => {
+  const filterPassedTime = (time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+    return currentDate.getTime() < selectedDate.getTime();
+  };
+
+  const executeChange = (dt) => {
+    setDate(dt)
+    updateDate && updateDate(dt)
+  }
+
+  return (
+    <DatePicker name='date' id='date' 
+        className='bookingForm'
+        placeholderText='Select date'
+        selected={date} //selected date by default
+        onChange={(dt) => executeChange(dt)} 
+        includeDateIntervals={[
+          //Only dates between the start date to end date are able to be selected. From today's dates to + 30 days are able to select. 
+        { start: subDays(new Date(), 1), end: addDays(new Date(), 30) },
+        ]}
+        //Configure format to display dates and times
+        format='yyyy-MM-dd'
+        timeFormat="p"
+        dateFormat="Pp"
+        //Includes time in the calendar
+        //Default interval is 30 minutes.
+        showTimeSelect
+        //Disable past time.
+        filterTime={filterPassedTime}
+        //Disable manipulate calender with keyboard.
+        disabledKeyboardNavigation
+        //Disable all time before 11am
+        minTime={setHours(setMinutes(new Date(), 0), 11)}
+        //Disable all time after 8:30pm
+        maxTime={setHours(setMinutes(new Date(), 30), 20)}
+        excludeTimes={[
+        //Excludes times from 14:30 to 16:30
+        setHours(setMinutes(new Date(), 30), 14),
+        setHours(setMinutes(new Date(), 0), 15),
+        setHours(setMinutes(new Date(), 30), 15),
+        setHours(setMinutes(new Date(), 0), 16),
+        setHours(setMinutes(new Date(), 30), 16)
+      ]}
+    />
+  )
+}
+
+export default Calendar
+```
+
+Result:
+
+At 01/Feb/2023 16:16  
+
+All past times are disabled.
+
+![calendar](resources/calendar1.png)
+
+And when date is selected, all configured times are shown.  
+
+![calendar](resources/calendar2.png)
+
+### google-map-react
+
+google-map-react allows developers to attach a Google map on the web site.
+
+```js
+import React from "react";
+import GoogleMapReact from 'google-map-react';
+import './map.css'
+
+//Define a marker on the map
+const Marker = ({ marker }) => <span id='marker' className="material-symbols-outlined">{marker}</span>
+
+//The api key can be issued from the google project.
+const googleApiKey = import.meta.env.VITE_REACT_APP_GOOGLE_API_KEY
+
+export default function Map() {
+  const defaultProps = {
+    //positioning the map.
+    center: {
+      lat: -33.85672,
+      lng: 151.21529
+    },
+    //zoom level
+    zoom: 13
+  };
+
+  return (
+    // Always set the container height explicitly
+    <section id ='map'>
+      //Link google map
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0" />
+      //Configurations defined above
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: googleApiKey }}
+        defaultCenter={defaultProps.center}
+        defaultZoom={defaultProps.zoom}
+      >
+        // Display marker
+        <Marker
+          lat={-33.85672}
+          lng={151.21529}
+          marker="location_on"
+        />
+      </GoogleMapReact>
+    </section>
+  );
+}
+```
+
 ## Backend
 
 ### Express
@@ -245,11 +394,12 @@ And it also can access the response status code by calling `response.statusCode`
 
 ### Development Testing
 
-#### Frontend
+#### < **Frontend** >
 
-#### Backend
 
-The automated test covers all the test scenarios.  
+#### < **Backend** >
+
+The automated test has been fully covered all possible cases.  
 Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/main/src/test) directory for more details.  
 
 **Automated test cases and outcomes**
@@ -258,3 +408,92 @@ Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/mai
 ![test Case](resources/exp_test3.png)
 
 ### Production Testing
+
+#### < **Frontend** >
+
+**-Header-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Header stay on the top on all pages|P|
+|Nav to landing page when the title is clicked|P|
+|Nav to corresponding web pages when nav bar components are clicked|P|
+
+**-Footer-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Footer stays on the bottom on all pages|P|
+|Modal boxes appear on click of corresponding icons|P|
+|Link icons work as intended|P|
+
+**-Home Page-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Images changes on click|P|
+|Icons work as intended|P|
+|Images are well sized|P|
+
+**-Admin Login Page-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Popup error message when ID is incorrect|P|
+|Popup error message when password is incorrect|P|
+|Navigate to the admin page when successfully logged in|P|
+
+**-Admin Page-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Display update popup on click of one reservation|P|
+|Update popup loads reservation details on click of one reservation|P|
+|Successfully search customer by mobile number|P|
+|Successfully update customer details|P|
+|Successfully delete customer details|P|
+|Dropdown menu displays all dates of reservations|P|
+|Dropdown menu shows only corresponding reservations on click|P|
+|Relocate the reservation on click of checkbox|P|
+|Reservations correctly grouped by confirmed/unconfirmed|P|
+|Reservations correctly grouped by confirmed/unconfirmed|P|
+|Correctly displays error popup message when there's no available table found on update |P|
+|Validation works for all inputs|P|
+|Validation works for all inputs|P|
+
+**-Rservation Page-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Validator works for all inputs and display popup message accordingly|P|
+|Displays popup message when booking is successfully made|P|
+|Displays popup message when booing is failed when there's no table left|P|
+|Calender displays only available dates and times correctly|P|
+
+**-About Us Page-**
+
+|CheckList|Pass|
+|---------|-----|
+|All components loaded correctly|P|
+|Fully responsive|P|
+|Map shows exact location|P|
+|Map is pinned by Marker correctly|P|
+
+#### < **Backend** >
+
+|CheckList|Pass|
+|---------|-----|
+|Deployed successfully|P|
+|All routers responses accordingly based on the test done from the frontend|P|
