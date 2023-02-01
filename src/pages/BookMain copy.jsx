@@ -134,35 +134,36 @@ const BookMain = () => {
           {errMsg}
         </p>
         <h3>Need to confirm</h3>
-        <ul className='list-none p-0'>
-          {/* <table className='table-auto text-left'>
+        <ul className='list-none'>
+          <table className='table-auto text-left'>
             <thead>
               <tr className='bg-gray-800 text-white'>
-                <th className='w-6 px-1'>Check</th>
-                <th className='w-20 px-4'>Date</th>
-                <th className='w-10 px-4'>Time</th>
-                <th className='w-10 px-20'>Name</th>
-                <th className='w-10 px-7'>Mobile</th>
+                <th className='px-4 py-2'>Check</th>
+                <th className='px-4 py-2'>Date</th>
+                <th className='px-4 py-2'>Time</th>
+                <th className='px-4 py-2'>Name</th>
+                <th className='px-4 py-2'>Mobile</th>
                 <th className='px-4 py-2'>Delete</th>
               </tr>
             </thead>
-            <tbody></tbody>
-          </table> */}
-          {notOkClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={client}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
+            <tbody>
+              {notOkClient.map((client) => (
+                <DoConfirm
+                  key={client._id}
+                  client={client}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  updateUsingState={handleState}
+                  updateInform={handleUpdate}
+                />
+              ))}
+            </tbody>
+          </table>
         </ul>
       </section>
-      <section className='w-full px-4 mt-4'>
+      <section>
         <h3>Completed Booking</h3>
-        <ul className='list-none p-0'>
+        <ul>
           {okClient.map((client) => (
             <DoConfirm
               key={client._id}

@@ -48,19 +48,28 @@ const AdminLogin = () => {
       <h2 className='flex justify-center my-4 font-bold text-2xl text-gray-800'>
         Login
       </h2>
+      <p
+        ref={errRef}
+        aria-live='assertive'
+        className='text-red-500 font-bold ml-5'
+      >
+        {errMsg}
+      </p>
       <form
         ref={formRef}
         onSubmit={handleSubmit}
-        className='flex flex-col px-8 pt-6 pb-8 mb-4 text-lg text-gray-800 font-bold'
+        className='flex flex-col px-8 pt-6 pb-8 mb-4 text-lg text-gray-800'
       >
-        <label htmlFor='loginId'>ID</label>
+        <label htmlFor='loginId' className=' font-bold'>
+          ID
+        </label>
         <input
           ref={idRef}
           type='text'
           id='loginId'
           className='my-2 py-1 pl-3 text-gray-800 text-lg rounded-md border-0 outline-0'
         />
-        <label htmlFor='password' className='mt-4'>
+        <label htmlFor='password' className='mt-4 font-bold'>
           password
         </label>
         <input
@@ -73,9 +82,6 @@ const AdminLogin = () => {
           Login
         </button>
       </form>
-      <p ref={errRef} aria-live='assertive'>
-        {errMsg}
-      </p>
     </section>
   );
 };

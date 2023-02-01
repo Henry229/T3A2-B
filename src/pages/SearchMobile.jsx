@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getConformedClients, getConformingClients } from '../util/getClients';
-import {
-  getAllClient,
-  updateClient,
-  deleteClient,
-  searchMobile,
-} from '../api/fetch_res';
+import { updateClient, deleteClient, searchMobile } from '../api/fetch_res';
 import MobileSearchConfirm from '../components/MobileSearchConfirm/MobileSearchConfirm';
 import { useJwt } from '../context/jwtContext';
 
@@ -38,6 +33,7 @@ const SearchMobile = () => {
         searchedClients.push({
           guest: reserv.guest,
           isConfirmed: reserv.isConfirmed,
+          tableNumber: reserv.table.tableNumber,
           _id: reserv._id,
           __v: 0,
         });
@@ -105,15 +101,19 @@ const SearchMobile = () => {
   };
 
   return (
-    <>
-      <h2>Searched Mobile Info.</h2>
+    <section className='w-full flex flex-col px-4 mt-4'>
+      <h1 className='basis-5/6 font-bold text-3xl text-grey-50 mb-2'>
+        Searched Mobile Info.
+      </h1>
       <section>
-        <h2>Booking List</h2>
+        <h2 className='basis-5/6 font-bold text-2xl text-grey-50 mb-2'>
+          Booking List
+        </h2>
         <p ref={errRef} aria-live='assertive'>
           {errMsg}
         </p>
         <h3>Need to confirm</h3>
-        <ul>
+        <ul className='list-none p-0'>
           {console.log('<<<<localNotOkClient in UL', localNotOkClient)}
           {notOkClient &&
             notOkClient.map((client) => (
@@ -132,7 +132,7 @@ const SearchMobile = () => {
       </section>
       <section>
         <h3>Completed Booking</h3>
-        <ul>
+        <ul className='list-none p-0'>
           {console.log('<<<<localOkClient in UL', localOkClient)}
           {okClient &&
             okClient.map((client) => (
@@ -147,7 +147,7 @@ const SearchMobile = () => {
             ))}
         </ul>
       </section>
-    </>
+    </section>
   );
 };
 

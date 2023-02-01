@@ -9,8 +9,8 @@ const MobileSearchConfirm = ({
   updateUsingState,
   updateInform,
 }) => {
-  const [click, setClick] = useState(false);
-  const { _id, isConfirmed } = client;
+  const [mobileClick, setMobileClick] = useState(false);
+  const { _id, isConfirmed, tableNumber } = client;
   const { date, lastName, firstName, mobile } = client.guest;
   const handleChange = (e) => {
     const isConfirmed = e.target.checked ? true : false;
@@ -22,8 +22,8 @@ const MobileSearchConfirm = ({
   };
 
   const handleCancel = () => {
-    setClick(false);
-    console.log('>>>>>====', click);
+    setMobileClick(false);
+    console.log('>>>>>====', mobileClick);
   };
 
   const stringDate = date.slice(0, 10);
@@ -32,9 +32,48 @@ const MobileSearchConfirm = ({
 
   return (
     <>
-      <li
+      <table className='table-auto sm:table-'>
+        <thead>
+          <tr></tr>
+        </thead>
+        <tbody>
+          <tr
+            onClick={() => setMobileClick(true)}
+            className=' bg-zinc-800 text-gray-100'
+          >
+            <td className='px-4 py-2'>
+              <input
+                type='checkbox'
+                checked={isConfirmed}
+                onChange={handleChange}
+              />
+            </td>
+            <td className='px-4 py-2'>Table# {tableNumber}</td>
+            <td className='px-4 py-2'>{stringDate}</td>
+            <td className='px-4 py-2'>{stringTime}</td>
+            <td className='px-4 py-2'>{combineName}</td>
+            <td className='px-4 py-2'>{mobile}</td>
+            <td className='px-4 py-2'>
+              <button onClick={handleDelete}>
+                <FaTrashAlt />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        {mobileClick && (
+          <UpdateModal
+            client={client}
+            updateUsingState={updateUsingState}
+            updateInform={updateInform}
+            onCancel={handleCancel}
+          />
+        )}
+      </div>
+      {/* <li
         onClick={() => {
-          setClick(true);
+          setMobileClick(true);
           console.log('<<<<<<====', click);
         }}
       >
@@ -60,7 +99,7 @@ const MobileSearchConfirm = ({
             />
           )}
         </div>
-      </li>
+      </li> */}
     </>
   );
 };
