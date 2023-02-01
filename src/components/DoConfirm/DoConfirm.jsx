@@ -14,7 +14,7 @@ const DoConfirm = ({
   const { date, lastName, firstName, mobile, guestNumber } = client.guest;
   const handleChange = (e) => {
     const isConfirmed = e.target.checked ? true : false;
-    onUpdate({ ...client, isConfirmed });
+    onUpdate({ ...client, isConfirmed }, true);
   };
 
   const handleDelete = () => {
@@ -42,8 +42,7 @@ const DoConfirm = ({
         <span> Guest number {guestNumber},</span>
         <span>{` ${combineName},`}</span>
         <span>{` ${mobile} `}</span>
-        <button value='{client.guest._id}' 
-        onClick={handleDelete}>
+        <button onClick={handleDelete}>
           <FaTrashAlt />
         </button>
         <div onClick={() => setClick(false)}>

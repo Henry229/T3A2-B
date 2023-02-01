@@ -30,8 +30,10 @@ const BookMain = () => {
   } = useLocation();
   let jwtValue = result.jwt;
 
-  const handleUpdate = async (updated) => {
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+  const handleUpdate = async (updated, checkBox=false) => {
+    clientsByDate.length 
+    ? setClientsByDate(clientsByDate.map((c) => (c._id === updated._id ? updated : c)))
+    : setClients(clients.map((c) => (c._id === updated._id ? updated : c)))
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
       lastName: updated.guest.lastName,
@@ -42,17 +44,20 @@ const BookMain = () => {
     });
     const sendId = updated._id;
     jwtValue = jwt;
-    //call updateClient for fetch put
     const result = await updateClient(jwtValue, body, sendId);
-    if (result.errorData?.message == 'Response : Not Acceptable') {
+    if (result?.error == 'No available table found') {
       alert('No available table found on the selected time')
-    } else if (result.jwt) {
+    } else if (result?.jwt) {
       setJwt(result.jwt);
-    } else alert('Network error\nPlease try again later');
+      !checkBox && alert('Update successful')
+    } else {
+      alert('Network error\nPlease try again later')
+    };
   };
 
   const handleState = (updated) => {
     setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+    clientsByDate.length && setClientsByDate(clientsByDate.map((c) => (c._id === updated._id ? updated : c)))
   };
 
   const handleDelete = async (deleted) => {
@@ -150,7 +155,7 @@ const BookMain = () => {
             <ul>
               {(clientsByDate.length 
                 ? clientsByDate.filter(client=>!client.isConfirmed) 
-                : notOkClient).map((client) => (
+                : notOkClient).map((client) => ( 
                 <DoConfirm
                   key={client._id}
                   client={client}

@@ -4,7 +4,7 @@ import base64 from 'base-64';
 export default class Restaurant {
   constructor() {
     this.httpServer = axios.create({
-      baseURL: 'http://localhost:3000/',
+      baseURL: 'https://mern-restaurant-api-production.up.railway.app/',
     });
   }
   async bookingClient(bookingPerson) {
@@ -20,7 +20,7 @@ export default class Restaurant {
     const headers = new Headers();
     headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
     const response = (
-      await fetch('http://localhost:3000/admin/login', {
+      await fetch('https://mern-restaurant-api-production.up.railway.app/admin/login', {
         method: 'POST',
         headers: headers,
       })
@@ -51,7 +51,7 @@ export default class Restaurant {
     const headers = new Headers();
     headers.set('jwt', jwt);
     const res2 = await (
-      await fetch(`http://localhost:3000/reservation/${sendId}`, {
+      await fetch(`https://mern-restaurant-api-production.up.railway.app/reservation/${sendId}`, {
         method: 'PUT',
         headers: headers,
         body: JSON.stringify(body),
@@ -77,8 +77,8 @@ export default class Restaurant {
 // async function a() {
 //   const headers = new Headers()
 //   headers.set('Authorization', 'Basic ' + base64.encode(loginInfo.id + ":" + loginInfo.password));
-//   const res = await (await fetch('http://localhost:3000/admin/login', {method:'POST', headers: headers})).json()
+//   const res = await (await fetch('https://mern-restaurant-api-production.up.railway.app/admin/login', {method:'POST', headers: headers})).json()
 //   headers.set("jwt", res.jwt)
-//   const res2 = await (await fetch('http://localhost:3000/reservation/63cdf89705f48ae7604520a7', {method:'PUT', headers: headers})).json()
+//   const res2 = await (await fetch('https://mern-restaurant-api-production.up.railway.app/reservation/63cdf89705f48ae7604520a7', {method:'PUT', headers: headers})).json()
 //   console.log(res2)
 // }
