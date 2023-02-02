@@ -411,6 +411,17 @@ Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/mai
 
 #### < **Frontend** >
 
+**-Website-**
+
+|CheckList|Pass|
+|---------|----|
+|Admin pages are protected|P|
+|All url works as expected|P|
+|No unexpected error found|P|
+|All pages communicate with API without problem|P|
+|Load pages in reasonable time|P|
+|Accessible from other devices|P|
+
 **-Header-**
 
 |CheckList|Pass|
@@ -496,4 +507,4 @@ Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/mai
 |CheckList|Pass|
 |---------|-----|
 |Deployed successfully|P|
-|All routers responses accordingly based on the test done from the frontend|P|
+|All routers responses accordingly based on the test done from the f|P|
