@@ -64,7 +64,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
       </button> */}
       <section
         className='fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center'
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
       >
         <section
           className='fixed inset-0 transition-opacity'
@@ -87,6 +87,12 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
                   className='grid gird-cols-1 sm:grid-cols-2 gap-2'
                   onSubmit={handleSubmit}
                 >
+                  <label htmlFor='date'>Booking Date</label>
+                  <Calendar
+                    date={getDate}
+                    setDate={setDate}
+                    updateDate={updateDate}
+                  />
                   <label htmlFor='firstName'>First Name</label>
                   <input
                     type='text'
@@ -113,12 +119,6 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
                     className='py-1 pl-3 text-gray-800 bg-blue-100 text-sm rounded-md border-0 outline-0'
                     value={mobile}
                     onChange={handleChange}
-                  />
-                  <label htmlFor='date'>Booking Date</label>
-                  <Calendar
-                    date={getDate}
-                    setDate={setDate}
-                    updateDate={updateDate}
                   />
                   {/* <label htmlFor='date'>Booking Date</label>
                   <input
