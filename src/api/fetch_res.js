@@ -4,12 +4,15 @@ export async function bookingClient(body) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   console.log(body);
-  const response = await fetch('http://localhost:3000/reservation', {
-    method: 'POST',
-    headers: headers,
-    body: body,
-    redirect: 'follow',
-  });
+  const response = await fetch(
+    'https://mern-restaurant-api-production.up.railway.app/reservation',
+    {
+      method: 'POST',
+      headers: headers,
+      body: body,
+      redirect: 'follow',
+    }
+  );
   const data = await response.json();
   return data;
   //Make useClient state global here
