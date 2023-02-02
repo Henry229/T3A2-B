@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 package-lock.json
 # vite.config.js
-.vsconde
+.vscode
 dist
 dist-ssr
 *.local
