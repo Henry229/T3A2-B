@@ -76,35 +76,6 @@ const MobileSearchConfirm = ({
           />
         )}
       </div>
-      {/* <li
-        onClick={() => {
-          setMobileClick(true);
-          console.log('<<<<<<====', click);
-        }}
-      >
-        <input
-          type='checkbox'
-          checked={isConfirmed === true}
-          onChange={handleChange}
-        />
-        <span>{stringDate}</span>
-        <span>{stringTime}</span>
-        <span>{combineName}</span>
-        <span>{mobile}</span>
-        <button onClick={handleDelete}>
-          <FaTrashAlt />
-        </button>
-        <div>
-          {click && (
-            <UpdateModal
-              client={client}
-              updateUsingState={updateUsingState}
-              updateInform={updateInform}
-              onCancel={handleCancel}
-            />
-          )}
-        </div>
-      </li> */}
     </>
   );
 };
