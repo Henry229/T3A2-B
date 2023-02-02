@@ -25,11 +25,11 @@ export async function adminLogin(loginInfo) {
       method: 'POST',
       headers: headers,
     });
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
       return data;
     } else {
-      throw new Error(`Response : ${response.statusText}`);
+      throw new Error(data.error);
     }
   } catch (error) {
     return {
@@ -50,12 +50,12 @@ export async function getAllClient(jwt) {
       method: 'GET',
       headers: headers,
     });
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
       console.log(data);
       return data;
     } else {
-      throw new Error(`Response : ${response.statusText}`);
+      throw new Error(data.error);
     }
   } catch (error) {
     return {

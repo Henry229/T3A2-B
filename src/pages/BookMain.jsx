@@ -5,6 +5,8 @@ import { getAllClient, updateClient, deleteClient } from '../api/fetch_res';
 import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
 import { useJwt } from '../context/jwtContext';
+import Loader from '../components/loader/Loader';
+import validateInputs from '../util/validations';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
@@ -12,6 +14,7 @@ const BookMain = () => {
   const { jwt, setJwt } = useJwt();
   const [mobile, setMobile] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const errRef = useRef();
   const navigate = useNavigate();
   let okClient = [];
@@ -23,11 +26,8 @@ const BookMain = () => {
   let jwtValue = result.jwt;
 
   const handleUpdate = async (updated, checkBox = false) => {
-    clientsByDate.length
-      ? setClientsByDate(
-          clientsByDate.map((c) => (c._id === updated._id ? updated : c))
-        )
-      : setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+      clientsByDate.length && setClientsByDate(clientsByDate.map((c) => (c._id === updated._id ? updated : c)))
+      setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
 
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
@@ -39,11 +39,21 @@ const BookMain = () => {
     });
     const sendId = updated._id;
     jwtValue = jwt;
-    //call updateClient for fetch put
+    !checkBox && setLoading(true)
     const result = await updateClient(jwtValue, body, sendId);
+    !checkBox && setLoading(false)
     if (result?.error == 'No available table found') {
       alert('No available table found on the selected time');
     } else if (result?.jwt) {
+      if (
+        clientsByDate.length > 1 && 
+        clientsByDate.filter(client => new Date(client.guest.date).getDate() === new Date(updated.guest.date).getDate()).length === 1
+        ) {
+        setClientsByDate(clientsByDate.filter(client => client._id != updated._id))
+      }else if (clientsByDate.length === 1) {
+        setClientsByDate(clients.filter(client => new Date(client.guest.date).getDate() === new Date(updated.guest.date).getDate()))
+      }
+
       setJwt(result.jwt);
       !checkBox && alert('Update successful');
     } else {
@@ -61,19 +71,20 @@ const BookMain = () => {
 
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
-    clientsByDate.length &&
-      setClientsByDate(clientsByDate.filter((d) => d._id !== deleted._id));
 
     const deleteId = deleted._id;
     jwtValue = jwt;
-    // call deleteClient for fetch delete
     const result = await deleteClient(jwtValue, deleteId);
     if (result.isError) {
-      console.log(result.errorData.message);
-      setErrMsg('fail to delete client!!');
+      setErrMsg(result.errorData.message);
     } else if (result.jwt) {
       setJwt(result.jwt);
     } else setErrMsg('failed deleteClient()');
+
+    if (clientsByDate.length) {
+      setClientsByDate(clientsByDate.filter((d) => d._id !== deleted._id));
+      clientsByDate.length === 1 && location.reload()
+    }
   };
 
   okClient = getConformedClients(clients);
@@ -81,7 +92,11 @@ const BookMain = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
-
+    try{
+      validateInputs(null, null, null, mobile, true)
+    }catch (e) {
+      return alert(e.message)
+    }
     navigate(`/admin/search/${mobile}`, {
       state: { mobile },
     });
@@ -89,11 +104,15 @@ const BookMain = () => {
 
   useEffect(() => {
     async function effect() {
+      setLoading(true);
       const results = await getAllClient(jwtValue);
+      setLoading(false)
       if (!results?.isError) {
         const clients = results.reservations;
         setJwt(results.jwt);
         setClients(clients);
+      }else {
+        alert(result.errorData.message)
       }
     }
     effect();
@@ -120,6 +139,7 @@ const BookMain = () => {
   };
 
   const dropDown = () => {
+    console.log('deropdown')
     const allDates = [];
     clients.forEach((client) =>
       allDates.push(new Date(client.guest.date).toDateString())
@@ -134,6 +154,7 @@ const BookMain = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <section className='w-full flex flex-col px-4 mt-4'>
         <article>
           <section className='flex'>
@@ -161,7 +182,7 @@ const BookMain = () => {
           </form>
         </article>
       </section>
-      {!clients.length ? (
+      {!clients.length && !loading ? (
         <h2>No Reservation Found</h2>
       ) : (
         <section>
