@@ -56,12 +56,15 @@ const BookMain = () => {
   };
 
   const handleState = (updated) => {
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
     clientsByDate.length && setClientsByDate(clientsByDate.map((c) => (c._id === updated._id ? updated : c)))
+    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
   };
 
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
+    //Added
+    clientsByDate.length && setClientsByDate(clientsByDate.filter((d) => d._id !== deleted._id))
+    //
     const deleteId = deleted._id;
     jwtValue = jwt;
     // call deleteClient for fetch delete
@@ -105,6 +108,9 @@ const BookMain = () => {
   }, [clients]);
 
   const getClientsBydate = (e) => {
+    //ADDED
+    e.preventDefault()
+    //
     e.target.value === 'All Reservations' 
     ? setClientsByDate([])
     : setClientsByDate(clients.filter(client => new Date(client.guest.date).getDate() === new Date(e.target.value).getDate()))
