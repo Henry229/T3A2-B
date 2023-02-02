@@ -11,14 +11,20 @@ const MobileSearchConfirm = ({
 }) => {
   const [mobileClick, setMobileClick] = useState(false);
   const { _id, isConfirmed, tableNumber } = client;
-  const { date, lastName, firstName, mobile } = client.guest;
+  const { date, lastName, firstName, mobile, guestNumber } = client.guest;
+
   const handleChange = (e) => {
     const isConfirmed = e.target.checked ? true : false;
     onUpdate({ ...client, isConfirmed });
   };
 
   const handleDelete = () => {
-    onDelete(client);
+    const areYouSure = confirm(
+      `Cancel reservation made by\n${firstName} ${lastName}\nat ${new Date(
+        date
+      ).toLocaleString()}`
+    );
+    areYouSure && onDelete(client);
   };
 
   const handleCancel = () => {
@@ -26,13 +32,12 @@ const MobileSearchConfirm = ({
     console.log('>>>>>====', mobileClick);
   };
 
-  const stringDate = date.slice(0, 10);
-  const stringTime = date.slice(11, 16);
+  const stringDate = new Date(date).toLocaleString();
   const combineName = `${firstName} ${lastName}`;
 
   return (
     <>
-      <table className='table-auto sm:table-'>
+      <table className='table-auto sm:table-fixed'>
         <thead>
           <tr></tr>
         </thead>
@@ -48,9 +53,9 @@ const MobileSearchConfirm = ({
                 onChange={handleChange}
               />
             </td>
-            <td className='px-4 py-2'>Table# {tableNumber}</td>
             <td className='px-4 py-2'>{stringDate}</td>
-            <td className='px-4 py-2'>{stringTime}</td>
+            <td className='px-4 py-2'>Table# {tableNumber}</td>
+            <td className='px-4 py-2'>{guestNumber}</td>
             <td className='px-4 py-2'>{combineName}</td>
             <td className='px-4 py-2'>{mobile}</td>
             <td className='px-4 py-2'>

@@ -58,18 +58,18 @@ const Home = () => {
       </article>
       <article className='homeNavContainer'>
         <Link className='homeNavIcons' to='/menu'>
-          <span class='material-symbols-outlined'>restaurant_menu</span>
+          <span className='material-symbols-outlined'>restaurant_menu</span>
           <p>Menu</p>
         </Link>
         <Link className='homeNavIcons' to='/reservation'>
-          <span class='material-symbols-outlined'>book</span>
+          <span className='material-symbols-outlined'>book</span>
           <p>Reservation</p>
         </Link>
         <a
           className='homeNavIcons'
           href='https://www.google.com/maps/place/Sydney+Opera+House/@-33.8567844,151.213108,17z/data=!3m2!4b1!5s0x6b12ae67d234a27f:0xd6d4e9380ca1e32f!4m6!3m5!1s0x6b12ae665e892fdd:0x3133f8d75a1ac251!8m2!3d-33.8567844!4d151.2152967!16zL20vMDZfbm0'
         >
-          <span class='material-symbols-outlined'>location_on</span>
+          <span className='material-symbols-outlined'>location_on</span>
           <p>Location</p>
         </a>
       </article>

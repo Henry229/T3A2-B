@@ -21,7 +21,6 @@ const SearchMobile = () => {
   let searchedClients = [];
   let searched = [];
   let jwtValue = jwt;
-  console.log('===<<<', jwt, '/', jwtValue);
 
   const [mobileClients, setMobileClients] = useState(searchedClients);
 
@@ -38,7 +37,6 @@ const SearchMobile = () => {
           __v: 0,
         });
       });
-      console.log('===<<< array in effect ', searchedClients);
       setMobileClients(searchedClients);
       setOkClient(() => getConformedClients(mobileClients));
       setNotOkClient(() => getConformingClients(mobileClients));
@@ -47,17 +45,13 @@ const SearchMobile = () => {
   }, []);
 
   useEffect(() => {
-    console.log('>>>in effect', mobileClients);
     setOkClient(() => getConformedClients(mobileClients));
-    console.log('### OKClient in effect', okClient);
     setNotOkClient(() => getConformingClients(mobileClients));
     // localNotOkClient = getConformingClients(mobileClients);
-    console.log('### Not OKClient in effect', notOkClient);
     //   notOkClient.map((client) => console.log(client, '/', !!notOkClient));
   }, [mobileClients]);
 
   const handleUpdate = async (updated) => {
-    console.log('***yogida10: ', updated);
     setMobileClients(
       mobileClients.map((c) => (c._id === updated._id ? updated : c))
     );
@@ -73,7 +67,6 @@ const SearchMobile = () => {
     jwtValue = jwt;
     const result = await updateClient(jwtValue, body, sendId);
     if (result.isError) {
-      console.log(result.errorData.message);
       setErrMsg('fail to update mobile client info!!');
     } else if (result.jwt) {
       setJwt(result.jwt);
@@ -93,7 +86,6 @@ const SearchMobile = () => {
     // call deleteClient for fetch delete
     const result = await deleteClient(jwtValue, deleteId);
     if (result.isError) {
-      console.log(result.errorData.message);
       setErrMsg('fail to delete mobile client!!');
     } else if (result.jwt) {
       setJwt(result.jwt);
@@ -112,13 +104,10 @@ const SearchMobile = () => {
         <p ref={errRef} aria-live='assertive'>
           {errMsg}
         </p>
-        <h3>Need to confirm</h3>
+        <h3>Unconfirmed bookings</h3>
         <ul className='list-none p-0'>
-          {console.log('<<<<localNotOkClient in UL', localNotOkClient)}
           {notOkClient &&
             notOkClient.map((client) => (
-              // <p key={client._id}>{client.guest.firstName}</p>
-
               <MobileSearchConfirm
                 key={client._id}
                 client={client}
@@ -131,9 +120,8 @@ const SearchMobile = () => {
         </ul>
       </section>
       <section>
-        <h3>Completed Booking</h3>
+        <h3>Confirmed Bookings</h3>
         <ul className='list-none p-0'>
-          {console.log('<<<<localOkClient in UL', localOkClient)}
           {okClient &&
             okClient.map((client) => (
               <MobileSearchConfirm

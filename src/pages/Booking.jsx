@@ -1,49 +1,63 @@
 import React, { useRef } from 'react';
 import { useState } from 'react';
 import { bookingClient } from '../api/fetch_res';
+import Calendar from '../components/calendar/Calendar';
+import validateInputs from '../util/validations.js';
 
 const Booking = () => {
   const formRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const mobileRef = useRef();
-  const dateRef = useRef();
-  const timeRef = useRef();
   const guestNumberRef = useRef();
+  const [date, setDate] = useState(null);
 
-  const [data, setData] = useState([]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      firstNameRef.current.value === '' ||
-      lastNameRef.current.value === '' ||
-      mobileRef.current.value === '' ||
-      dateRef.current.value === '' ||
-      guestNumberRef.current.value === ''
-    )
-      return;
+    try {
+      validateInputs(
+        date,
+        firstNameRef.current.value,
+        lastNameRef.current.value,
+        mobileRef.current.value
+      );
+    } catch (e) {
+      return alert(e.message);
+    }
+
+    const capitalizeString = (str) => {
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
 
     const body = JSON.stringify({
-      firstName: firstNameRef.current.value,
-      lastName: lastNameRef.current.value,
+      firstName: capitalizeString(firstNameRef.current.value),
+      lastName: capitalizeString(lastNameRef.current.value),
       mobile: mobileRef.current.value,
-      date: `${dateRef.current.value}T${timeRef.current.value}Z`.toLocaleString(),
-      // time: timeRef.current.value || '',
+      date: date,
       guestNumber: guestNumberRef.current.value,
     });
-    // const convertDay = `${bookingPerson.date}T${bookingPerson.time}Z`;
-    // bookingPerson.date = convertDay.toLocaleString();
-    // console.log('####', bookingPerson.date, '/', convertDay);
-    // delete bookingPerson.time;
-    console.log('=== yogida1:', body);
-    bookingClient(body);
+    const res = await bookingClient(body);
+    if (res.table) {
+      alert(
+        `Your reservation has been made on\n${new Date(
+          res.guest.date
+        ).toLocaleString()} for ${res.guest.guestNumber} people`
+      );
+      formRef.current.reset();
+    } else {
+      if (res.error == 'Same guest found!') {
+        return alert('Your booking already has been made.');
+      }
+      if (res.error == 'No available table found') {
+        return alert('Sorry, we all booked out on the selected time.');
+      }
+    }
     formRef.current.reset();
   };
 
   return (
-    <section className='w-full flex flex-col px-4 mt-4'>
+    <section className='w-full flex flex-col px-8 mt-4'>
       <h1 className='font-bold text-xl text-grey-50 mb-2'>
         Booking for Customer
       </h1>
@@ -58,7 +72,7 @@ const Booking = () => {
             First Name
           </label>
           <input
-            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-md border-0 outline-0'
+            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-blue-100 rounded-md border-0 outline-0'
             ref={firstNameRef}
             type='text'
             name='firstName'
@@ -71,7 +85,7 @@ const Booking = () => {
             Last Name
           </label>
           <input
-            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-md border-0 outline-0'
+            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-blue-100 rounded-md border-0 outline-0'
             ref={lastNameRef}
             type='text'
             name='lastName'
@@ -84,7 +98,7 @@ const Booking = () => {
             Mobile No.
           </label>
           <input
-            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-md border-0 outline-0'
+            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-blue-100 rounded-md border-0 outline-0'
             ref={mobileRef}
             type='text'
             name='mobile'
@@ -92,38 +106,14 @@ const Booking = () => {
             placeholder='Mobile 0401333777'
           />
         </article>
-        <article className='flex flex-col'>
-          <label htmlFor='date' className='mr-4'>
-            Booking Date
-          </label>
-          <input
-            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-md border-0 outline-0'
-            ref={dateRef}
-            type='date'
-            name='date'
-            id='date'
-            placeholder=''
-          />
-        </article>
-        <article className='flex flex-col'>
-          <label htmlFor='time' className='mr-4'>
-            Booking Time
-          </label>
-          <input
-            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-md border-0 outline-0'
-            ref={timeRef}
-            type='time'
-            name='time'
-            id='time'
-            placeholder=''
-          />
-        </article>
+        {/* <label htmlFor='date'>Booking Date</label> */}
+        <Calendar date={date} setDate={setDate} />
         <article className='flex flex-col'>
           <label htmlFor='number' className='mr-4'>
             Number of People
           </label>
           <select
-            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-md border-0 outline-0'
+            className='my-2 py-1 pl-3 text-gray-800 text-lg bg-blue-100 rounded-md border-0 outline-0'
             ref={guestNumberRef}
             name='guestNumber'
             id='number'

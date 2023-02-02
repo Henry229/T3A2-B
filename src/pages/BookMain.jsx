@@ -1,19 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
-import {
-  getAllClient,
-  updateClient,
-  deleteClient,
-  searchMobile,
-} from '../api/fetch_res';
+import { getAllClient, updateClient, deleteClient } from '../api/fetch_res';
 import DoConfirm from '../components/DoConfirm/DoConfirm';
 import { getConformedClients, getConformingClients } from '../util/getClients';
-import SearchMobile from './SearchMobile';
 import { useJwt } from '../context/jwtContext';
 
 const BookMain = () => {
   const [clients, setClients] = useState([]);
+  const [clientsByDate, setClientsByDate] = useState([]);
   const { jwt, setJwt } = useJwt();
   const [mobile, setMobile] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -21,17 +16,19 @@ const BookMain = () => {
   const navigate = useNavigate();
   let okClient = [];
   let notOkClient = [];
-  // let searchedClients = [];
-  // let searched = [];
 
   const {
     state: { result },
   } = useLocation();
   let jwtValue = result.jwt;
 
-  const handleUpdate = async (updated) => {
-    // console.log('***yogida10: ', updated);
-    setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+  const handleUpdate = async (updated, checkBox = false) => {
+    clientsByDate.length
+      ? setClientsByDate(
+          clientsByDate.map((c) => (c._id === updated._id ? updated : c))
+        )
+      : setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
       lastName: updated.guest.lastName,
@@ -44,20 +41,29 @@ const BookMain = () => {
     jwtValue = jwt;
     //call updateClient for fetch put
     const result = await updateClient(jwtValue, body, sendId);
-    if (result.isError) {
-      console.log(result.errorData.message);
-      setErrMsg('fail to update client info!!');
-    } else if (result.jwt) {
+    if (result?.error == 'No available table found') {
+      alert('No available table found on the selected time');
+    } else if (result?.jwt) {
       setJwt(result.jwt);
-    } else setErrMsg('failed updateClient()');
+      !checkBox && alert('Update successful');
+    } else {
+      alert('Network error\nPlease try again later');
+    }
   };
 
   const handleState = (updated) => {
+    clientsByDate.length &&
+      setClientsByDate(
+        clientsByDate.map((c) => (c._id === updated._id ? updated : c))
+      );
     setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
   };
 
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
+    clientsByDate.length &&
+      setClientsByDate(clientsByDate.filter((d) => d._id !== deleted._id));
+
     const deleteId = deleted._id;
     jwtValue = jwt;
     // call deleteClient for fetch delete
@@ -84,17 +90,47 @@ const BookMain = () => {
   useEffect(() => {
     async function effect() {
       const results = await getAllClient(jwtValue);
-      const clients = results.reservations;
-      setJwt(results.jwt);
-      setClients(clients);
+      if (!results?.isError) {
+        const clients = results.reservations;
+        setJwt(results.jwt);
+        setClients(clients);
+      }
     }
     effect();
   }, []);
 
   useEffect(() => {
-    okClient = getConformedClients(clients);
-    notOkClient = getConformingClients(clients);
+    if (clients.length) {
+      okClient = getConformedClients(clients);
+      notOkClient = getConformingClients(clients);
+    }
   }, [clients]);
+
+  const getClientsBydate = (e) => {
+    e.preventDefault();
+    e.target.value === 'All Reservations'
+      ? setClientsByDate([])
+      : setClientsByDate(
+          clients.filter(
+            (client) =>
+              new Date(client.guest.date).getDate() ===
+              new Date(e.target.value).getDate()
+          )
+        );
+  };
+
+  const dropDown = () => {
+    const allDates = [];
+    clients.forEach((client) =>
+      allDates.push(new Date(client.guest.date).toDateString())
+    );
+    const uniqueDates = allDates.filter(
+      (date, i) => allDates.indexOf(date) === i
+    );
+    return uniqueDates.map((date, i) => (
+      <option key={i}>{new Date(date).toDateString()}</option>
+    ));
+  };
 
   return (
     <>
@@ -125,56 +161,61 @@ const BookMain = () => {
           </form>
         </article>
       </section>
-      {/* <div>{searched ? <SearchMobile className='w-full' /> : null}</div> */}
-      <section className='w-full px-4 mt-4'>
-        <h2 className='basis-5/6 font-bold text-xl text-grey-50 mb-2'>
-          Booking List
-        </h2>
-        <p ref={errRef} aria-live='assertive'>
-          {errMsg}
-        </p>
-        <h3>Need to confirm</h3>
-        <ul className='list-none p-0'>
-          {/* <table className='table-auto text-left'>
-            <thead>
-              <tr className='bg-gray-800 text-white'>
-                <th className='w-6 px-1'>Check</th>
-                <th className='w-20 px-4'>Date</th>
-                <th className='w-10 px-4'>Time</th>
-                <th className='w-10 px-20'>Name</th>
-                <th className='w-10 px-7'>Mobile</th>
-                <th className='px-4 py-2'>Delete</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table> */}
-          {notOkClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={client}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
-        </ul>
-      </section>
-      <section className='w-full px-4 mt-4'>
-        <h3>Completed Booking</h3>
-        <ul className='list-none p-0'>
-          {okClient.map((client) => (
-            <DoConfirm
-              key={client._id}
-              client={client}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              updateUsingState={handleState}
-              updateInform={handleUpdate}
-            />
-          ))}
-        </ul>
-      </section>
+      {!clients.length ? (
+        <h2>No Reservation Found</h2>
+      ) : (
+        <section>
+          <section className='w-full px-4 mt-4'>
+            <h2 className='basis-5/6 font-bold text-xl text-grey-50 mb-2'>
+              Booking List
+            </h2>
+            <select
+              className='w-5/12 p-2 outline-none py-1 pl-3 text-gray-800 text-lg bg-amber-100 rounded-lg'
+              onChange={(e) => getClientsBydate(e)}
+            >
+              <option>All Reservations</option>
+              {clients && dropDown()}
+            </select>
+            <p ref={errRef} aria-live='assertive'>
+              {errMsg}
+            </p>
+            <h3>Unconfirmed bookings</h3>
+            <ul className='list-none p-0 overflow-y-auto'>
+              {(clientsByDate.length
+                ? clientsByDate.filter((client) => !client.isConfirmed)
+                : notOkClient
+              ).map((client) => (
+                <DoConfirm
+                  key={client._id}
+                  client={client}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  updateUsingState={handleState}
+                  updateInform={handleUpdate}
+                />
+              ))}
+            </ul>
+          </section>
+          <section className='w-full px-4 mt-4'>
+            <h3>Confirmed Bookings</h3>
+            <ul className='list-none p-0 overflow-y-auto'>
+              {(clientsByDate.length
+                ? clientsByDate.filter((client) => client.isConfirmed)
+                : okClient
+              ).map((client) => (
+                <DoConfirm
+                  key={client._id}
+                  client={client}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  updateUsingState={handleState}
+                  updateInform={handleUpdate}
+                />
+              ))}
+            </ul>
+          </section>
+        </section>
+      )}
     </>
   );
 };

@@ -12,32 +12,32 @@ const DoConfirm = ({
   const [click, setClick] = useState(false);
   const { _id, isConfirmed } = client;
   const { tableNumber } = client.table;
-  const { date, lastName, firstName, mobile } = client.guest;
+  const { date, lastName, firstName, mobile, guestNumber } = client.guest;
+
   const handleChange = (e) => {
     const isConfirmed = e.target.checked ? true : false;
-    onUpdate({ ...client, isConfirmed });
+    onUpdate({ ...client, isConfirmed }, true);
   };
 
   const handleDelete = () => {
-    onDelete(client);
+    const areYouSure = confirm(
+      `Cancel reservation made by\n${firstName} ${lastName}\nat ${new Date(
+        date
+      ).toLocaleString()}`
+    );
+    areYouSure && onDelete(client);
   };
 
   const handleCancel = () => {
     setClick(false);
-    console.log('>>>>>====', click);
   };
 
-  const stringDate = date.slice(0, 10);
-  const stringTime = date.slice(11, 16);
+  const stringDate = new Date(date).toLocaleString();
   const combineName = `${firstName} ${lastName}`;
 
   return (
     <>
-      {/* <table className='table-fixed'> */}
-      {/* <li onClick={() => setClick(true)}> */}
-      {/* <section> */}
-      {/* <tbody> */}
-      <table className='table-auto sm:table-'>
+      <table className='table-auto sm:table-fixed'>
         <thead>
           <tr></tr>
         </thead>
@@ -49,13 +49,13 @@ const DoConfirm = ({
             <td className='px-4 py-2'>
               <input
                 type='checkbox'
-                checked={isConfirmed}
+                checked={isConfirmed === true}
                 onChange={handleChange}
               />
             </td>
-            <td className='px-4 py-2'>Table# {tableNumber}</td>
             <td className='px-4 py-2'>{stringDate}</td>
-            <td className='px-4 py-2'>{stringTime}</td>
+            <td className='px-4 py-2'>Table# {tableNumber}</td>
+            <td className='px-4 py-2'>{guestNumber}</td>
             <td className='px-4 py-2'>{combineName}</td>
             <td className='px-4 py-2'>{mobile}</td>
             <td className='px-4 py-2'>
@@ -66,8 +66,6 @@ const DoConfirm = ({
           </tr>
         </tbody>
       </table>
-      {/* </tbody> */}
-      {/* <div onClick={() => setClick(false)}> */}
       <div>
         {click && (
           <UpdateModal
@@ -78,7 +76,6 @@ const DoConfirm = ({
           />
         )}
       </div>
-      {/* </section> */}
     </>
   );
 };

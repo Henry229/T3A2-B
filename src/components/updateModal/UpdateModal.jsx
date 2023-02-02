@@ -1,40 +1,56 @@
 import React, { useState } from 'react';
-import { FaRegWindowClose } from 'react-icons/fa';
+import Calendar from '../calendar/Calendar';
+import validateInputs from '../../util/validations.js';
 
 const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
   const [updateDB, setUpdateDB] = useState('');
   const { firstName, lastName, mobile, date, guestNumber } = client.guest;
+  const [getDate, setDate] = useState(new Date(date));
   const guest = client.guest;
   let updated = '';
 
-  const stringDate = date.slice(0, 10);
-  const stringTime = date.slice(11, 16);
-  // date: stringDate.toLocaleString();
-
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     if (e.currentTarget == null) {
       return;
     }
     e.preventDefault();
-    if (e.currentTarget.name === 'date') {
-      const time = `${stringTime}:00.000`;
-      const day = `${e.currentTarget.value}T${time}Z`;
-      updated = { ...client, guest: { ...guest, date: day } };
-    } else if (e.currentTarget.name === 'time') {
-      const day = `${stringDate}T${e.currentTarget.value}:00.000Z`;
-      updated = { ...client, guest: { ...guest, date: day } };
-    } else {
-      updated = {
-        ...client,
-        guest: { ...guest, [e.currentTarget.name]: e.currentTarget.value },
-      };
-    }
+
+    updated = {
+      ...client,
+      guest: { ...guest, [e.currentTarget.name]: e.currentTarget.value },
+    };
+    setUpdateDB(() => updated);
+    updateUsingState(updated);
+  };
+
+  const updateDate = (dt) => {
+    updated = { ...client, guest: { ...guest, date: dt } };
     setUpdateDB(() => updated);
     updateUsingState(updated);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!updateDB) {
+      return alert('Please type at least one field to update');
+    }
+    const fields = updateDB.guest;
+    try {
+      validateInputs(
+        fields.date,
+        fields.firstName,
+        fields.lastName,
+        fields.mobile
+      );
+    } catch (e) {
+      return alert(e.message);
+    }
+    const capitalizeString = (str) => {
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    };
+    updateDB.guest.firstName = capitalizeString(fields.firstName);
+    updateDB.guest.lastName = capitalizeString(fields.lastName);
+
     updateInform(updateDB);
   };
 
@@ -99,6 +115,12 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
                     onChange={handleChange}
                   />
                   <label htmlFor='date'>Booking Date</label>
+                  <Calendar
+                    date={getDate}
+                    setDate={setDate}
+                    updateDate={updateDate}
+                  />
+                  {/* <label htmlFor='date'>Booking Date</label>
                   <input
                     type='date'
                     name='date'
@@ -115,7 +137,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
                     className='py-1 pl-3 text-gray-800 bg-blue-100 text-sm rounded-md border-0 outline-0'
                     value={stringTime}
                     onChange={handleChange}
-                  />
+                  /> */}
                   <label htmlFor='number'>Number of People</label>
                   <select
                     name='guestNumber'

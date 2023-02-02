@@ -20,12 +20,11 @@ const AdminLogin = () => {
     if (id === '' || password === '') return;
 
     const result = await adminLogin(loginInfo);
-    if (result.isError) {
-      console.log(result.errorData.message);
+    if (result.errorData?.message == 'Response : Unauthorized') {
       setErrMsg('Wrong ID or Password!');
     } else if (result.jwt) {
       navigate('/admin/bookmain', { state: { result } });
-    } else setErrMsg('failed login');
+    } else setErrMsg('Server error failed login\nPlease try again');
 
     // .then((jwt) => {
     //   navigate(`/admin/bookmain`, { state: { jwt } });
