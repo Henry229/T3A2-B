@@ -84,6 +84,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
                     date={getDate}
                     setDate={setDate}
                     updateDate={updateDate}
+                    autocomplete='off'
                   />
                   <label htmlFor='firstName'>First Name</label>
                   <input

@@ -107,7 +107,7 @@ const Booking = () => {
           />
         </article>
         {/* <label htmlFor='date'>Booking Date</label> */}
-        <Calendar date={date} setDate={setDate} />
+        <Calendar date={date} setDate={setDate} autocomplete='off' />
         <article className='flex flex-col'>
           <label htmlFor='number' className='mr-4'>
             Number of People

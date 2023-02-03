@@ -41,10 +41,10 @@ const DoConfirm = ({
         <thead>
           <tr></tr>
         </thead>
-        <tbody>
+        <tbody className='relative'>
           <tr
             onClick={() => setClick(true)}
-            className=' bg-zinc-800 text-gray-100'
+            className='absolute tex bg-zinc-800 text-gray-100 cursor-pointer hover:outline-none hover:ring hover:ring-sky-300'
           >
             <td className='px-4 py-2'>
               <input
@@ -59,7 +59,10 @@ const DoConfirm = ({
             <td className='px-4 py-2'>{combineName}</td>
             <td className='px-4 py-2'>{mobile}</td>
             <td className='px-4 py-2'>
-              <button onClick={handleDelete}>
+              <button
+                onClick={handleDelete}
+                className='hover:scale-125 rotate-1'
+              >
                 <FaTrashAlt />
               </button>
             </td>

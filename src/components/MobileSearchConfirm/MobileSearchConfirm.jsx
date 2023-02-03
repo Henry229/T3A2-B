@@ -44,7 +44,7 @@ const MobileSearchConfirm = ({
         <tbody>
           <tr
             onClick={() => setMobileClick(true)}
-            className=' bg-zinc-800 text-gray-100'
+            className=' bg-zinc-800 text-gray-100 cursor-pointer'
           >
             <td className='px-4 py-2'>
               <input
