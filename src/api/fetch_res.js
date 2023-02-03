@@ -4,15 +4,13 @@ export async function bookingClient(body) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   console.log(body);
-  const response = await fetch(
-    'https://mern-restaurant-api-production.up.railway.app/reservation',
-    {
-      method: 'POST',
-      headers: headers,
-      body: body,
-      redirect: 'follow',
-    }
-  );
+
+  const response = await fetch('https://mern-restaurant-api-production.up.railway.app/reservation', {
+    method: 'POST',
+    headers: headers,
+    body: body,
+    redirect: 'follow',
+  });
   const data = await response.json();
   return data;
   //Make useClient state global here
@@ -24,18 +22,16 @@ export async function adminLogin(loginInfo) {
     const { id, password } = loginInfo;
     const headers = new Headers();
     headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
-    const response = await fetch(
-      'https://mern-restaurant-api-production.up.railway.app/admin/login',
-      {
-        method: 'POST',
-        headers: headers,
-      }
-    );
+
+    const response = await fetch('https://mern-restaurant-api-production.up.railway.app/admin/login', {
+      method: 'POST',
+      headers: headers,
+    });
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
       return data;
     } else {
-      throw new Error(`Response : ${response.statusText}`);
+      throw new Error(data.error);
     }
   } catch (error) {
     return {
@@ -52,19 +48,17 @@ export async function getAllClient(jwt) {
   try {
     const headers = new Headers();
     headers.set('jwt', jwt);
-    const response = await fetch(
-      'https://mern-restaurant-api-production.up.railway.app/reservation',
-      {
-        method: 'GET',
-        headers: headers,
-      }
-    );
+
+    const response = await fetch('https://mern-restaurant-api-production.up.railway.app/reservation', {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
       console.log(data);
       return data;
     } else {
-      throw new Error(`Response : ${response.statusText}`);
+      throw new Error(data.error);
     }
   } catch (error) {
     return {
@@ -147,15 +141,12 @@ export async function searchMobile(jwt, mobile) {
   const headers = new Headers();
   headers.set('jwt', jwt);
   headers.append('Content-Type', 'application/json');
-  const response = await fetch(
-    `https://mern-restaurant-api-production.up.railway.app/reservation/${mobile}`,
-    {
-      method: 'GET',
-      headers: headers,
-      // body: body,
-      redirect: 'follow',
-    }
-  );
+  const response = await fetch(`https://mern-restaurant-api-production.up.railway.app/reservation/${mobile}`, {
+    method: 'GET',
+    headers: headers,
+    // body: body,
+    redirect: 'follow',
+  });
   const data = await response.json();
   return data;
 }

@@ -56,6 +56,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
 
   return (
     <>
+  
       <section className='fixed bottom-10 inset-x-0 px-4 pb-4 md:inset-0 md:flex md:items-center md:justify-center'>
         {/* <section className='fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center'> */}
         <section
@@ -77,6 +78,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
               <div className='text-sm leading-5 text-gray-800 font-bold'>
                 <form
                   className='grid gird-cols-1 sm:grid-cols-2 gap-2'
+                  autocomplete="off"
                   onSubmit={handleSubmit}
                 >
                   <label htmlFor='date'>Booking Date</label>
