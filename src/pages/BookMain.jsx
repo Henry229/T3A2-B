@@ -69,6 +69,7 @@ const BookMain = () => {
 
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
+    clientsByDate.length && setClientsByDate(clientsByDate.filter((client) => client._id !== deleted._id));
 
     const deleteId = deleted._id;
     jwtValue = jwt;
