@@ -51,8 +51,6 @@ const SearchMobile = () => {
   useEffect(() => {
     setOkClient(() => getConformedClients(mobileClients));
     setNotOkClient(() => getConformingClients(mobileClients));
-    // localNotOkClient = getConformingClients(mobileClients);
-    //   notOkClient.map((client) => console.log(client, '/', !!notOkClient));
   }, [mobileClients]);
 
   const handleUpdate = async (updated) => {

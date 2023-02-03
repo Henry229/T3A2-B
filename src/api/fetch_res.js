@@ -4,6 +4,7 @@ export async function bookingClient(body) {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   console.log(body);
+
   const response = await fetch('https://mern-restaurant-api-production.up.railway.app/reservation', {
     method: 'POST',
     headers: headers,
@@ -21,6 +22,7 @@ export async function adminLogin(loginInfo) {
     const { id, password } = loginInfo;
     const headers = new Headers();
     headers.set('Authorization', 'Basic ' + base64.encode(id + ':' + password));
+
     const response = await fetch('https://mern-restaurant-api-production.up.railway.app/admin/login', {
       method: 'POST',
       headers: headers,
@@ -46,6 +48,7 @@ export async function getAllClient(jwt) {
   try {
     const headers = new Headers();
     headers.set('jwt', jwt);
+
     const response = await fetch('https://mern-restaurant-api-production.up.railway.app/reservation', {
       method: 'GET',
       headers: headers,

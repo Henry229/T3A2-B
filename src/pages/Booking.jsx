@@ -61,7 +61,7 @@ const Booking = () => {
   };
 
   return (
-    <section className='w-full flex flex-col px-8 mt-4'>
+    <section className='flex flex-col px-8 mt-4'>
       {isLoading && <Loader />}
       <h1 className='font-bold text-xl text-grey-50 mb-2'>
         Booking for Customer
