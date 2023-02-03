@@ -85,7 +85,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
               <div className='text-sm leading-5 text-gray-800 font-bold'>
                 <form
                   className='grid gird-cols-1 sm:grid-cols-2 gap-2'
-                  autocomplete="off"
+                  autoComplete="off"
                   onSubmit={handleSubmit}
                 >
                   <label htmlFor='date'>Booking Date</label>

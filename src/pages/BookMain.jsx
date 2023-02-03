@@ -26,8 +26,10 @@ const BookMain = () => {
   let jwtValue = result.jwt;
 
   const handleUpdate = async (updated, checkBox = false) => {
+    if (checkBox) {
       clientsByDate.length && setClientsByDate(clientsByDate.map((c) => (c._id === updated._id ? updated : c)))
       setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
+    }
 
     const body = JSON.stringify({
       firstName: updated.guest.firstName,
@@ -45,17 +47,13 @@ const BookMain = () => {
     if (result?.error == 'No available table found') {
       alert('No available table found on the selected time');
     } else if (result?.jwt) {
-      if (
-        clientsByDate.length > 1 && 
-        clientsByDate.filter(client => new Date(client.guest.date).getDate() === new Date(updated.guest.date).getDate()).length === 1
-        ) {
-        setClientsByDate(clientsByDate.filter(client => client._id != updated._id))
-      }else if (clientsByDate.length === 1) {
-        setClientsByDate(clients.filter(client => new Date(client.guest.date).getDate() === new Date(updated.guest.date).getDate()))
-      }
-
       setJwt(result.jwt);
       !checkBox && alert('Update successful');
+      if (
+        clientsByDate.length &&
+        clientsByDate.filter(client => new Date(client.guest.date).getDate() === new Date(updated.guest.date).getDate()).length==1) {
+          location.reload()
+        }
     } else {
       alert('Network error\nPlease try again later');
     }

@@ -30,6 +30,7 @@ const DoConfirm = ({
 
   const handleCancel = () => {
     setClick(false);
+    location.reload();
   };
 
   const stringDate = new Date(date).toLocaleString();
