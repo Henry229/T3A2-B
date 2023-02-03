@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminLogin } from '../api/fetch_res';
+import Loader from '../components/loader/Loader';
 
 const AdminLogin = () => {
   const formRef = useRef();
@@ -9,6 +10,7 @@ const AdminLogin = () => {
   const errRef = useRef();
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,9 +21,11 @@ const AdminLogin = () => {
     const { id, password } = loginInfo;
     if (id === '' || password === '') return;
 
+    setLoading(true)
     const result = await adminLogin(loginInfo);
-    if (result.errorData?.message == 'Response : Unauthorized') {
-      setErrMsg('Wrong ID or Password!');
+    setLoading(false);  
+    if (result.errorData?.message) {
+      setErrMsg('Wrong admin ID or Password provided');
     } else if (result.jwt) {
       navigate('/admin/bookmain', { state: { result } });
     } else setErrMsg('Server error failed login\nPlease try again');
@@ -44,6 +48,7 @@ const AdminLogin = () => {
 
   return (
     <section className='w-full flex flex-col max-w-sm mx-auto mt-16 bg-gray-300 shadow-md rounded'>
+      {loading && <Loader />}
       <h2 className='flex justify-center my-4 font-bold text-2xl text-gray-800'>
         Login
       </h2>

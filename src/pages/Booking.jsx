@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { bookingClient } from '../api/fetch_res';
 import Calendar from '../components/calendar/Calendar';
 import validateInputs from '../util/validations.js';
+import Loader from '../components/loader/Loader';
 
 const Booking = () => {
   const formRef = useRef();
@@ -11,6 +12,7 @@ const Booking = () => {
   const mobileRef = useRef();
   const guestNumberRef = useRef();
   const [date, setDate] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +39,9 @@ const Booking = () => {
       date: date,
       guestNumber: guestNumberRef.current.value,
     });
+    setIsLoading(true);
     const res = await bookingClient(body);
+    setIsLoading(false);
     if (res.table) {
       alert(
         `Your reservation has been made on\n${new Date(
@@ -58,6 +62,7 @@ const Booking = () => {
 
   return (
     <section className='flex flex-col px-8 mt-4'>
+      {isLoading && <Loader />}
       <h1 className='font-bold text-xl text-grey-50 mb-2'>
         Booking for Customer
       </h1>
@@ -66,6 +71,7 @@ const Booking = () => {
         // className='w-full flex flex-col'
         ref={formRef}
         onSubmit={handleSubmit}
+        autocomplete="off"
       >
         <article className='flex flex-col'>
           <label htmlFor='firstName' className='mr-4'>

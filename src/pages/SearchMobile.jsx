@@ -4,6 +4,7 @@ import { getConformedClients, getConformingClients } from '../util/getClients';
 import { updateClient, deleteClient, searchMobile } from '../api/fetch_res';
 import MobileSearchConfirm from '../components/MobileSearchConfirm/MobileSearchConfirm';
 import { useJwt } from '../context/jwtContext';
+import Loader from '../components/loader/Loader';
 
 const SearchMobile = () => {
   const {
@@ -14,6 +15,7 @@ const SearchMobile = () => {
   const { jwt, setJwt } = useJwt();
   const [notOkClient, setNotOkClient] = useState([]);
   const [errMsg, setErrMsg] = useState('');
+  const [loading, setLoading] = useState(false)
   const errRef = useRef();
   let localOkClient = [];
   let localNotOkClient = [];
@@ -27,7 +29,9 @@ const SearchMobile = () => {
   useEffect(() => {
     async function effect() {
       jwtValue = jwt;
+      setLoading(true)
       searched = await searchMobile(jwtValue, mobile);
+      setLoading(false)
       searched.reservations.map((reserv) => {
         searchedClients.push({
           guest: reserv.guest,
@@ -63,7 +67,9 @@ const SearchMobile = () => {
     });
     const sendId = updated._id;
     jwtValue = jwt;
+    setLoading(true)
     const result = await updateClient(jwtValue, body, sendId);
+    setLoading(false)
     if (result.isError) {
       setErrMsg('fail to update mobile client info!!');
     } else if (result.jwt) {
@@ -82,7 +88,9 @@ const SearchMobile = () => {
     const deleteId = deleted._id;
     jwtValue = jwt;
     // call deleteClient for fetch delete
+    setLoading(true)
     const result = await deleteClient(jwtValue, deleteId);
+    setLoading(false)
     if (result.isError) {
       setErrMsg('fail to delete mobile client!!');
     } else if (result.jwt) {
@@ -92,9 +100,13 @@ const SearchMobile = () => {
 
   return (
     <section className='w-full flex flex-col px-4 mt-4'>
+      {loading && <Loader />}
       <h1 className='basis-5/6 font-bold text-3xl text-grey-50 mb-2'>
         Searched Mobile Info.
       </h1>
+      {!loading && !mobileClients.length
+      ? <h2>No Reservation Found</h2>
+      :
       <section>
         <h2 className='basis-5/6 font-bold text-2xl text-grey-50 mb-2'>
           Booking List
@@ -116,7 +128,10 @@ const SearchMobile = () => {
               />
             ))}
         </ul>
-      </section>
+      </section>}
+      {!loading && !mobileClients.length
+      ? null
+      :
       <section>
         <h3>Confirmed Bookings</h3>
         <ul className='list-none p-0'>
@@ -132,7 +147,7 @@ const SearchMobile = () => {
               />
             ))}
         </ul>
-      </section>
+      </section>}
     </section>
   );
 };
