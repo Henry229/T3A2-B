@@ -485,11 +485,138 @@ By following these steps, you can effectively manage your code using Git source 
 
 For more details, you can see the use of multiple feature branches and commits, merges, and pull requests between team members by looking at the `.gitignore` and `git log` of the source.
 
-## R4. Demonstrate your ability to work in a team
+# R4. Demonstrate your ability to work in a team
 
 ## Use a recognised project management methodology
 
-## Testing
+Trello for Restaurant booking application : https://trello.com/b/yeE67wpk/t3a2-a
+
+During the project period, our team implemented application functions while repeating implementation-testing according to the `Agile` methodology.
+Since the design phase was completed in the last T3A2-A, the steps from `implementation` to `completion` were performed.
+
+![Trello](resources/trello-main.png)
+
+### Development
+
+**Source Coding**
+Implement sources, RESTful API in each programs with ReactJs, Nodejs based on design.
+
+**What our team have done**
+
+1. Implement appropriate functionalities as planned
+   The following functions were implemented during the project period.
+   - Customer's reservation function
+   - Manager's ability to confirm customer reservations
+   - Search function by mobile and reservation date for the convenience of the manager
+   - When a customer requests to change the reservation date and time, the admin updates the reservation information
+   - When a customer requests cancellation of a reservation, the admin deletes the reservation information
+   - Deletion and confirmation function for user convenience
+   - Provides an intuitive screen that users can understand without a manual
+2. Use Restful API to query the database
+   - The back-end can expose a RESTful API to allow the front-end to interact with the back-end and retrieve or modify data stored in the database.
+     - Reservation information CRUD API for manager's reservation management
+     - API for admin login and JWT management
+   - The front-end can make HTTP requests to the back-end using libraries such as Fetch, and the back-end can respond with JSON data
+     - Request for customer reservation
+     - Reservation information CRUD request for manager's reservation management
+3. Catch errors and handle them for a good user experience
+   - During API communication, try and catch are used to distinguish between normal and error requests and responses, and appropriate error messages are provided.
+4. Return precise code and message for error
+5. Implement functions to validate data
+   - A function was added to validate the input information at the time of customer reservation. For example, mobile phone number confirmation,
+6. Make sure D.R.Y - DRY was followed to reuse and to prevent duplication of components and functions in the application.
+
+**Issues and Resolutions**
+
+1. AXIOS
+   - At first, our team tried to use axios for frontend and backend communication, but there was a problem of putting `JWT` in the axios header.
+   - <u>Resolution:</u> The problem persisted, so we switched to `Fetch`
+2. UsaState hook
+   - When using the useState hook, there were problems that they were not updated at the right time.
+   - - <u>Resolution:</u> Use of `useEffect` changes the value of `useState` when the value of a variable is changed
+
+**Lesson Learns**
+We learned that we need more study and practice on `axios` and `useState` to become a mature developer.
+
+![Trello](resources/trello-coding.png)
+
+### Test
+
+**User Test**
+Since the user is a virtual user, whenever we implemented a function to meet the requirements, we performed functional and UI tests in parallel. In addition, implementation and testing were repeated according to the agile methodology.
+
+**What our team have done**
+Our team did the test according to the testcase created in the design stage of the project.
+
+1. All components and functions work well according to the design
+   Using the console log and debugging function, it was tested whether it moved according to the program flow, and whether the desired values were included in each variable.
+2. Values and messages returned as you designed
+   A message is displayed so that users can check errors that occur during network communication, and when each transaction is completed without any error, we created alert indication that it has been completed. Of course, the user's confirmation was also required for deletion and update transactions.
+3. Each table working well according to CRUD design
+   In MongoDB atlas, we verified that the data had done proper action for CRUD, and we verified the accuracy of the data in the screen of all reservation list.
+4. Data validation is working well
+   In order to check the customer's input information in advance, a validation function was placed to check the phone number and name.
+
+![Trello Test](resources/trello-userTest.png)
+
+**Interface Test**
+Ensure RESTful API are working properly as you planed between frontend and backend. This helps to catch any issues that may arise from the interactions between the different parts of the application.
+
+**What our team have done**
+
+1. Each method in the API works well
+   - Our team tested and confirmed that the frontend http request and the backend api are request and response properly according to the methods of `get`, `post`, `put`, and `delete`.
+2. It shall operate normally from the front-end request to the back-end response.
+3. The error messages and status codes should work properly.
+   - We tested whether the error message is displayed properly according to the error status code.
+4. Does the created API work normally for all requests?
+   - According to each method, they were confirmed that CRUD of mongoDB works.
+5. Has the front-end verified the correct response from the API?
+   - In the case of an error, it was confirmed that the error was displayed as an alert or message. If the status code is normal, We checked if res.body was created properly.
+
+Therefore, in the interface test phase, the checkpoints we set in the project planning phase were completed.
+
+![Trello Test](resources/trello-interfaceTest.png)
+
+**Integration Test**
+Our team performed to verify that the different modules or components of the application work together as expected. For example, When a customer makes a reservation, requests are created from the input and passed to the backend, and after they are stored in the DB, it is tested to receive a response indicating that it has been completed.
+
+**What our team have done**
+
+1. Is the RESTful API implemented working properly?
+   - It was confirmed that the request was made properly through the API of each system and that the response was received correctly.
+2. Is the error message displayed properly?
+   - Check the message that can distinguish the error situation according to each error status code.
+3. Is the status code displayed according to the situation?
+   - We checked normal messages and error messages.
+
+![Trello Test](resources/trello-integrationTest.png)
+
+**Regression Test**
+
+Since the `regression test` frequently occurs in the project development and testing stages, it was not placed as a separate stage in the project testing stage. However, even if a new part is added for issue generation and resolution, the existing logic must be guaranteed as it is, so it was done frequently.
+
+### Deployment
+
+Once all development and testing have been completed, all source code will be deployed for users. After both systems were deployed, we tested to make sure they work just as we did like the integration tests.
+
+**What our team have done**
+
+1. Does the frotend work properly after deployment?
+2. Does the backend work properly after deployment?
+3. Does the application work as implemented?
+
+After changing to the production address created after deployment, it was confirmed that both the frontend and backend functions normally.
+
+![Trello deployment](resources/trello-deploy.png)
+
+All project phases were completed without any delay. Our team always reviewed the scope of change in the schedule when issues occurred, and the project was completed without any major issues or risks.
+
+![Trello deployment](resources/trello-termi.png)
+
+---
+
+# R8. Testing
 
 ### Development Testing
 
@@ -607,15 +734,14 @@ Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/mai
 | Deployed successfully                                               | P    |
 | All routers responses accordingly based on the test done from the f | P    |
 
-=======
-| CheckList | Pass |
+| CheckList                                      | Pass |
 | ---------------------------------------------- | ---- |
-| Admin pages are protected | P |
-| All url works as expected | P |
-| No unexpected error found | P |
-| All pages communicate with API without problem | P |
-| Load pages in reasonable time | P |
-| Accessible from other devices | P |
+| Admin pages are protected                      | P    |
+| All url works as expected                      | P    |
+| No unexpected error found                      | P    |
+| All pages communicate with API without problem | P    |
+| Load pages in reasonable time                  | P    |
+| Accessible from other devices                  | P    |
 
 **-Header-**
 
@@ -703,3 +829,27 @@ Please check [src/test/](https://github.com/lmh4686/MERN-Restaurant-API/tree/mai
 | ------------------------------------------------------------------- | ---- |
 | Deployed successfully                                               | P    |
 | All routers responses accordingly based on the test done from the f | P    |
+
+# R10. A link (URL) to your deployed website
+
+### Front-end
+
+T3A2-B:Front-end: https://mern-restaurant-bookingapp.web.app/
+
+### Back-end
+
+T3A2-B:Back-end: https://mern-restaurant-api-production.up.railway.app/
+
+# R11. A link to your GitHub repository (repo)
+
+### Front-end
+
+T3A2-B:Front-end git address: https://github.com/Henry229/T3A2-B
+
+### Back-end
+
+T3A2-B:Back-end git address: https://github.com/lmh4686/MERN-Restaurant-API
+
+# R12. The contents of your README.md as submitted for Full Stack App - Part A
+
+# R13. A link and screenshots of your Trello board throughout the duration of the project.
