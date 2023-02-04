@@ -45,7 +45,7 @@ const DoConfirm = ({
         <tbody>
           <tr
             onClick={() => setClick(true)}
-            className=' bg-zinc-800 text-gray-100'
+            className=' bg-zinc-800 text-gray-100 cursor-pointer hover:outline-none hover:ring hover:ring-violet-500'
           >
             <td className='px-4 py-2'>
               <input
@@ -60,7 +60,10 @@ const DoConfirm = ({
             <td className='px-4 py-2'>{combineName}</td>
             <td className='px-4 py-2'>{mobile}</td>
             <td className='px-4 py-2'>
-              <button onClick={handleDelete}>
+              <button
+                onClick={handleDelete}
+                className='hover:scale-125 hover:rotate-3 hover:easy-in-out hover:duration-300 hover:text-orange-500 '
+              >
                 <FaTrashAlt />
               </button>
             </td>
@@ -82,4 +85,3 @@ const DoConfirm = ({
 };
 
 export default DoConfirm;
-

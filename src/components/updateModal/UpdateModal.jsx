@@ -56,23 +56,14 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
 
   return (
     <>
-      {/* <button
-        className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded'
-        onClick={onCancel}
-      >
-        <FaRegWindowClose />
-      </button> */}
-      <section
-        className='fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center'
-        // onSubmit={handleSubmit}
-      >
+      <section className='fixed bottom-10 inset-x-0 px-4 pb-4 md:inset-0 md:flex md:items-center md:justify-center'>
         <section
           className='fixed inset-0 transition-opacity'
           onClick={onCancel}
         >
           <article className='absolute inset-0 bg-gray-500 opacity-75'></article>
         </section>
-        <div className='bg-lime-100 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full'>
+        <div className='bg-lime-100 rounded-lg overflow-hidden shadow-xl transform transition-all lg:max-w-lg lg:w-full'>
           <div className='px-4 py-5 sm:p-6'>
             <div className='sm:flex sm:items-start'>
               <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
@@ -85,7 +76,7 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
               <div className='text-sm leading-5 text-gray-800 font-bold'>
                 <form
                   className='grid gird-cols-1 sm:grid-cols-2 gap-2'
-                  autoComplete="off"
+                  autoComplete='off'
                   onSubmit={handleSubmit}
                 >
                   <label htmlFor='date'>Booking Date</label>
@@ -121,24 +112,6 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
                     value={mobile}
                     onChange={handleChange}
                   />
-                  {/* <label htmlFor='date'>Booking Date</label>
-                  <input
-                    type='date'
-                    name='date'
-                    id='date'
-                    className='py-1 pl-3 text-gray-800 bg-blue-100 text-sm rounded-md border-0 outline-0'
-                    value={stringDate}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor='time'>Booking Time</label>
-                  <input
-                    type='time'
-                    name='time'
-                    id='time'
-                    className='py-1 pl-3 text-gray-800 bg-blue-100 text-sm rounded-md border-0 outline-0'
-                    value={stringTime}
-                    onChange={handleChange}
-                  /> */}
                   <label htmlFor='number'>Number of People</label>
                   <select
                     name='guestNumber'
@@ -175,8 +148,6 @@ const UpdateModal = ({ client, updateUsingState, updateInform, onCancel }) => {
           </div>
         </div>
       </section>
-
-      {/* <button onClick={onCancel}> */}
     </>
   );
 };

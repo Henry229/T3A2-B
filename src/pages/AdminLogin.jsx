@@ -21,28 +21,14 @@ const AdminLogin = () => {
     const { id, password } = loginInfo;
     if (id === '' || password === '') return;
 
-    setLoading(true)
+    setLoading(true);
     const result = await adminLogin(loginInfo);
-    setLoading(false);  
+    setLoading(false);
     if (result.errorData?.message) {
       setErrMsg('Wrong admin ID or Password provided');
     } else if (result.jwt) {
       navigate('/admin/bookmain', { state: { result } });
     } else setErrMsg('Server error failed login\nPlease try again');
-
-    // .then((jwt) => {
-    //   navigate(`/admin/bookmain`, { state: { jwt } });
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    //   if (err.response.status === 401) {
-    //   } else if (err.response.status === 403) {
-    //     setErrMsg('Missing Auth');
-    //   } else {
-    //     setErrMsg('Login failed');
-    //   }
-    // });
-
     formRef.current.reset();
   };
 

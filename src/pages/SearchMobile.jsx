@@ -15,7 +15,7 @@ const SearchMobile = () => {
   const { jwt, setJwt } = useJwt();
   const [notOkClient, setNotOkClient] = useState([]);
   const [errMsg, setErrMsg] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const errRef = useRef();
   let localOkClient = [];
   let localNotOkClient = [];
@@ -29,9 +29,9 @@ const SearchMobile = () => {
   useEffect(() => {
     async function effect() {
       jwtValue = jwt;
-      setLoading(true)
+      setLoading(true);
       searched = await searchMobile(jwtValue, mobile);
-      setLoading(false)
+      setLoading(false);
       searched.reservations.map((reserv) => {
         searchedClients.push({
           guest: reserv.guest,
@@ -51,8 +51,6 @@ const SearchMobile = () => {
   useEffect(() => {
     setOkClient(() => getConformedClients(mobileClients));
     setNotOkClient(() => getConformingClients(mobileClients));
-    // localNotOkClient = getConformingClients(mobileClients);
-    //   notOkClient.map((client) => console.log(client, '/', !!notOkClient));
   }, [mobileClients]);
 
   const handleUpdate = async (updated) => {
@@ -69,9 +67,9 @@ const SearchMobile = () => {
     });
     const sendId = updated._id;
     jwtValue = jwt;
-    setLoading(true)
+    setLoading(true);
     const result = await updateClient(jwtValue, body, sendId);
-    setLoading(false)
+    setLoading(false);
     if (result.isError) {
       setErrMsg('fail to update mobile client info!!');
     } else if (result.jwt) {
@@ -90,9 +88,9 @@ const SearchMobile = () => {
     const deleteId = deleted._id;
     jwtValue = jwt;
     // call deleteClient for fetch delete
-    setLoading(true)
+    setLoading(true);
     const result = await deleteClient(jwtValue, deleteId);
-    setLoading(false)
+    setLoading(false);
     if (result.isError) {
       setErrMsg('fail to delete mobile client!!');
     } else if (result.jwt) {
@@ -106,50 +104,50 @@ const SearchMobile = () => {
       <h1 className='basis-5/6 font-bold text-3xl text-grey-50 mb-2'>
         Searched Mobile Info.
       </h1>
-      {!loading && !mobileClients.length
-      ? <h2>No Reservation Found</h2>
-      :
-      <section>
-        <h2 className='basis-5/6 font-bold text-2xl text-grey-50 mb-2'>
-          Booking List
-        </h2>
-        <p ref={errRef} aria-live='assertive'>
-          {errMsg}
-        </p>
-        <h3>Unconfirmed bookings</h3>
-        <ul className='list-none p-0'>
-          {notOkClient &&
-            notOkClient.map((client) => (
-              <MobileSearchConfirm
-                key={client._id}
-                client={client}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                updateUsingState={handleState}
-                updateInform={handleUpdate}
-              />
-            ))}
-        </ul>
-      </section>}
-      {!loading && !mobileClients.length
-      ? null
-      :
-      <section>
-        <h3>Confirmed Bookings</h3>
-        <ul className='list-none p-0'>
-          {okClient &&
-            okClient.map((client) => (
-              <MobileSearchConfirm
-                key={client._id}
-                client={client}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                updateUsingState={handleState}
-                updateInform={handleUpdate}
-              />
-            ))}
-        </ul>
-      </section>}
+      {!loading && !mobileClients.length ? (
+        <h2>No Reservation Found</h2>
+      ) : (
+        <section>
+          <h2 className='basis-5/6 font-bold text-2xl text-grey-50 mb-2'>
+            Booking List
+          </h2>
+          <p ref={errRef} aria-live='assertive'>
+            {errMsg}
+          </p>
+          <h3>Unconfirmed bookings</h3>
+          <ul className='list-none p-0'>
+            {notOkClient &&
+              notOkClient.map((client) => (
+                <MobileSearchConfirm
+                  key={client._id}
+                  client={client}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  updateUsingState={handleState}
+                  updateInform={handleUpdate}
+                />
+              ))}
+          </ul>
+        </section>
+      )}
+      {!loading && !mobileClients.length ? null : (
+        <section>
+          <h3>Confirmed Bookings</h3>
+          <ul className='list-none p-0'>
+            {okClient &&
+              okClient.map((client) => (
+                <MobileSearchConfirm
+                  key={client._id}
+                  client={client}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  updateUsingState={handleState}
+                  updateInform={handleUpdate}
+                />
+              ))}
+          </ul>
+        </section>
+      )}
     </section>
   );
 };

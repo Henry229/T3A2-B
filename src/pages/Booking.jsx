@@ -61,17 +61,16 @@ const Booking = () => {
   };
 
   return (
-    <section className='w-full flex flex-col px-8 mt-4'>
+    <section className='flex flex-col px-8 mt-4'>
       {isLoading && <Loader />}
       <h1 className='font-bold text-xl text-grey-50 mb-2'>
         Booking for Customer
       </h1>
       <form
         className='grid gird-cols-1 sm:grid-cols-2 gap-4'
-        // className='w-full flex flex-col'
         ref={formRef}
         onSubmit={handleSubmit}
-        autocomplete="off"
+        autoComplete='off'
       >
         <article className='flex flex-col'>
           <label htmlFor='firstName' className='mr-4'>
@@ -112,7 +111,6 @@ const Booking = () => {
             placeholder='Mobile 0401333777'
           />
         </article>
-        {/* <label htmlFor='date'>Booking Date</label> */}
         <Calendar date={date} setDate={setDate} />
         <article className='flex flex-col'>
           <label htmlFor='number' className='mr-4'>

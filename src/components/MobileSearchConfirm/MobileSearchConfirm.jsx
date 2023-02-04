@@ -44,7 +44,7 @@ const MobileSearchConfirm = ({
         <tbody>
           <tr
             onClick={() => setMobileClick(true)}
-            className=' bg-zinc-800 text-gray-100'
+            className=' bg-zinc-800 text-gray-100 cursor-pointer hover:outline-none hover:ring hover:ring-sky-500'
           >
             <td className='px-4 py-2'>
               <input
@@ -59,7 +59,10 @@ const MobileSearchConfirm = ({
             <td className='px-4 py-2'>{combineName}</td>
             <td className='px-4 py-2'>{mobile}</td>
             <td className='px-4 py-2'>
-              <button onClick={handleDelete}>
+              <button
+                onClick={handleDelete}
+                className='hover:scale-125 hover:rotate-3 hover:easy-in-out hover:duration-300 hover:text-orange-500 '
+              >
                 <FaTrashAlt />
               </button>
             </td>
@@ -76,35 +79,6 @@ const MobileSearchConfirm = ({
           />
         )}
       </div>
-      {/* <li
-        onClick={() => {
-          setMobileClick(true);
-          console.log('<<<<<<====', click);
-        }}
-      >
-        <input
-          type='checkbox'
-          checked={isConfirmed === true}
-          onChange={handleChange}
-        />
-        <span>{stringDate}</span>
-        <span>{stringTime}</span>
-        <span>{combineName}</span>
-        <span>{mobile}</span>
-        <button onClick={handleDelete}>
-          <FaTrashAlt />
-        </button>
-        <div>
-          {click && (
-            <UpdateModal
-              client={client}
-              updateUsingState={updateUsingState}
-              updateInform={updateInform}
-              onCancel={handleCancel}
-            />
-          )}
-        </div>
-      </li> */}
     </>
   );
 };

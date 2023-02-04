@@ -9,8 +9,6 @@
   font-weight: 400;
   background-color: #0d1321;
   color: white;
-  /* @apply flex flex-col items-center;
-  @apply bg-zinc-900 text-gray-50; */
 }
 
 a {
