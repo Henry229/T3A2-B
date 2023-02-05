@@ -496,7 +496,7 @@ Trello for Restaurant booking application : https://trello.com/b/yeE67wpk/t3a2-a
 During the project period, our team implemented application functions while repeating implementation-testing according to the `Agile` methodology.
 Since the design phase was completed in the last T3A2-A, the steps from `implementation` to `completion` were performed.
 
-![Trello](resources/trello-main.png)
+![Trello](https://user-images.githubusercontent.com/91045214/216808262-2c552bff-0e34-4cbd-a3c7-499a273a94df.png)
 
 ### Development
 
@@ -540,7 +540,7 @@ Implement sources, RESTful API in each programs with ReactJs, Nodejs based on de
 **Lesson Learns**
 We learned that we need more study and practice on `axios` and `useState` to become a mature developer.
 
-![Trello](resources/trello-coding.png)
+![Trello](https://user-images.githubusercontent.com/91045214/216808320-3e5d571e-20a1-4c9a-8fad-150bac932c3f.png)
 
 ### Test
 
@@ -559,7 +559,8 @@ Our team did the test according to the testcase created in the design stage of t
 4. Data validation is working well
    In order to check the customer's input information in advance, a validation function was placed to check the phone number and name.
 
-![Trello Test](resources/trello-userTest.png)
+![trello-userTest](https://user-images.githubusercontent.com/91045214/216808366-1e8cb86c-da23-4648-bc59-6dab34cd5581.png)
+
 
 **Interface Test**
 Ensure RESTful API are working properly as you planed between frontend and backend. This helps to catch any issues that may arise from the interactions between the different parts of the application.
@@ -578,7 +579,7 @@ Ensure RESTful API are working properly as you planed between frontend and backe
 
 Therefore, in the interface test phase, the checkpoints we set in the project planning phase were completed.
 
-![Trello Test](resources/trello-interfaceTest.png)
+![trello-interfaceTest](https://user-images.githubusercontent.com/91045214/216808395-afd7c770-b61a-4e7e-8436-3917c768def8.png)
 
 **Integration Test**
 Our team performed to verify that the different modules or components of the application work together as expected. For example, When a customer makes a reservation, requests are created from the input and passed to the backend, and after they are stored in the DB, it is tested to receive a response indicating that it has been completed.
@@ -592,7 +593,7 @@ Our team performed to verify that the different modules or components of the app
 3. Is the status code displayed according to the situation?
    - We checked normal messages and error messages.
 
-![Trello Test](resources/trello-integrationTest.png)
+![trello-integrationTest](https://user-images.githubusercontent.com/91045214/216808411-9c3344e9-6eb9-427e-9d2f-fdbcc0853f16.png)
 
 **Regression Test**
 
@@ -610,11 +611,11 @@ Once all development and testing have been completed, all source code will be de
 
 After changing to the production address created after deployment, it was confirmed that both the frontend and backend functions normally.
 
-![Trello deployment](resources/trello-deploy.png)
+![trello-deploy](https://user-images.githubusercontent.com/91045214/216808434-dfeb59ae-d217-41f9-8e78-61480fb3702d.png)
 
 All project phases were completed without any delay. Our team always reviewed the scope of change in the schedule when issues occurred, and the project was completed without any major issues or risks.
 
-![Trello deployment](resources/trello-termi.png)
+![trello-termi](https://user-images.githubusercontent.com/91045214/216808443-b5f0fe5c-fac2-4020-bdcc-129a5789b785.png)
 
 ## Use a recognised task delegation methodology
 
@@ -646,12 +647,12 @@ T3A2-B:Back-end: https://mern-restaurant-api-production.up.railway.app/
 
 The UI of our application is very intuitive. Even if there is no manual, if you have used a web application or mobile app that is currently used, you can use it without any problems.
 
-![wholeApplication](resources/wholescreenofApp.png)
-![wholeAppforUpdate](resources/wholeAppforUpdate.png)
+![resources/wholescreenofApp.png](https://user-images.githubusercontent.com/91045214/216808485-fceae20b-e9a1-4ddb-b995-b21b88fd8406.png)
+![resources/wholeAppforUpdate.png](https://user-images.githubusercontent.com/91045214/216808542-924c8aeb-fb6c-402d-91a9-6f1363d76964.png)
 
 Error handling is carried out in a user-friendly way so that users can check errors, and when changing or deleting booking information, user can always receive confirmation from our application, and the user can check the processing result.
 
-![wholeAppforAlert](resources/wholeAppforAlert.png)
+![wholeAppforAlert](https://user-images.githubusercontent.com/91045214/216808570-3d385c2e-aae8-46b2-af9a-0122064ec205.png)
 
 Also, as our application is a responsive designed, so our application works flawlessly on mobile or tablet.
 
