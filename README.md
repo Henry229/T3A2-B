@@ -501,6 +501,7 @@ Since the design phase was completed in the last T3A2-A, the steps from `impleme
 ### Development
 
 **Source Coding**
+
 Implement sources, RESTful API in each programs with ReactJs, Nodejs based on design.
 
 **What our team have done**
@@ -538,6 +539,7 @@ Implement sources, RESTful API in each programs with ReactJs, Nodejs based on de
    - - <u>Resolution:</u> Use of `useEffect` changes the value of `useState` when the value of a variable is changed
 
 **Lesson Learns**
+
 We learned that we need more study and practice on `axios` and `useState` to become a mature developer.
 
 ![Trello](https://user-images.githubusercontent.com/91045214/216808320-3e5d571e-20a1-4c9a-8fad-150bac932c3f.png)
@@ -545,9 +547,11 @@ We learned that we need more study and practice on `axios` and `useState` to bec
 ### Test
 
 **User Test**
+
 Since the user is a virtual user, whenever we implemented a function to meet the requirements, we performed functional and UI tests in parallel. In addition, implementation and testing were repeated according to the agile methodology.
 
 **What our team have done**
+
 Our team did the test according to the testcase created in the design stage of the project.
 
 1. All components and functions work well according to the design
@@ -563,6 +567,7 @@ Our team did the test according to the testcase created in the design stage of t
 
 
 **Interface Test**
+
 Ensure RESTful API are working properly as you planed between frontend and backend. This helps to catch any issues that may arise from the interactions between the different parts of the application.
 
 **What our team have done**
