@@ -483,7 +483,7 @@ Coding and testing were done while repeating the above cycle.
 
 By following these steps, you can effectively manage your code using Git source control methodology, which allows for collaboration, versioning, and backup of your code.
 
-![frontend in github](/resources/frontendUsingGithub.png)
+![frontend in github](https://user-images.githubusercontent.com/91045214/216804099-6be2ed36-df22-4b19-b0f4-81a4a1731320.png)
 
 For more details, you can see the use of multiple feature branches and commits, merges, and pull requests between team members by looking at the `.gitignore` and `git log` of the source.
 
