@@ -587,6 +587,7 @@ Therefore, in the interface test phase, the checkpoints we set in the project pl
 ![trello-interfaceTest](https://user-images.githubusercontent.com/91045214/216808395-afd7c770-b61a-4e7e-8436-3917c768def8.png)
 
 **Integration Test**
+
 Our team performed to verify that the different modules or components of the application work together as expected. For example, When a customer makes a reservation, requests are created from the input and passed to the backend, and after they are stored in the DB, it is tested to receive a response indicating that it has been completed.
 
 **What our team have done**
