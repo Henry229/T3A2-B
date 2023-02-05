@@ -27,7 +27,10 @@ const BookMain = () => {
 
   const handleUpdate = async (updated, checkBox = false) => {
     if (checkBox) {
-      clientsByDate.length && setClientsByDate(clientsByDate.map((c) => (c._id === updated._id ? updated : c)))
+      clientsByDate.length &&
+        setClientsByDate(
+          clientsByDate.map((c) => (c._id === updated._id ? updated : c))
+        );
       setClients(clients.map((c) => (c._id === updated._id ? updated : c)));
     }
 
@@ -41,9 +44,9 @@ const BookMain = () => {
     });
     const sendId = updated._id;
     jwtValue = jwt;
-    !checkBox && setLoading(true)
+    !checkBox && setLoading(true);
     const result = await updateClient(jwtValue, body, sendId);
-    !checkBox && setLoading(false)
+    !checkBox && setLoading(false);
     if (result?.error == 'No available table found') {
       alert('No available table found on the selected time');
     } else if (result?.jwt) {
@@ -51,9 +54,14 @@ const BookMain = () => {
       !checkBox && alert('Update successful');
       if (
         clientsByDate.length &&
-        clientsByDate.filter(client => new Date(client.guest.date).getDate() === new Date(updated.guest.date).getDate()).length==1) {
-          location.reload()
-        }
+        clientsByDate.filter(
+          (client) =>
+            new Date(client.guest.date).getDate() ===
+            new Date(updated.guest.date).getDate()
+        ).length == 1
+      ) {
+        location.reload();
+      }
     } else {
       alert('Network error\nPlease try again later');
     }
@@ -69,7 +77,10 @@ const BookMain = () => {
 
   const handleDelete = async (deleted) => {
     setClients(clients.filter((d) => d._id !== deleted._id));
-    clientsByDate.length && setClientsByDate(clientsByDate.filter((client) => client._id !== deleted._id));
+    clientsByDate.length &&
+      setClientsByDate(
+        clientsByDate.filter((client) => client._id !== deleted._id)
+      );
 
     const deleteId = deleted._id;
     jwtValue = jwt;
@@ -82,7 +93,7 @@ const BookMain = () => {
 
     if (clientsByDate.length) {
       setClientsByDate(clientsByDate.filter((d) => d._id !== deleted._id));
-      clientsByDate.length === 1 && location.reload()
+      clientsByDate.length === 1 && location.reload();
     }
   };
 
@@ -91,10 +102,10 @@ const BookMain = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
-    try{
-      validateInputs(null, null, null, mobile, true)
-    }catch (e) {
-      return alert(e.message)
+    try {
+      validateInputs(null, null, null, mobile, true);
+    } catch (e) {
+      return alert(e.message);
     }
     navigate(`/admin/search/${mobile}`, {
       state: { mobile },
@@ -105,13 +116,13 @@ const BookMain = () => {
     async function effect() {
       setLoading(true);
       const results = await getAllClient(jwtValue);
-      setLoading(false)
+      setLoading(false);
       if (!results?.isError) {
         const clients = results.reservations;
         setJwt(results.jwt);
         setClients(clients);
-      }else {
-        alert(result.errorData.message)
+      } else {
+        alert(result.errorData.message);
       }
     }
     effect();
@@ -138,7 +149,6 @@ const BookMain = () => {
   };
 
   const dropDown = () => {
-    console.log('deropdown')
     const allDates = [];
     clients.forEach((client) =>
       allDates.push(new Date(client.guest.date).toDateString())

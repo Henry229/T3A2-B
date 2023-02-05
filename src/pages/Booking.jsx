@@ -14,6 +14,7 @@ const Booking = () => {
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // handling submit when clicking button in form
   const handleSubmit = async (e) => {
     e.preventDefault();
 

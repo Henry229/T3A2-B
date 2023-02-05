@@ -29,7 +29,6 @@ const MobileSearchConfirm = ({
 
   const handleCancel = () => {
     setMobileClick(false);
-    console.log('>>>>>====', mobileClick);
   };
 
   const stringDate = new Date(date).toLocaleString();
