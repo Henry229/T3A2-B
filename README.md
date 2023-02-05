@@ -5,6 +5,8 @@
 [Frontend](https://github.com/Henry229/T3A2-B)  
 [Backend](https://github.com/lmh4686/MERN-Restaurant-API)
 
+[Presentation In Youtube](https://youtu.be/aMy8y5Wz6gU)
+
 # R1 At a minimum use the following technologies MongoDB, Express, React, and Node
 
 Our project is using MERN Stack that is stands for `MongoDB`, `Express`, `Reactjs`, and `Nodejs`. It is a popular web development stack used to build modern web applications. We use Reactjs for frontend development. Backend development is done by MongoDB, Express, and Nodejs.
@@ -614,7 +616,44 @@ All project phases were completed without any delay. Our team always reviewed th
 
 ![Trello deployment](resources/trello-termi.png)
 
----
+## Use a recognised task delegation methodology
+
+There are several recognized task delegation methodologies that can be used to achieve this, including `RACI(Responsible, Accountable, Consulted, Informed)`, `Delegation Porker`, `Eisenhower Matrix`, and `ABC Analysis`. but our team was working with a different approach. As you can see in `Trello`, we put a `priority` on each task when designing. We shared the importance of tasks when collaborating by setting priorities.
+
+- `Priority1` is a group that needs to be dealt with first as a task that has the greatest impact when a requirement or issue occurs. This is equivalent to `A` of `ABC analysis` and can affect the project schedule if not handled properly.
+- `priority2` is almost similar to `B` in `ABC analysis`. `A` group of tasks that are important but not urgent compared to priority1. Of course, if there is a change in this, the entire project schedule should be reviewed again.
+- `priority3` is almost the same as `C` in `ABC analysis`. This is a non-critical but not urgent working group. However, since it is one of the tasks of the project, it means that it is relatively less important than Priority1 or Priority2, and should not be neglected.
+
+When we collaborated, based on this `task delegation`, we proceeded with the project until the entire project was finished without any issues.
+
+# R5. Produce a working application that meets client and user needs
+
+Our team created the application based on the user story and DFD, AAD, and WireFrame created during the design phase. Please, See the source link above.
+
+# R6. Deploy the application to a cloud hosting service
+
+`The frontend` was deployed through `Google Firebase`, and `the backend` was distributed through `railway`. Please see link below for details.
+
+### Front-end
+
+T3A2-B:Front-end: https://mern-restaurant-bookingapp.web.app/
+
+### Back-end
+
+T3A2-B:Back-end: https://mern-restaurant-api-production.up.railway.app/
+
+# R7. Produce an application with an intuitive user interface
+
+The UI of our application is very intuitive. Even if there is no manual, if you have used a web application or mobile app that is currently used, you can use it without any problems.
+
+![wholeApplication](resources/wholescreenofApp.png)
+![wholeAppforUpdate](resources/wholeAppforUpdate.png)
+
+Error handling is carried out in a user-friendly way so that users can check errors, and when changing or deleting booking information, user can always receive confirmation from our application, and the user can check the processing result.
+
+![wholeAppforAlert](resources/wholeAppforAlert.png)
+
+Also, as our application is a responsive designed, so our application works flawlessly on mobile or tablet.
 
 # R8. Testing
 
@@ -852,4 +891,9 @@ T3A2-B:Back-end git address: https://github.com/lmh4686/MERN-Restaurant-API
 
 # R12. The contents of your README.md as submitted for Full Stack App - Part A
 
+Attached as a pdf in the submitted directory.
+
 # R13. A link and screenshots of your Trello board throughout the duration of the project.
+
+Plase, see trello part in #R4 above<br/>
+[TRELLO](#R4.-Demonstrate-your-ability-to-work-in-a-team)
